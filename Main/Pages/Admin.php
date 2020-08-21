@@ -4,7 +4,13 @@ namespace YunTaIDC\Page;
 
 use YunTaIDC\Admin\Admin as A;
 use YunTaIDC\Workorder\Workorder;
+
 use YunTaIDC\Events\AdminReplyWorkorderEvent;
+use YunTaIDC\Events\ServiceDeleteEvent;
+use YunTaIDC\Events\DeleteServiceEvent;
+use YunTaIDC\Events\CreateServiceEvent;
+
+use YunTaIDC\Service\Service;
 
 class Admin{
     
@@ -596,7 +602,11 @@ class Admin{
                                        <th>'.$v['username'].'</th>
                                        <th>'.$product['name'].'</th>
                                        <th>'.$v['enddate'].'</th>
-                                       <th><a href="./index.php?p=Admin&a=Service&sid='.$v['id'].'" class="btn btn-sm btn-primary">编辑</a><a href="./index.php?p=Admin&a=Service&sid='.$v['id'].'&act=del" class="btn btn-sm btn-danger">删除</a></th>
+                                       <th><a href="./index.php?p=Admin&a=Service&sid='.$v['id'].'" class="btn btn-sm btn-primary">编辑</a>';
+                                       if($v['status'] == '待开通'){
+                                           echo '<a href="./index.php?p=Admin&a=ReopenService&sid='.$v['id'].'" class="btn btn-sm btn-success">开通</a>';
+                                       }
+                                       echo '<a href="./index.php?p=Admin&a=Service&sid='.$v['id'].'&act=del" class="btn btn-sm btn-danger">删除</a></th>
                                     </tr>';
                                  }
                                  echo '
@@ -1466,6 +1476,18 @@ class Admin{
                         if(!$this->CheckPermission('service_delete')){
                             $this->goIndex();
                         }
+                        $PluginManager = $this->getSystem()->getPluginManager();
+                        $Service = new Service($service['id'], $this);
+                        $Product = $Service->getProduct();
+                        $Server = $Product->getServer();
+                        if($Product->isExisted() !== false){
+                            if($Server->isExisted() !== false){
+                                $Event = new ServiceDeleteEvent($Service, $Server);
+                                $PluginManager->loadEvent('onServiceDelete', $Event);
+                                $Event = new DeleteServiceEvent($Service, $Server);
+                                $PluginManager->loadEventByPlugin('DeleteService', $Event, $Server->getServerPluginName());
+                            }
+                        }
                         $this->getSystem()->getDatabase()->exec("DELETE FROM `ytidc_service` WHERE `id`='{$service['id']}'");
                         @header("Location: ./index.php?p=Admin&a=Services");
                         exit;
@@ -2134,6 +2156,49 @@ class Admin{
                        </div>
                     </main>';
                     $this->Footer();
+                    }
+                }
+            }
+        }
+    }
+    
+    public function ReopenService(){
+        if($this->checkLogin() === false){
+            $this->goLogin();
+        }else{
+            if(empty($this->getSystem()->getGetParams()['sid'])){
+                $Service = new Service($this->getSystem()->getGetParams()['sid'], $this);
+                if($Service->isExisted() == false){
+                    @header("Location: ./index.php?p=Clientarea&a=Services");
+                    exit;
+                }else{
+                    if($Service->getStatus() != '待开通'){
+                        @header("Location: ./index.php?p=Clientarea&a=Services");
+                        exit;
+                    }else{
+                        $Product = $Service->getProduct();
+                        if($Product->isExisted() === false){
+                            @header("Location: ./index.php?p=Clientarea&a=Services");
+                            exit;
+                        }else{
+                            $Server = $Product->getServer();
+                            if($Server->isExisted() === false){
+                                @header("Location: ./index.php?p=Clientarea&a=Services");
+                                exit;
+                            }else{
+                                $PluginManager = $this->getSystem()->getPluginManager();
+                                $Event = new CreateServiceEvent($Service, $Product, $Service->getUser());
+                                $result = $PluginManager->loadEventByPlugin('CreateService', $Event, $Server->getServerPluginName());
+                                if($result === true){
+                                    $Service->setStatus('激活');
+                                    @header("Location: ./index.php?p=Clientarea&a=Services");
+                                    exit;
+                                }else{
+                                    @header("Location: ./index.php?p=Clientarea&a=Services");
+                                    exit;
+                                }
+                            }
+                        }
                     }
                 }
             }
