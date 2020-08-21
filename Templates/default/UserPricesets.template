@@ -1,0 +1,50 @@
+[include[UserHeader.template]]
+
+            <div class="container-fluid">
+                <div class="side-body">
+                    <div class="page-title">
+                        <span class="title">升级价格组</span>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <div class="title">
+                                        	价格组列表
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row no-margin no-gap">
+                                    [PricesetList]
+                                    
+                                        <div class="col-sm-3">
+                                            <div class="pricing-table green">
+                                                <div class="pt-header">
+                                                    <div class="plan-pricing">
+                                                        <div class="pricing">[name]</div>
+                                                        <div class="pricing-type">预存：￥[money]</div>
+                                                    </div>
+                                                </div>
+                                                <div class="pt-body">
+                                                    <ul class="plan-detail">
+                                                        [description]
+                                                    </ul>
+                                                </div>
+                                                <div class="pt-footer">
+                                                    <a href="?up=[id]" class="btn btn-success">点击升级</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    [/PricesetList]
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+[include[UserFooter.template]]

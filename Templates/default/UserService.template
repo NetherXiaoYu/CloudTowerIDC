@@ -1,0 +1,37 @@
+[include[UserHeader.template]]
+            <div class="container-fluid">
+                <div class="side-body">
+                    <div class="page-title">
+                        <span class="title">管理产品：[service[username]]</span>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="card">
+                                <div class="card-body">
+                                  服务账号：[service[username]]<br>
+                                  服务密码：[service[password]]<br>
+                                  到期时间：[service[enddate]]<br>
+                                  产品名称：[product[name]]<br>
+                                  <form action="./index.php?p=Service&a=RenewService" method="POST">
+                                    	<input type="hidden" name="service" value="[service[id]]">
+                                    	<div class="form-group">
+                                          	<label for="exampleInputEmail1">续费周期</label>
+                                    <div>
+                                        <select name="period">
+                                            <optgroup label="请选择">
+                                              [PeriodList]
+                                              <option value="[name]">[name]：[price]元</option>
+                                              [/PeriodList]
+                                            </optgroup>
+                                        </select>
+                                    </div>	
+                                      	</div>     <button type="submit" class="btn btn-danger">续费</button>
+                                  </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+[include[UserFooter.template]]

@@ -1,0 +1,58 @@
+[include[UserHeader.template]]
+
+            <div class="container-fluid">
+                <div class="side-body">
+                    <div class="page-title">
+                        <span class="title">产品订购确认</span>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <div class="title">开通服务</div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <form method="POST" action="./index.php?p=Service&a=CreateService">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">服务账号</label>
+                                            <input name="username" type="text" class="form-control" id="title" placeholder="服务账号">
+                                            <input name="product" type="hidden" class="form-control" id="title" value="[product[id]]">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">服务密码</label>
+                                            <input name="password" type="text" class="form-control" id="title" placeholder="服务密码">
+                                        </div>
+                                        [CustomOptionList]
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">[label]</label>
+                                            <input name="[name]" type="[type]" class="form-control" id="title" placeholder="[label]">
+                                        </div>
+                                        [/CustomOptionList]
+                                        <div class="form-group">
+                                          	<label for="exampleInputEmail1">购买周期</label>
+                                    <div>
+                                        <select name="period">
+                                            <optgroup label="请选择">
+                                              [PeriodList]
+                                              <option value="[name]">[name]：[price]元</option>
+                                              [/PeriodList]
+                                            </optgroup>
+                                        </select>
+                                    </div>	
+                                      	</div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">优惠码（没有可为空）</label>
+                                            <input name="promo_code" type="text" class="form-control" id="title" placeholder="优惠码">
+                                        </div>
+                                        <button type="submit" class="btn btn-default">确认</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+[include[UserFooter.template]]

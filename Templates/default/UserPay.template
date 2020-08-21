@@ -1,0 +1,41 @@
+[include[UserHeader.template]]
+
+
+            <div class="container-fluid">
+                <div class="side-body">
+                    <div class="page-title">
+                        <span class="title">充值余额</span>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <div class="title">充值余额</div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <form method="POST" action="./index.php?p=Pay&a=Send">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">充值金额</label>
+                                            <input name="money" type="text" class="form-control" id="title" placeholder="充值金额">
+                                            <input name="user" type="hidden" class="form-control" id="title" value="[user[id]]">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">支付渠道</label>
+                                            <select name="gateway" class="form-control">
+                                            [GatewayList]
+                                            <option value="[id]">[name]</option>
+                                            [/GatewayList]
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-default">充值</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+[include[UserFooter.template]]

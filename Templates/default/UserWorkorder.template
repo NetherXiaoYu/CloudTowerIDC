@@ -1,0 +1,28 @@
+[include[UserHeader.template]]
+            <div class="container-fluid">
+                <div class="side-body">
+                    <div class="page-title">
+                        <span class="title">[workorder[title]]</span>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="card">
+                                <div class="card-body">
+                                  工单状态：[workorder[status]]<br>
+                                  <form action="#" method="POST">
+                                  <div class="form-group">
+                                	<textarea class="form-control" name="reply"></textarea>
+                                	<button class="btn btn-default" type"submit">回复</button>
+                                  </div>
+                                  <form>
+                                  [ReplyList]
+                                    [person]回复（[time]）：[content]<br>
+                                  [/ReplyList]
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+[include[UserFooter.template]]

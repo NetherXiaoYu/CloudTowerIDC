@@ -1,0 +1,47 @@
+[include[UserHeader.template]]
+
+            <div class="container-fluid">
+                <div class="side-body">
+                    <div class="page-title">
+                        <span class="title">在线服务管理</span>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="card">
+                                <div class="card-header">
+
+                                    <div class="card-title">
+                                    <div class="title">服务列表</div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>服务账户</th>
+                                                <th>服务产品</th>
+                                                <th>到期日期</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                          [ServiceList]
+	                                        	<tr>
+												    <th scope="row">[id]</th>
+												    <td>[username]</td>
+												    <td>[product]</td>
+												    <td>[enddate]</td>
+												    <td><a href="./index.php?p=Clientarea&a=Service&sid=[id]">续费服务</a> | <a href="./index.php?p=Service&a=LoginService&service=[id]">登陆服务</a></td>
+												</tr>
+                                          [/ServiceList]
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+[include[UserFooter.template]]

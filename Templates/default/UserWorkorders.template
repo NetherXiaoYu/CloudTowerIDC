@@ -1,0 +1,45 @@
+[include[UserHeader.template]]
+
+            <div class="container-fluid">
+                <div class="side-body">
+                    <div class="page-title">
+                        <span class="title">用户工单</span>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="card">
+                                <div class="card-header">
+
+                                    <div class="card-title">
+                                    <div class="title">工单列表<a href="./index.php?p=Clientarea&a=AddWorkorder">[点击提交新工单>>>]</a></div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>标题</th>
+                                                <th>状态</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                          [WorkorderList]
+                                        	<tr>
+											    <th scope="row">[id]</th>
+											    <td>[title]</td>
+											    <td>[status]</td>
+											    <td><a href="./index.php?p=Clientarea&a=Workorder&wid=[id]">[点击查看工单>>>]</a></td>
+											</tr>
+                                          [/WorkorderList]
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+[include[UserFooter.template]]
