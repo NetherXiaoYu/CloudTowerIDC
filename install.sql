@@ -15,6 +15,11 @@ CREATE TABLE `ytidc_admin` (
 INSERT INTO `ytidc_admin` (`id`, `username`, `password`, `permission`, `lastip`, `status`) VALUES
 (1, 'admin', '14e1b600b1fd579f47433b88e8d85291', '[\"*\"]', '', 1);
 
+CREATE TABLE `ytidc_template` (
+  `key` varchar(64) NOT NULL,
+  `value` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `ytidc_config` (
   `key` varchar(64) NOT NULL,
   `value` text NOT NULL

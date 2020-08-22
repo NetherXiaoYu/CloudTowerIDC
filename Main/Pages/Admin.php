@@ -115,10 +115,11 @@ class Admin{
                   <li class="nav-item dropdown">
                      <a class="dropdown-toggle" href="javascript:void(0);"><span class="icon-holder"><i class="c-red-500 ti-settings"></i> </span><span class="title">网站设置</span> <span class="arrow"><i class="ti-angle-right"></i></span></a>
                      <ul class="dropdown-menu">
-                        <li><a class="sidebar-link" href="./index.php?p=Admin&a=Settings&set=Seo">SEO管理</a></li>
+                        <li><a class="sidebar-link" href="./index.php?p=Admin&a=Setting&set=Seo">SEO管理</a></li>
                         <li><a class="sidebar-link" href="./index.php?p=Admin&a=Notices">公告管理</a></li>
-                        <li><a class="sidebar-link" href="./index.php?p=Admin&a=Settings&set=Template">模板管理</a></li>
-                        <li><a class="sidebar-link" href="./index.php?p=Admin&a=Settings&set=Cron">Cron管理</a></li>
+                        <li><a class="sidebar-link" href="./index.php?p=Admin&a=Setting&set=Template">模板管理</a></li>
+                        <li><a class="sidebar-link" href="./index.php?p=Admin&a=Template">模板自定义</a></li>
+                        <li><a class="sidebar-link" href="./index.php?p=Admin&a=Setting&set=Cron">Cron管理</a></li>
                         <li><a class="sidebar-link" href="signup.html">其他管理</a></li>
                      </ul>
                   </li>
@@ -138,16 +139,23 @@ class Admin{
                            <div class="peer"><span class="fsz-sm c-grey-900">管理员</span></div>
                         </a>
                         <ul class="dropdown-menu fsz-sm">
-                           <li><a href="" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700"><i class="ti-settings mR-10"></i> <span>网站设置</span></a></li>
-                           <li><a href="" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700"><i class="ti-user mR-10"></i> <span>用户管理</span></a></li>
-                           <li><a href="email.html" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700"><i class="ti-email mR-10"></i> <span>工单管理</span></a></li>
+                           <li><a href="./index.php?p=Admin&a=Setting&set=Seo" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700"><i class="ti-settings mR-10"></i> <span>网站设置</span></a></li>
+                           <li><a href="./index.php?p=Admin&a=Users" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700"><i class="ti-user mR-10"></i> <span>用户管理</span></a></li>
+                           <li><a href="./index.php?p=Admin&a=Workorders" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700"><i class="ti-email mR-10"></i> <span>工单管理</span></a></li>
                            <li role="separator" class="divider"></li>
-                           <li><a href="" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700"><i class="ti-power-off mR-10"></i> <span>注销登陆</span></a></li>
+                           <li><a href="./index.php?p=Admin&a=Logout" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700"><i class="ti-power-off mR-10"></i> <span>注销登陆</span></a></li>
                         </ul>
                      </li>
                   </ul>
                </div>
             </div>';
+    }
+    
+    public function Logout(){
+        unset($_SESSION['ctadmin_ip']);
+        unset($_SESSION['ctadmin_user']);
+        @header("Location: ./index.php?p=Admin&a=Login");
+        exit;
     }
     
     private function Footer(){
@@ -206,7 +214,7 @@ class Admin{
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
-      <title>Sign In</title>
+      <title>登陆 - 云塔IDC系统v3.0</title>
       <style>#loader{transition:all .3s ease-in-out;opacity:1;visibility:visible;position:fixed;height:100vh;width:100%;background:#fff;z-index:90000}#loader.fadeOut{opacity:0;visibility:hidden}.spinner{width:40px;height:40px;position:absolute;top:calc(50% - 20px);left:calc(50% - 20px);background-color:#333;border-radius:100%;-webkit-animation:sk-scaleout 1s infinite ease-in-out;animation:sk-scaleout 1s infinite ease-in-out}@-webkit-keyframes sk-scaleout{0%{-webkit-transform:scale(0)}100%{-webkit-transform:scale(1);opacity:0}}@keyframes sk-scaleout{0%{-webkit-transform:scale(0);transform:scale(0)}100%{-webkit-transform:scale(1);transform:scale(1);opacity:0}}</style>
       <link href="/Main/Pages/Admin/style.css" rel="stylesheet">
    </head>
@@ -1196,6 +1204,101 @@ class Admin{
         }
     }
     
+    public function Template(){
+        if($this->checkLogin() === false){
+            $this->goLogin();
+        }else{
+            if(!$this->CheckPermission('web_setting')){
+                $this->goIndex();
+            }
+            if(!empty($this->getSystem()->getPostParams())){
+                $custom = $this->getSystem()->getPostParams()['custom'];
+                foreach ($custom as $k => $v){
+                    if(empty($v['value'])){
+                        $this->getSystem()->getDatabase()->exec("DELETE FROM `ytidc_template` WHERE `key`='{$v['key']}'");
+                    }else{
+                        if($this->getSystem()->getDatabase()->num_rows("SELECT COUNT(*) FROM `ytidc_template` WHERE `key`='{$v['key']}'") != 0){
+                            $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_template` SET `value`='{$v['value']}' WHERE `key`='{$v['key']}'");
+                        }else{
+                            $this->getSystem()->getDatabase()->exec("INSERT INTO `ytidc_template` (`key`, `value`) VALUES ('{$v['key']}', '{$v['value']}')");
+                        }
+                    }
+                }
+                @header("Location: ./index.php?p=Admin&a=Template");
+                exit;
+            }else{
+                $customcount = count($this->getSystem()->getTemplateCustom());
+                $custom = $this->getSystem()->getDatabase()->get_rows("SELECT * FROM `ytidc_template`");
+                $this->Header();
+                echo '
+                <script>
+                                var customcount = '.$customcount.';
+                        
+                                function AddCustomInput() {
+                                    customcount++;
+                                    var custom = document.getElementById("customtable");
+                                    var editform = document.getElementById("editform");
+                                    editform.style.height = editform.offsetHeight + 50 +\'px\';
+                        
+                                    var tr = document.createElement(\'tr\');
+                            	    	var td = document.createElement(\'td\');
+                            	    	td.innerHTML=\'<input type="text" class="form-control" name="custom[\' + customcount + \'][key]" value="" style="min-width: 100px;"/>\';
+                            			tr.appendChild(td);
+                            	    	var td = document.createElement(\'td\');
+                            	    	td.innerHTML=\'<input type="text" class="form-control" name="custom[\' + customcount + \'][value]" value="" style="min-width: 100px;"/>\';
+                            			tr.appendChild(td);
+                            		custom.appendChild(tr);
+                        
+                                }
+                            </script>
+                    <main class="main-content bgc-grey-100">
+                   <div id="mainContent">
+                      <div class="row gap-20 masonry pos-r"  id="editform">
+                         <div class="masonry-sizer col-md-6"></div>
+                         <div class="masonry-item col-md-12">
+                            <div class="bgc-white p-20 bd">
+                               <h6 class="c-grey-900">模板自定义设置</h6>
+                               <div class="mT-30">
+                                  <form action="./index.php?p=Admin&a=Template" method="POST">
+                                     <div class="form-group row">
+                                            <label for="inputEmail3" class="col-sm-2 col-form-label">模板自定义设置 <button class="btn btn-sm btn-primary" onclick="AddCustomInput()" type="button">新增设置</button></label>
+                                            <div class="table-responsive col-sm-10">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                           <th scope="col">自定义KEY</th>
+                                                           <th scope="col">自定义内容(留空删除)</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="customtable">';
+                                                    foreach($custom as $k => $v){
+                                                        echo '
+                                                            <tr>
+                                                               <td><input class="form-control" name="custom['.$k.'][key]" value="'.$v['key'].'"></td>
+                                                               <td><input class="form-control" name="custom['.$k.'][value]" value="'.$v['value'].'"></td>
+                                                            </tr>
+                                                        ';
+                                                    }
+                                                    echo '
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                         </div>
+                                     <div class="form-group row">
+                                        <div class="col-sm-10"><button type="submit" class="btn btn-primary">保存</button></div>
+                                     </div>
+                                  </form>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                </main>';
+                $this->Footer();
+            }
+        }
+    }
+    
     public function Add(){
         if($this->checkLogin() === false){
             $this->goLogin();
@@ -1627,7 +1730,7 @@ class Admin{
                                             <div class="col-sm-10"><input type="text" class="form-control" id="inputEmail3" placeholder="用户余额" name="money" value="'.$user['money'].'"></div>
                                          </div>
                                          <div class="form-group row">
-                                            <label for="inputEmail3" class="col-sm-2 col-form-label">用户状态</label>
+                                            <label for="inputEmail3" class="col-sm-2 col-form-label">用户价格组</label>
                                             <div class="col-sm-10"><select name="priceset" class="form-control">';
                                                 $pricesets = $this->getSystem()->getDatabase()->get_rows("SELECT * FROM `ytidc_priceset` WHERE `status`='1'");
                                                 foreach ($pricesets as $k => $v){
@@ -1874,7 +1977,7 @@ class Admin{
                         $workorder = new Workorder($workorder['id'], $this);
                         $Event = new AdminReplyWorkorderEvent($params['reply'], $workorder, $this->Admin);
                         $PluginManager->loadEvent('onAdminReplyWorkorder', $Event);
-                        @header("Location: ./index.php?p=Admin&a=Workorder&wid=".$workorder['id']);
+                        @header("Location: ./index.php?p=Admin&a=Workorder&wid=".$workorder->getId());
                         exit;
                     }else{
                         $replys = $this->getSystem()->getDatabase()->get_rows("SELECT * FROM `ytidc_workorder_reply` WHERE `workorder`='{$workorder['id']}'");
@@ -2254,7 +2357,11 @@ class Admin{
                         $Servers = $this->getSystem()->getDatabase()->get_rows("SELECT * FROM `ytidc_server` WHERE `status`='1'");
                         $Groups = $this->getSystem()->getDatabase()->get_rows("SELECT * FROM `ytidc_group` WHERE `status`='1'");
                         $periods = json_decode($product['period'],true);
-                        $periodcount = count($periods);
+                        if(is_array($periods)){
+                            $periodcount = count($periods);
+                        }else{
+                            $periodcount = 0;
+                        }
                         $product['configoption'] = json_decode($product['configoption'], true);
                         $customoption = json_decode($product['customoption'], true);
                         $server = $this->getSystem()->getDatabase()->get_row("SELECT * FROM `ytidc_server` WHERE `id`='{$product['server']}'");
@@ -2264,7 +2371,11 @@ class Admin{
                         }else{
                             $ProductConfigs = array();
                         }
-                        $customcount = count($customoption);
+                        if(is_array($customcount)){
+                            $customcount = count($customoption);
+                        }else{
+                            $customcount = 0;
+                        }
                         $this->Header();
                         echo '
                             <script>
@@ -2387,14 +2498,16 @@ class Admin{
                                                         </tr>
                                                     </thead>
                                                     <tbody id="customtable">';
-                                                    foreach($customoption as $k => $v){
-                                                        echo '
-                                                            <tr>
-                                                               <td scope="row"><input class="form-control" name="customoption['.$k.'][name]" value="'.$v['name'].'"></td>
-                                                               <td><input class="form-control" name="customoption['.$k.'][type]" value="'.$v['type'].'"></td>
-                                                               <td><input class="form-control" name="customoption['.$k.'][label]" value="'.$v['label'].'"></td>
-                                                            </tr>
-                                                        ';
+                                                    if(is_array($customoption)){
+                                                        foreach($customoption as $k => $v){
+                                                            echo '
+                                                                <tr>
+                                                                   <td scope="row"><input class="form-control" name="customoption['.$k.'][name]" value="'.$v['name'].'"></td>
+                                                                   <td><input class="form-control" name="customoption['.$k.'][type]" value="'.$v['type'].'"></td>
+                                                                   <td><input class="form-control" name="customoption['.$k.'][label]" value="'.$v['label'].'"></td>
+                                                                </tr>
+                                                            ';
+                                                        }
                                                     }
                                                     echo '
                                                     </tbody>
@@ -2404,11 +2517,13 @@ class Admin{
                                          <div class="form-group row">
                                             <label for="inputEmail3" class="col-sm-2 col-form-label">所属产品组</label>
                                             <div class="col-sm-10"><select name="group" class="form-control">';
-                                            foreach($Groups as $k => $v){
-                                                if($v['id'] == $product['group']){
-                                                    echo '<option value="'.$v['id'].'" selected>'.$v['name'].'</option>';
-                                                }else{
-                                                    echo '<option value="'.$v['id'].'">'.$v['name'].'</option>';
+                                            if(is_array($Groups)){
+                                                foreach($Groups as $k => $v){
+                                                    if($v['id'] == $product['group']){
+                                                        echo '<option value="'.$v['id'].'" selected>'.$v['name'].'</option>';
+                                                    }else{
+                                                        echo '<option value="'.$v['id'].'">'.$v['name'].'</option>';
+                                                    }
                                                 }
                                             }
                                             echo '</select></div>
@@ -2416,11 +2531,13 @@ class Admin{
                                          <div class="form-group row">
                                             <label for="inputEmail3" class="col-sm-2 col-form-label">产品服务器</label>
                                             <div class="col-sm-10"><select name="server" class="form-control">';
-                                            foreach($Servers as $k => $v){
-                                                if($v['id'] == $product['server']){
-                                                    echo '<option value="'.$v['id'].'" selected>'.$v['name'].'</option>';
-                                                }else{
-                                                    echo '<option value="'.$v['id'].'">'.$v['name'].'</option>';
+                                            if(is_array($Servers)){
+                                                foreach($Servers as $k => $v){
+                                                    if($v['id'] == $product['server']){
+                                                        echo '<option value="'.$v['id'].'" selected>'.$v['name'].'</option>';
+                                                    }else{
+                                                        echo '<option value="'.$v['id'].'">'.$v['name'].'</option>';
+                                                    }
                                                 }
                                             }
                                             echo '</select></div>
@@ -2445,35 +2562,37 @@ class Admin{
                                                 }
                                             echo'</select></div>
                                          </div>';
-                                         foreach($ProductConfigs as $k => $v){
-                                             if($v['type'] == 'text' || $v['type'] == "number" || $v['type'] == "password"){
-                                                 echo '
-                                             <div class="form-group row">
-                                                <label for="inputEmail3" class="col-sm-2 col-form-label">插件配置：'.$v['label'].'</label>
-                                                <div class="col-sm-10"><input type="'.$v['type'].'" class="form-control" id="inputEmail3" placeholder="'.$v['placeholder'].'" name="configoption['.$k.']" value="'.$product['configoption'][$k].'"></div>
-                                             </div>';
-                                             }
-                                             if($v['type'] == 'textarea'){
-                                                 echo '
-                                             <div class="form-group row">
-                                                <label for="inputEmail3" class="col-sm-2 col-form-label">插件配置：'.$v['label'].'</label>
-                                                <div class="col-sm-10"><textarea class="form-control" placeholder="'.$v['placeholder'].'" name="configoption['.$k.']">'.$product['configoption'][$k].'</textarea></div>
-                                             </div>';
-                                             }
-                                             if($v['type'] == "select"){
-                                                 echo '
-                                             <div class="form-group row">
-                                                <label for="inputEmail3" class="col-sm-2 col-form-label">插件配置：'.$v['label'].'</label>
-                                                <div class="col-sm-10"><select name="configoption['.$k.']" class="form-control">';
-                                                    foreach($v['option'] as $k1 => $v1){
-                                                        if($product['configoption'][$k] == $v1){
-                                        					echo '<option value="'.$v1.'" selected>'.$k1.'</option>';
-                                        				}else{
-                                        					echo '<option value="'.$v1.'">'.$k1.'</option>';
-                                        				}
-                                                    }
-                                                echo '</select></div>
-                                             </div>';
+                                         if(is_array($ProductConfigs)){
+                                             foreach($ProductConfigs as $k => $v){
+                                                 if($v['type'] == 'text' || $v['type'] == "number" || $v['type'] == "password"){
+                                                     echo '
+                                                 <div class="form-group row">
+                                                    <label for="inputEmail3" class="col-sm-2 col-form-label">插件配置：'.$v['label'].'</label>
+                                                    <div class="col-sm-10"><input type="'.$v['type'].'" class="form-control" id="inputEmail3" placeholder="'.$v['placeholder'].'" name="configoption['.$k.']" value="'.$product['configoption'][$k].'"></div>
+                                                 </div>';
+                                                 }
+                                                 if($v['type'] == 'textarea'){
+                                                     echo '
+                                                 <div class="form-group row">
+                                                    <label for="inputEmail3" class="col-sm-2 col-form-label">插件配置：'.$v['label'].'</label>
+                                                    <div class="col-sm-10"><textarea class="form-control" placeholder="'.$v['placeholder'].'" name="configoption['.$k.']">'.$product['configoption'][$k].'</textarea></div>
+                                                 </div>';
+                                                 }
+                                                 if($v['type'] == "select"){
+                                                     echo '
+                                                 <div class="form-group row">
+                                                    <label for="inputEmail3" class="col-sm-2 col-form-label">插件配置：'.$v['label'].'</label>
+                                                    <div class="col-sm-10"><select name="configoption['.$k.']" class="form-control">';
+                                                        foreach($v['option'] as $k1 => $v1){
+                                                            if($product['configoption'][$k] == $v1){
+                                            					echo '<option value="'.$v1.'" selected>'.$k1.'</option>';
+                                            				}else{
+                                            					echo '<option value="'.$v1.'">'.$k1.'</option>';
+                                            				}
+                                                        }
+                                                    echo '</select></div>
+                                                 </div>';
+                                                 }
                                              }
                                          }
                                          echo '

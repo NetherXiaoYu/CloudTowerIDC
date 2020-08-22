@@ -29,18 +29,20 @@ class Cron{
         $stopdate = date('Y-m-d', strtotime("+{$config['cron_stopday']} days", time()));
         $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_service` SET `status`='暂停' WHERE `enddate`<='$stopdate'");
         $deletedate = date('Y-m-d', strtotime("-{$config['cron_stopday']} days", time()));
-        $Services = $this->getSystem()->getDatabase()->exec("SELECT * FROM `ytidc_service` WHERE `enddate`<='{$deletedate}'");
-        foreach ($Services as $k => $v){
-            $Service = new Service($v['username'], $this);
-            $Product = $Service->getProduct();
-            if($Product->isExisted() !== false){
-                $Server = $Product->getServer();
-                if($Server->isExisted() !== false){
-                    $PluginManager = $this->getSystem()->getPluginManager();
-                    $Event = new ServiceDeleteEvent($Service, $Server);
-                    $PluginManager->loadEvent('onServiceDelete', $Event);
-                    $DeleteEvent = new DeleteServiceEvent($Service, $Server);
-                    $PluginManager->loadEventByPlugin('DeleteService', $DeleteEvent, $Server->getServerPluginName());
+        $Services = $this->getSystem()->getDatabase()->get_rows("SELECT * FROM `ytidc_service` WHERE `enddate`<='{$deletedate}'");
+        if(is_array($Services)){
+            foreach ($Services as $k => $v){
+                $Service = new Service($v['username'], $this);
+                $Product = $Service->getProduct();
+                if($Product->isExisted() !== false){
+                    $Server = $Product->getServer();
+                    if($Server->isExisted() !== false){
+                        $PluginManager = $this->getSystem()->getPluginManager();
+                        $Event = new ServiceDeleteEvent($Service, $Server);
+                        $PluginManager->loadEvent('onServiceDelete', $Event);
+                        $DeleteEvent = new DeleteServiceEvent($Service, $Server);
+                        $PluginManager->loadEventByPlugin('DeleteService', $DeleteEvent, $Server->getServerPluginName());
+                    }
                 }
             }
         }

@@ -47,11 +47,13 @@ class Cart extends Page{
             }
             $Product = $Group->getProducts();
             $Products = array();
-            foreach($Product as $k => $v){
-                $Products[$k] = $v;
-                $vperiod = array_shift(json_decode($v['period'], true));
-                $Products[$k]['periodname'] = $vperiod['name'];
-                $Products[$k]['periodprice'] = $vperiod['price'];
+            if(is_array($Product)){
+                foreach($Product as $k => $v){
+                    $Products[$k] = $v;
+                    $vperiod = array_shift(json_decode($v['period'], true));
+                    $Products[$k]['periodname'] = $vperiod['name'];
+                    $Products[$k]['periodprice'] = $vperiod['price'];
+                }
             }
             if($Product === false){
                 $this->getTemplate()->replaceListContent('ProductList', array());
@@ -60,6 +62,7 @@ class Cart extends Page{
             }
             $template_code = array(
                 'config' => $this->getSystem()->getConfigAll(),
+                'template' => $this->getSystem()->getTemplateCustom(),
                 'group' => $Group->getAll(),
             );
             $this->getTemplate()->setTemplateCode($template_code);
@@ -91,12 +94,17 @@ class Cart extends Page{
                     }
                     $Period = $Product->getPeriod();
                     if($this->checkLogin() === true){
-                        $Price = $this->getUser()->getPriceset()->getPrice()[$Product->getId()];
-                        if(empty($Price)){
-                            $Price = $this->getUser()->getPriceset()->getPrice()['*'];
+                        $Priceset = $this->getUser()->getPriceset();
+                        if($Priceset !== false){
+                            $Price = $Priceset->getPrice()[$Product->getId()];
                             if(empty($Price)){
-                                $Price = 100;
+                                $Price = $this->getUser()->getPriceset()->getPrice()['*'];
+                                if(empty($Price)){
+                                    $Price = 100;
+                                }
                             }
+                        }else{
+                            $Price = 100;
                         }
                     }else{
                         $Price = 100;
@@ -111,6 +119,7 @@ class Cart extends Page{
                     }
                     $template_code = array(
                         'config' => $this->getSystem()->getConfigAll(),
+                    'template' => $this->getSystem()->getTemplateCustom(),
                         'product' => $Product->getAll(),
                     );
                     $this->getTemplate()->setTemplateCode($template_code);

@@ -14,6 +14,7 @@ use YunTaIDC\Events\OrderCreateEvent;
 use YunTaIDC\Events\ServiceCreateEvent;
 use YunTaIDC\Events\CreateServiceEvent;
 use YunTaIDC\Events\ServiceRenewEvent;
+use YunTaIDC\Events\LoginServiceEvent;
 use YunTaIDC\Events\RenewServiceEvent;
 
 class Service extends Page{
@@ -47,8 +48,8 @@ class Service extends Page{
             if($Product->isExisted() === false){
                 $this->goMsg('产品不存在');
             }else{
-                $Period = $Product->getPeriod();
-                foreach($Period as $k => $v){
+                $Periods = $Product->getPeriod();
+                foreach($Periods as $k => $v){
                     if($v['name'] == $Posts['period']){
                         $Period = $v;
                     }
@@ -60,12 +61,17 @@ class Service extends Page{
                     if($Service->isExisted() === true){
                         $this->goMsg('服务账号已被使用');
                     }
-                    $Discount = $this->getUser()->getPriceset()->getPrice()[$Post['product']];
-                    if(empty($Discount)){
-                        $Discount = $this->getUser()->getPriceset()->getPrice()['*'];
+                    $Priceset = $this->getUser()->getPriceset();
+                    if($Priceset !== false){
+                        $Discount = $this->getUser()->getPriceset()->getPrice()[$Post['product']];
                         if(empty($Discount)){
-                            $Discount = 100;
+                            $Discount = $this->getUser()->getPriceset()->getPrice()['*'];
+                            if(empty($Discount)){
+                                $Discount = 100;
+                            }
                         }
+                    }else{
+                        $Discount = 100;
                     }
                     $Price = $Period['price'] * $Discount / 100;
                     $Orderid = date('YmdHis').rand(100000,999999);
@@ -147,12 +153,17 @@ class Service extends Page{
                             exit(print_r($Period));
                             $this->goMsg('所选周期不存在或不允许续费');
                         }else{
-                            $Discount = $this->getUser()->getPriceset()->getPrice()[$Product->getId()];
-                            if(empty($Discount)){
-                                $Discount = $this->getUser()->getPriceset()->getPrice()['*'];
+                            $Priceset = $this->getUser()->getPriceset();
+                            if($Priceset !== false){
+                                $Discount = $this->getUser()->getPriceset()->getPrice()[$Post['product']];
                                 if(empty($Discount)){
-                                    $Discount = 100;
+                                    $Discount = $this->getUser()->getPriceset()->getPrice()['*'];
+                                    if(empty($Discount)){
+                                        $Discount = 100;
+                                    }
                                 }
+                            }else{
+                                $Discount = 100;
                             }
                             $Price = $Period['price'] * $Discount / 100;
                             $Orderid = date('YmdHis').rand(100000,999999);
@@ -213,7 +224,8 @@ class Service extends Page{
                         }else{
                             $Plugin = $PluginManager->getPlugin($Server->getServerPluginName());
                             if(method_exists($Plugin,'LoginService')){
-                                $Plugin->LoginService($Service->getUsername(), $Service->getPassword());
+                                $Event = new LoginServiceEvent($Service, $Product, $Server);
+                                $Plugin->LoginService($Event);
                             }else{
                                 $this->goMsg('该服务器无法登陆');
                             }

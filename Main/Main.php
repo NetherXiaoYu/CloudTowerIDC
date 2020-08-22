@@ -85,6 +85,15 @@ class Main{
         return $this->config;
     }
     
+    public function getTemplateCustom(){
+        $custom = $this->Database->get_rows("SELECT * FROM `ytidc_template`");
+        $customs = array();
+        foreach($custom as $k => $v){
+            $customs[$v['key']] = $v['value'];
+        }
+        return $customs;
+    }
+    
     public function getDatabase(){
         return $this->Database;
     }

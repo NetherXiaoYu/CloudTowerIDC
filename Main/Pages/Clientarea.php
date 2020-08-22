@@ -48,6 +48,7 @@ class Clientarea extends Page{
                         'workordercount' => $this->getUser()->getWorkorderCount(),
                     ),
                     'config' => $this->getSystem()->getConfigAll(),
+                    'template' => $this->getSystem()->getTemplateCustom(),
                     'user' => $this->getUser()->getAll(),
                 );
                 $this->getTemplate()->setTemplateCode($template_code);
@@ -99,6 +100,7 @@ class Clientarea extends Page{
                     }
                     $template_code = array(
                         'config' => $this->getSystem()->getConfigAll(),
+                        'template' => $this->getSystem()->getTemplateCustom(),
                         'message' => $params['msg'],
                     );
                     $this->getTemplate()->setTemplateCode($template_code);
@@ -143,9 +145,11 @@ class Clientarea extends Page{
                     }
                     $template_code = array(
                         'config' => $this->getSystem()->getConfigAll(),
+                        'template' => $this->getSystem()->getTemplateCustom(),
                         'message' => $params['msg'],
                     );
-                    echo $this->getTemplate()->setTemplateContent('UserRegister', $template_code);
+                    $this->getTemplate()->setTemplateCode($template_code);
+                    echo $this->getTemplate()->outputTemplate();
                 }
             }
         }
@@ -182,10 +186,12 @@ class Clientarea extends Page{
                 if($workorder === false){
                     $template = $this->getTemplate()->replaceListContent('WorkorderList', array());
                 }else{
+                    // exit(print_r($notice));
                     $template = $this->getTemplate()->replaceListContent('WorkorderList', $workorder);
                 }
                 $template_code = array(
                     'config' => $this->getSystem()->getConfigAll(),
+                    'template' => $this->getSystem()->getTemplateCustom(),
                     'user' => $this->getUser()->getAll(),
                 );
                 $this->getTemplate()->setTemplateCode($template_code);
@@ -205,10 +211,12 @@ class Clientarea extends Page{
                 if($notice === false){
                     $template = $this->getTemplate()->replaceListContent('NoticeList', array());
                 }else{
+                    // exit(print_r($notice));
                     $template = $this->getTemplate()->replaceListContent('NoticeList', $notice);
                 }
                 $template_code = array(
                     'config' => $this->getSystem()->getConfigAll(),
+                    'template' => $this->getSystem()->getTemplateCustom(),
                     'user' => $this->getUser()->getAll(),
                 );
                 $this->getTemplate()->setTemplateCode($template_code);
@@ -232,6 +240,7 @@ class Clientarea extends Page{
                 }
                 $template_code = array(
                     'config' => $this->getSystem()->getConfigAll(),
+                    'template' => $this->getSystem()->getTemplateCustom(),
                     'user' => $this->getUser()->getAll(),
                 );
                 $this->getTemplate()->setTemplateCode($template_code);
@@ -255,6 +264,7 @@ class Clientarea extends Page{
                 }
                 $template_code = array(
                     'config' => $this->getSystem()->getConfigAll(),
+                    'template' => $this->getSystem()->getTemplateCustom(),
                     'user' => $this->getUser()->getAll(),
                 );
                 $this->getTemplate()->setTemplateCode($template_code);
@@ -317,6 +327,7 @@ class Clientarea extends Page{
                 }
                 $template_code = array(
                     'config' => $this->getSystem()->getConfigAll(),
+                    'template' => $this->getSystem()->getTemplateCustom(),
                     'user' => $this->getUser()->getAll(),
                 );
                 $this->getTemplate()->setTemplateCode($template_code);
@@ -336,6 +347,7 @@ class Clientarea extends Page{
                 $params = $this->getSystem()->getGetParams();
                 $template_code = array(
                     'config' => $this->getSystem()->getConfigAll(),
+                    'template' => $this->getSystem()->getTemplateCustom(),
                     'user' => $this->getUser()->getAll(),
                     'msg' => $params['msg'],
                 );
@@ -372,6 +384,7 @@ class Clientarea extends Page{
                 }
                 $template_code = array(
                     'config' => $this->getSystem()->getConfigAll(),
+                    'template' => $this->getSystem()->getTemplateCustom(),
                     'user' => $this->getUser()->getAll(),
                 );
                 $this->getTemplate()->setTemplateCode($template_code);
@@ -413,6 +426,7 @@ class Clientarea extends Page{
                         }
                         $template_code = array(
                             'config' => $this->getSystem()->getConfigAll(),
+                            'template' => $this->getSystem()->getTemplateCustom(),
                             'user' => $this->getUser()->getAll(),
                             'workorder' => $workorder->getAll(),
                         );
@@ -445,6 +459,7 @@ class Clientarea extends Page{
                 if(!$this->getTemplateEvent()->isCancelled()){
                     $template_code = array(
                         'config' => $this->getSystem()->getConfigAll(),
+                        'template' => $this->getSystem()->getTemplateCustom(),
                         'user' => $this->getUser()->getAll(),
                     );
                     echo $this->getTemplate()->setTemplateCode($template_code);
@@ -469,6 +484,7 @@ class Clientarea extends Page{
                 if(!$this->getTemplateEvent()->isCancelled()){
                     $template_code = array(
                         'config' => $this->getSystem()->getConfigAll(),
+                        'template' => $this->getSystem()->getTemplateCustom(),
                         'user' => $this->getUser()->getAll(),
                         'notice' => $notice->getAll(),
                     );
@@ -497,6 +513,7 @@ class Clientarea extends Page{
                 }
                 $template_code = array(
                     'config' => $this->getSystem()->getConfigAll(),
+                    'template' => $this->getSystem()->getTemplateCustom(),
                     'user' => $this->getUser()->getAll(),
                 );
                 echo $this->getTemplate()->setTemplateCode($template_code);
@@ -523,12 +540,17 @@ class Clientarea extends Page{
                     if(!$this->getTemplateEvent()->isCancelled()){
                         $Product = $service->getProduct();
                         $Period = $Product->getPeriod();
-                        $Price = $this->getUser()->getPriceset()->getPrice()[$Product->getId()];
-                        if(empty($Price)){
-                            $Price = $this->getUser()->getPriceset()->getPrice()['*'];
+                        $Priceset = $Price = $this->getUser()->getPriceset();
+                        if($Priceset !== false){
+                            $Price = $this->getUser()->getPriceset()->getPrice()[$Product->getId()];
                             if(empty($Price)){
-                                $Price = 100;
+                                $Price = $this->getUser()->getPriceset()->getPrice()['*'];
+                                if(empty($Price)){
+                                    $Price = 100;
+                                }
                             }
+                        }else{
+                            $Price = 100;
                         }
                         foreach($Period as $k => $v){
                             $Period[$k]['price'] = $v['price'] * $Price / 100;
@@ -540,6 +562,7 @@ class Clientarea extends Page{
                         }
                         $template_code = array(
                             'config' => $this->getSystem()->getConfigAll(),
+                            'template' => $this->getSystem()->getTemplateCustom(),
                             'user' => $this->getUser()->getAll(),
                             'service' => $service->getAll(),
                             'product' => $Product->getAll(),

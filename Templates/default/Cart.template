@@ -12,7 +12,7 @@
                                     <div class="card-title">
                                         <div class="title">
                                         	[ProductGroupList]
-                                        	<a href="./buy.php?type=[id]">[name]</a>
+                                        	<a href="./index.php?p=Cart&a=Index&gid=[id]">[name]</a>
                                         	[/ProductGroupList]
                                         </div>
                                     </div>

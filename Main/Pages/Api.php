@@ -13,6 +13,7 @@ use YunTaIDC\Events\ServiceCreateEvent;
 use YunTaIDC\Events\CreateServiceEvent;
 use YunTaIDC\Events\ServiceRenewEvent;
 use YunTaIDC\Events\RenewServiceEvent;
+use YunTaIDC\Events\LoginServiceEvent;
 
 class Api{
     
@@ -466,7 +467,8 @@ class Api{
                     }else{
                         $Plugin = $PluginManager->getPlugin($Server->getServerPluginName());
                         if(method_exists($Plugin,'LoginService')){
-                            $Plugin->LoginService($params['username'], $params['password']);
+                            $Event = new LoginServiceEvent($Service, $Product, $Server);
+                            $Plugin->LoginService($Event);
                         }else{
                             exit('该服务器无法登陆');
                         }
