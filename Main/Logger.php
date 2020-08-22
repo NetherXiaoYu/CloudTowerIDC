@@ -23,7 +23,7 @@ class Logger{
             'shortMessage' => $info,
             'errorMessage' => $error,
         );
-        if(file_put_contents($path, json_encode($content))){
+        if(file_put_contents($path, json_encode($content, JSON_UNESCAPED_UNICODE))){
             return true;
         }else{
             return false;

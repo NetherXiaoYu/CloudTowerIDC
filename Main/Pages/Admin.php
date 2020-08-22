@@ -1597,7 +1597,7 @@ class Admin{
                     }
                     if(!empty($this->getSystem()->getPostParams())){
                         $params = $this->getSystem()->getPostParams();
-                        $params['customoption'] = json_encode($params['customoption']);
+                        $params['customoption'] = json_encode($params['customoption'], JSON_UNESCAPED_UNICODE);
                         $params['password'] = base64_encode($params['password']);
                         $result = $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_service` SET `username`='{$params['username']}', `password`='{$params['password']}', `enddate`='{$params['enddate']}', `customoption`='{$params['customoption']}', `status`='{$params['status']}' WHERE `id`='{$service['id']}'");
                         if($result == 0){
@@ -2165,7 +2165,8 @@ class Admin{
                     }
                     if(!empty($this->getSystem()->getPostParams())){
                         $params = $this->getSystem()->getPostParams();
-                        $params['password'] = base64_encode($params['password']);
+                        $params['serverpassword'] = base64_encode($params['serverpassword']);
+                        $params['serveraccesshash'] = base64_encode($params['serveraccesshash']);
                         $result = $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_server` SET `name`='{$params['name']}',`serverip`='{$params['serverip']}',`serverdomain`='{$params['serverdomain']}',`serverdns1`='{$params['serverdns1']}',`serverdns2`='{$params['serverdns2']}',`serverusername`='{$params['serverusername']}',`serverpassword`='{$params['serverpassword']}',`serveraccesshash`='{$params['serveraccesshash']}',`servercpanel`='{$params['servercpanel']}',`serverport`='{$params['serverport']}',`plugin`='{$params['plugin']}',`status`='{$params['status']}' WHERE `id`='{$server['id']}'");
                         if($result == 0){
                             $this->getSystem()->getLogger()->addSystemLog('数据库修改服务器错误：'.print_r($this->getSystem()->getDatabase()->error()));
@@ -2174,7 +2175,8 @@ class Admin{
                         exit;
                     }else{
                         $Plugins = $this->getSystem()->getPluginManager()->getPlugins('SERVER');
-                        $server['password'] = base64_decode($server['password']);
+                        $server['serverpassword'] = base64_decode($server['serverpassword']);
+                        $server['serveraccesshash'] = base64_decode($server['serveraccesshash']);
                         $this->Header();
                         echo '
                             <main class="main-content bgc-grey-100">
