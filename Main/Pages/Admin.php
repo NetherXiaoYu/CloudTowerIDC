@@ -4,11 +4,13 @@ namespace YunTaIDC\Page;
 
 use YunTaIDC\Admin\Admin as A;
 use YunTaIDC\Workorder\Workorder;
+use YunTaIDC\Server\Server;
 
 use YunTaIDC\Events\AdminReplyWorkorderEvent;
 use YunTaIDC\Events\ServiceDeleteEvent;
 use YunTaIDC\Events\DeleteServiceEvent;
 use YunTaIDC\Events\CreateServiceEvent;
+use YunTaIDC\Events\ProductConfigEvent;
 
 use YunTaIDC\Service\Service;
 
@@ -2368,8 +2370,10 @@ class Admin{
                         $customoption = json_decode($product['customoption'], true);
                         $server = $this->getSystem()->getDatabase()->get_row("SELECT * FROM `ytidc_server` WHERE `id`='{$product['server']}'");
                         $Plugin = $this->getSystem()->getPluginManager()->getPlugin($server['plugin']);
+                        $PluginServer = new Server($server['id'], $this);
+                        $Event = new ProductConfigEvent($PluginServer);
                         if($Plugin  !== false){
-                            $ProductConfigs = $Plugin->ProductConfig();
+                            $ProductConfigs = $Plugin->ProductConfig($Event);
                         }else{
                             $ProductConfigs = array();
                         }

@@ -153,7 +153,7 @@ class Service{
         if(empty($this->Service)){
             return false;
         }else{
-            $configoption = json_encode($array);
+            $configoption = json_encode($array,JSON_UNESCAPED_UNICODE);
             return $this->Database->exec("UPDATE `ytidc_service` WHERE `configoption`='{$configoption}' WHERE `id`='{$this->Service['id']}'");
         }
     }

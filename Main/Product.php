@@ -154,7 +154,7 @@ class Product{
         if(empty($this->Product)){
             return false;
         }else{
-            $array = json_encode($array);
+            $array = json_encode($array, JSON_UNESCAPED_UNICODE);
             return $this->Database->exec("UPDATE `ytidc_product` SET `configoption`='{$array}' WHERE `id`='{$this->Product['id']}'");
         }
     }
@@ -163,7 +163,7 @@ class Product{
         if(empty($this->Product)){
             return false;
         }else{
-            $array = json_encode($array);
+            $array = json_encode($array, JSON_UNESCAPED_UNICODE);
             return $this->Database->exec("UPDATE `ytidc_product` SET `customoption`='{$array}' WHERE `id`='{$this->Product['id']}'");
         }
     }

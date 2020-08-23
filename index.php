@@ -34,6 +34,7 @@ require_once(BASE_ROOT.'Main/Events/OrderChangeEvent.php');
 require_once(BASE_ROOT.'Main/Events/PaySendEvent.php');
 require_once(BASE_ROOT.'Main/Events/PayReturnEvent.php');
 require_once(BASE_ROOT.'Main/Events/PayNotifyEvent.php');
+require_once(BASE_ROOT.'Main/Events/ProductConfigEvent.php');
 require_once(BASE_ROOT.'Main/Events/ServiceCreateEvent.php');
 require_once(BASE_ROOT.'Main/Events/AdminReplyWorkorderEvent.php');
 require_once(BASE_ROOT.'Main/Events/CreateServiceEvent.php');
