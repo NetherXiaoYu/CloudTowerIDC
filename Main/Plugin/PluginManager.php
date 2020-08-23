@@ -26,11 +26,13 @@ class PluginManager{
         if($handle = opendir($this->path)){
             while(false !== ($entry = readdir($handle))){
                 if($entry != '.' && $entry != '..' && is_dir($this->path .'/'. $entry)){
-                    $config = json_decode(file_get_contents($this->path.'/'. $entry.'/plugin.json'),true);
-                    $pluginsconfig[$config['priority']][] = array(
-                        'config' => $config,
-                        'entry' => $entry,
-                    );
+                    if(file_exists($this->path.'/'. $entry.'/plugin.json')){
+                        $config = json_decode(file_get_contents($this->path.'/'. $entry.'/plugin.json'),true);
+                        $pluginsconfig[$config['priority']][] = array(
+                            'config' => $config,
+                            'entry' => $entry,
+                        );
+                    }
                 }
             }
             for($i = 100; $i >= 1; $i--){
@@ -46,11 +48,11 @@ class PluginManager{
                         }else{
                             require_once($mainPath);
                             $this->PluginClass[$v['config']['name']] = $v['config']['main'];
-                            if(!empty($config['page'])){
+                            if(!empty($v['config']['page'])){
                                 $PagePath = str_replace('\\', '/', $v['config']['page']);
-                                $PagePath = $this->path . '/' . $v['entry'] . '/src/' . $PagePath;
+                                $PagePath = $this->path . '/' . $v['entry'] . '/src/' . $PagePath . '.php';
                                 if(!file_exists($PagePath) || !is_file($PagePath)){
-                                    $this->System->getLogger()->newCrashDump('无法加载插件', 'Cannot load plugins '.$v['config']['name'].'\' page due to the incorrect or non existed path of the plugin page file, main file should be '.$PagePath);
+                                    $this->System->getLogger()->newCrashDump('无法加载插件', 'Cannot load plugins '.$v['config']['name'].'\'s page due to the incorrect or non existed path of the plugin page file, main file should be '.$PagePath);
                                     exit('YunTaIDC:加载插件出错'.$PagePath);
                                 }else{
                                     require_once($PagePath);
@@ -167,7 +169,9 @@ class PluginManager{
     public function loadPluginPage($Plugin, $System){
         if($this->PageRegistered($Plugin)){
             $PageClass = $this->PluginPage[$Plugin];
-            return new $PageClass($System);
+            $dataFolder = $this->dataFolder .$Plugin;
+            $sourceFolder = $this->PluginPath[$Plugin];
+            return new $PageClass($System, $dataFolder, $sourceFolder);
         }else{
             return false;
         }

@@ -6,14 +6,18 @@ class PluginPage{
     
     public $System;
     public $Plugin;
-    public $resourceFolder;
     public $templateFolder;
+    public $dataFolder;
     
-    public function __construct($System, $resourceFolder, $templateFolder, $Plugin){
+    public function __construct($System, $dataFolder, $sourceFolder){
         $this->System = $System;
-        $this->Plugin = $Plugin;
-        $this->resourceFolder = $resourceFolder;
-        $this->templateFolder = $templateFolder;
+        $this->dataFolder = $dataFolder;
+        $this->templateFolder = $sourceFolder .'/template';
+        $this->onLoad();
+    }
+    
+    public function onLoad(){
+        
     }
     
     public function getSystem(){
@@ -38,6 +42,24 @@ class PluginPage{
     
     public function getUserSession(){
         return $_SESSION['ytidc_user'];
+    }
+    
+    public function getdataFolder(){
+        return $this->dataFolder;
+    }
+    
+    public function getConfig(){
+        $configPath = $this->dataFolder . '/config.json';
+        if(!file_exists($configPath)){
+            return false;
+        }
+        return json_decode(file_get_contents($configPath), true);
+    }
+    
+    public function saveConfig($array){
+        $content = json_encode($array);
+        $configPath = $this->dataFolder .'/config.json';
+        return file_put_contents($configPath, $content);
     }
     
     public function isMobile(){
