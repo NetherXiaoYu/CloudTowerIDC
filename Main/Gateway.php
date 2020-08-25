@@ -79,19 +79,18 @@ class Gateway{
         }
     }
     
-    public function setName($name){
-        if(!empty($this->Gateway)){
-            return $this->Database->exec("UPDATE `ytidc_gateway` SET `name`='{$name}' WHERE `id`='{$this->Gateway['id']}'");
-        }else{
+    public function set($array){
+        if(empty($this->Gateway)){
             return false;
-        }
-    }
-    
-    public function setRate($rate){
-        if(!empty($this->Gateway)){
-            return $this->Database->exec("UPDATE `ytidc_gateway` SET `rate`='{$rate}' WHERE `id`='{$this->Gateway['id']}'");
         }else{
-            return false;
+            if(empty($array)){
+                return true;
+            }else{
+                foreach($array as $k => $v){
+                    $this->Database->exec("UPDATE `ytidc_gateway` SET `{$k}`='{$v}' WHERE `id`='{$this->Gateway['id']}'");
+                }
+                return true;
+            }
         }
     }
     

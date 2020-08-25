@@ -105,38 +105,6 @@ class Priceset{
         }
     }
     
-    public function setName($name){
-        if(empty($this->Priceset)){
-            return false;
-        }else{
-            return $this->Database->exec("UPDATE `ytidc_priceset` SET `name`='{$name}' WHERE `id`='{$this->Priceset['id']}'");
-        }
-    }
-    
-    public function setDescription($description){
-        if(empty($this->Priceset)){
-            return false;
-        }else{
-            return $this->Database->exec("UPDATE `ytidc_priceset` SET `description`='{$description}' WHERE `id`='{$this->Priceset['id']}'");
-        }
-    }
-    
-    public function setWeight($weight){
-        if(empty($this->Priceset)){
-            return false;
-        }else{
-            return $this->Database->exec("UPDATE `ytidc_priceset` SET `weight`='{$weight}' WHERE `id`='{$this->Priceset['id']}'");
-        }
-    }
-    
-    public function setMoney($money){
-        if(empty($this->Priceset)){
-            return false;
-        }else{
-            return $this->Database->exec("UPDATE `ytidc_priceset` SET `money`='{$money}' WHERE `id`='{$this->Priceset['id']}'");
-        }
-    }
-    
     public function setPrice($price){
         if(empty($this->Priceset)){
             return false;

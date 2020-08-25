@@ -29,26 +29,6 @@ class User{
         }
     }
     
-    public function isLock(){
-        if($status == 0){
-            return true;
-        }else{
-            return false;
-        }
-    }
-    
-    public function setLock($value){
-        if(empty($this->User)){
-            return false;
-        }else{
-            if($value){
-                return $this->Database->exec("UPDATE `ytidc_user` SET `status`='0' WHERE `id`='{$this->User['id']}'");
-            }else{
-                return $this->Database->exec("UPDATE `ytidc_user` SET `status`='1' WHERE `id`='{$this->User['id']}'");
-            }
-        }
-    }
-    
     public function getAll(){
         if(empty($this->User)){
             return false;
@@ -183,6 +163,18 @@ class User{
                 return true;
             }else{
                 return false;
+            }
+        }
+    }
+    
+    public function setStatus($status = true){
+        if(empty($this->User)){
+            return false;
+        }else{
+            if($status){
+                return $this->Database->exec("UPDATE `ytidc_group` SET `status`='1' WHERE `id`='{$this->User['id']}'");
+            }else{
+                return $this->Database->exec("UPDATE `ytidc_group` SET `status`='0' WHERE `id`='{$this->User['id']}'");
             }
         }
     }

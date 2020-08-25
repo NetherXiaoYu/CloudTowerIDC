@@ -82,11 +82,38 @@ class Admin{
         }
     }
     
+    public function set($array){
+        if(empty($this->Admin)){
+            return false;
+        }else{
+            if(empty($array)){
+                return true;
+            }else{
+                foreach($array as $k => $v){
+                    $this->Database->exec("UPDATE `ytidc_admin` SET `{$k}`='{$v}' WHERE `id`='{$this->Admin['id']}'");
+                }
+                return true;
+            }
+        }
+    }
+    
     public function setLastIp($LastIp){
         if(empty($this->Admin)){
             return false;
         }else{
             return $this->Database->exec("UPDATE `ytidc_admin` SET `lastip`='{$LastIp}' WHERE `id`='{$this->Admin['id']}'");
+        }
+    }
+    
+    public function setStatus($Status = true){
+        if(empty($this->Admin)){
+            return false;
+        }else{
+            if($status){
+                return $this->Database->exec("UPDATE `ytidc_admin` SET `status`='1' WHERE `id`='{$this->Admin['id']}'");
+            }else{
+                return $this->Database->exec("UPDATE `ytidc_admin` SET `status`='0' WHERE `id`='{$this->Admin['id']}'");
+            }
         }
     }
     

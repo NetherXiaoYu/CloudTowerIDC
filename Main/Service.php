@@ -94,14 +94,6 @@ class Service{
         }
     }
     
-    public function getPromoCode(){
-        if(empty($this->Service)){
-            return false;
-        }else{
-            return $this->Service['PromoCode'];
-        }
-    }
-    
     public function getCustomOption(){
         if(empty($this->Service)){
             return false;

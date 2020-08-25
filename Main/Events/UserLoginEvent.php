@@ -14,7 +14,6 @@ class UserLoginEvent extends Events{
     public function __construct(User $User, $ip){
         $this->User = $User;
         $this->LoginIp = $ip;
-        $this->LoginStatus = $LoginStatus;
     }
     
     public function getUser(){

@@ -63,14 +63,6 @@ class ProductGroup{
         }
     }
     
-    public function getFather(){
-        if(empty($this->Group)){
-            return false;
-        }else{
-            return $this->Group['father'];
-        }
-    }
-    
     public function getStatus(){
         if(empty($this->Group)){
             return false;

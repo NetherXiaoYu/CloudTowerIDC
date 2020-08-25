@@ -70,30 +70,6 @@ class Notice{
         }
     }
     
-    public function setTitle($title){
-        if(empty($this->Notice)){
-            return false;
-        }else{
-            return $this->Database->exec("UPDATE `ytidc_notice` SET `title`='{$title}' WHERE `id`='{$this->Notice['id']}'");
-        }
-    }
-    
-    public function setContent($content){
-        if(empty($this->Notice)){
-            return false;
-        }else{
-            return $this->Database->exec("UPDATE `ytidc_notice` SET `content`='{$content}' WHERE `id`='{$this->Notice['id']}'");
-        }
-    }
-    
-    public function setDate($date){
-        if(empty($this->Notice)){
-            return false;
-        }else{
-            return $this->Database->exec("UPDATE `ytidc_notice` SET `date`='{$date}' WHERE `id`='{$this->Notice['id']}'");
-        }
-    }
-    
     public function setStatus($status = true){
         if(empty($this->Notice)){
             return false;
