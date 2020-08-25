@@ -826,7 +826,7 @@ class Admin{
             if(!$this->CheckPermission('order_check')){
                 $this->goIndex();
             }
-            $orders = $this->getSystem()->getDatabase()->get_rows("SELECT * FROM `ytidc_order`");
+            $orders = $this->getSystem()->getDatabase()->get_rows("SELECT * FROM `ytidc_order` ORDER BY `orderid` DESC");
             $this->Header();
             echo '
             <main class="main-content bgc-grey-100">
@@ -841,6 +841,7 @@ class Admin{
                                  <thead>
                                     <tr>
                                        <th>ID</th>
+                                       <th>用户ID</th>
                                        <th>详细</th>
                                        <th>金额</th>
                                        <th>操作</th>
@@ -850,6 +851,7 @@ class Admin{
                                  <tfoot>
                                     <tr>
                                        <th>ID</th>
+                                       <th>用户ID</th>
                                        <th>详细</th>
                                        <th>金额</th>
                                        <th>操作</th>
@@ -862,6 +864,7 @@ class Admin{
                                      echo '
                                     <tr>
                                        <th>'.$v['orderid'].'</th>
+                                       <th>'.$v['user'].'</th>
                                        <th>'.$v['description'].'</th>
                                        <th>'.$v['money'].'</th>
                                        <th>'.$v['action'].'</th>
