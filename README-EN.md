@@ -3,7 +3,7 @@ CloudTowerIDC is a free, open sourced web program for web host billing and manag
 ![d6csMR.png](https://s1.ax1x.com/2020/08/25/d6csMR.png)
 
 ## Environment
-- .htaccess support (Or else change the rules to support)
+- .htaccess support (If not change the rules to support, or else may lead to a data exportation)
 - PHP7.4 version(Official test environment, not a must)
 - MySQL5.6.48 version(Official test environment, not a must)
 
