@@ -1329,7 +1329,7 @@ class Admin{
                         if(!$this->CheckPermission('product_add')){
                             $this->goIndex();
                         }
-                        $result = $this->getSystem()->getDatabase()->exec("INSERT INTO `ytidc_product`(`name`, `description`, `weight`, `period`, `group`, `configoption`, `customoption`, `server`, `hidden`, `status`) VALUES ('新建产品{$rand}', '', '', '[]', '', '[]', '[]', '', '0', '1')");
+                        $result = $this->getSystem()->getDatabase()->exec("INSERT INTO `ytidc_product`(`name`, `description`, `weight`, `period`, `group`, `configoption`, `customoption`, `server`, `hidden`, `status`) VALUES ('新建产品{$rand}', '', '0', '[]', '0', '[]', '[]', '0', '0', '1')");
                         if($result == 0){
                             $this->getSystem()->getLogger()->addSystemLog('数据库添加'.$this->getSystem()->getGetParams()['add'].'错误：'.print_r($this->getSystem()->getDatabase()->error()));
                         }
