@@ -91,7 +91,7 @@ class Server{
         if(empty($this->Server)){
             return false;
         }else{
-            return base64_decode($this->Server['serverusername']);
+            return base64_decode($this->Server['serverpassword']);
         }
     }
     

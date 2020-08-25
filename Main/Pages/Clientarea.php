@@ -66,13 +66,13 @@ class Clientarea extends Page{
                 if(!empty($params['ytidc_username']) && !empty($params['ytidc_password'])){
                     $user = new User($params['ytidc_username'], $this);
                     if(!$user){
-                        $this->goLogin();
+                        $this->goLogin('用户不存在');
                     }else{
                         if(md5(md5($params['ytidc_password'])) == $user->getPassword()){
                             $event = new UserLoginEvent($user, $this->getSystem()->getClientIp());
                             $this->getPluginManager()->loadEvent('onUserLogin', $event);
                             if($event->isCancelled() === true){
-                                $this->goLogin();
+                                $this->goLogin('插件取消登陆事件');
                             }else{
                                 $_SESSION['ytidc_user'] = $user->getId();
                                 $_SESSION['ytidc_lastip'] = $this->getSystem()->getClientIp();
@@ -80,14 +80,11 @@ class Clientarea extends Page{
                                 $this->goIndex();
                             }
                         }else{
-                            $event = new UserLoginEvent($user, $this->getSystem()->getClientIp());
-                            $event->setCancelled(true);
-                            $this->getPluginManager()->loadEvent('onUserLogin', $event);
-                            $this->goLogin();
+                            $this->goLogin('账户密码错误');
                         }
                     }
                 }else{
-                    $this->goLogin();
+                    $this->goLogin('请填写账户密码');
                 }
             }else{
                 $this->getTemplate()->setTemplateFile('UserLogin');
@@ -118,22 +115,25 @@ class Clientarea extends Page{
                 $params = $this->getSystem()->getPostParams();
                 if(!empty($params['ytidc_username']) && !empty($params['ytidc_password']) && !empty($params['ytidc_password2'])){
                     if($params['ytidc_password'] != $params['ytidc_password2']){
-                        $this->goRegister();
+                        $this->goRegister('请填写账户密码');
                     }else{
+                        if(is_numeric($params['ytidc_username'])){
+                            $this->goRegister('用户名不能为纯数字');
+                        }
                         $event = new UserRegisterEvent($params['ytidc_username'], $params['ytidc_password']);
                         $this->getPluginManager()->loadEvent('onUserRegister', $event);
                         if($event->isCancelled() === false){
                             if($this->getSystem()->registerUser($params['ytidc_username'], $params['ytidc_password'])){
-                                $this->goLogin();
+                                $this->goLogin('注册成功，请登录');
                             }else{
-                                $this->goRegister();
+                                $this->goRegister('系统插入数据库失败');
                             }
                         }else{
-                            $this->goRegister();
+                            $this->goRegister('插件取消注册事件');
                         }
                     }
                 }else{
-                    $this->goRegister();
+                    $this->goRegister('请填写账户密码');
                 }
             }else{
                 $this->getTemplate()->setTemplateFile('UserRegister');
@@ -560,11 +560,13 @@ class Clientarea extends Page{
                         }else{
                             $this->getTemplate()->replaceListContent('PeriodList', $Period);
                         }
+                        $service = $service->getAll();
+                        $service['password'] = base64_decode($service['password']);
                         $template_code = array(
                             'config' => $this->getSystem()->getConfigAll(),
                             'template' => $this->getSystem()->getTemplateCustom(),
                             'user' => $this->getUser()->getAll(),
-                            'service' => $service->getAll(),
+                            'service' => $service,
                             'product' => $Product->getAll(),
                         );
                         echo $this->getTemplate()->setTemplateCode($template_code);

@@ -2276,24 +2276,24 @@ class Admin{
         if($this->checkLogin() === false){
             $this->goLogin();
         }else{
-            if(empty($this->getSystem()->getGetParams()['sid'])){
+            if(!empty($this->getSystem()->getGetParams()['sid'])){
                 $Service = new Service($this->getSystem()->getGetParams()['sid'], $this);
                 if($Service->isExisted() == false){
-                    @header("Location: ./index.php?p=Clientarea&a=Services");
+                    @header("Location: ./index.php?p=Admin&a=Services");
                     exit;
                 }else{
                     if($Service->getStatus() != '待开通'){
-                        @header("Location: ./index.php?p=Clientarea&a=Services");
+                        @header("Location: ./index.php?p=Admin&a=Services");
                         exit;
                     }else{
                         $Product = $Service->getProduct();
                         if($Product->isExisted() === false){
-                            @header("Location: ./index.php?p=Clientarea&a=Services");
+                            @header("Location: ./index.php?p=Admin&a=Services");
                             exit;
                         }else{
                             $Server = $Product->getServer();
                             if($Server->isExisted() === false){
-                                @header("Location: ./index.php?p=Clientarea&a=Services");
+                                @header("Location: ./index.php?p=Admin&a=Services");
                                 exit;
                             }else{
                                 $PluginManager = $this->getSystem()->getPluginManager();
@@ -2301,16 +2301,19 @@ class Admin{
                                 $result = $PluginManager->loadEventByPlugin('CreateService', $Event, $Server->getServerPluginName());
                                 if($result === true){
                                     $Service->setStatus('激活');
-                                    @header("Location: ./index.php?p=Clientarea&a=Services");
+                                    @header("Location: ./index.php?p=Admin&a=Services");
                                     exit;
                                 }else{
-                                    @header("Location: ./index.php?p=Clientarea&a=Services");
+                                    @header("Location: ./index.php?p=Admin&a=Services");
                                     exit;
                                 }
                             }
                         }
                     }
                 }
+            }else{
+                @header("Location: ./index.php?p=Admin&a=Services");
+                exit;
             }
         }
     }

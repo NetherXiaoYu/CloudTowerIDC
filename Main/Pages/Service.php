@@ -143,8 +143,8 @@ class Service extends Page{
                     if($Server->isExisted() === false){
                         $this->goMsg('产品所属服务器已被删除，不能续费！');
                     }else{
-                        $Period = $Product->getPeriod();
-                        foreach($Period as $k => $v){
+                        $Periods = $Product->getPeriod();
+                        foreach($Periods as $k => $v){
                             if($Posts['period'] == $v['name']){
                                 $Period = $v;
                             }

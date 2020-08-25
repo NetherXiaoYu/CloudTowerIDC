@@ -64,8 +64,10 @@ class Pay extends Page{
                                     $event = new PaySendEvent($this->getUser(), $Order, $Gateway);
                                     $this->getPluginManager()->loadEventByPlugin('onPaySend', $event, $Gateway->getPluginName());
                                 }else{
-                                    exit('系统提示：创建订单失败');
+                                    $this->goMsg('系统提示：创建订单失败');
                                 }
+                            }else{
+                                $this->goMsg('系统提示：插件取消创建订单');
                             }
                         }
                     }
@@ -113,8 +115,12 @@ class Pay extends Page{
                                             $this->goMsg('加款成功！');
                                         }
                                     }
+                                }else{
+                                    $this->goMsg('插件取消加款');
                                 }
                             }
+                        }else{
+                            $this->goMsg('渠道返回：支付失败');
                         }
                     }
                 }
@@ -158,8 +164,12 @@ class Pay extends Page{
                                         exit('success');
                                     }
                                 }
+                            }else{
+                                exit('fail');
                             }
                         }
+                    }else{
+                        exit('fail');
                     }
                 }
             }
