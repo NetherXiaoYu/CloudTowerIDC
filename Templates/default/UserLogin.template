@@ -22,7 +22,7 @@
     <link rel="stylesheet" type="text/css" href="[templatePath]/css/themes/flat-blue.css">
 </head>
 
-<body class="flat-blue login-page">
+<body class="flat-blue login-page" style="background-color: #000;">
     <div class="container">
         <div class="login-box">
             <div>
@@ -33,9 +33,9 @@
                     </div>
                     <div class="col-sm-12">
                         <div class="login-body">
-                            <div class="progress hidden" id="login-progress">
-                                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                    登陆中...
+                            <div class="progress" id="login-progress">
+                                <div class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                    [message]
                                 </div>
                             </div>
                             <form action="#" method="POST">
