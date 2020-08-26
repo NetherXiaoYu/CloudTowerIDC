@@ -61,6 +61,9 @@ class Service extends Page{
                     if($Service->isExisted() === true){
                         $this->goMsg('服务账号已被使用');
                     }
+                    if(is_numeric($Posts['username'])){
+                        $this->goMsg('服务账号不能为纯数字！');
+                    }
                     $Priceset = $this->getUser()->getPriceset();
                     if($Priceset !== false){
                         $Discount = $this->getUser()->getPriceset()->getPrice()[$Post['product']];

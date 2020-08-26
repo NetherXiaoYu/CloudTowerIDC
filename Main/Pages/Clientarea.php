@@ -56,6 +56,12 @@ class Clientarea extends Page{
             }
         }
     }
+
+    public function Logout(){
+        unset($_SESSION['ytidc_user']);
+        @header("Location: ./index.php?p=Clientarea&a=Login");
+        exit;
+    }
     
     public function Login(){ //用户登陆
         if($this->checkLogin()){

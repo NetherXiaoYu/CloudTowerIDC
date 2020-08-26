@@ -256,6 +256,12 @@ class Api{
                             'code' => '2003'
                         )));
                     }
+                    if(is_numeric($params['username'])){
+                        exit(json_encode(array(
+                            'status' => 'fail',
+                            'code' => '2003'
+                        )));
+                    }
                     $Discount = $this->User->getPriceset()->getPrice()[$params['product']];
                     if(empty($Discount)){
                         $Discount = $this->User->getPriceset()->getPrice()['*'];

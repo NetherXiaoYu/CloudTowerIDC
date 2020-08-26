@@ -56,7 +56,10 @@ class Main{
 
     private function LoadPage($page, $action){
         if(!file_exists(BASE_ROOT.'Main/Pages/'.$page.'.php')){
-            exit();
+            require_once(BASE_ROOT.'Main/Pages/Index.php');
+            $class = 'YunTaIDC\Page\Index';
+            $pager = new $class($this);
+            $pager->Index();
         }else{
             require_once(BASE_ROOT.'Main/Pages/'.$page.'.php');
             $class = 'YunTaIDC\Page\\'.$page;
