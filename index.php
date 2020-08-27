@@ -44,6 +44,7 @@ require_once(BASE_ROOT.'Main/Events/ServiceDeleteEvent.php');
 require_once(BASE_ROOT.'Main/Events/DeleteServiceEvent.php');
 require_once(BASE_ROOT.'Main/Events/LoginServiceEvent.php');
 require_once(BASE_ROOT.'Main/Plugin/PluginManager.php');
+require_once(BASE_ROOT.'Main/Plugin/PluginConfig.php');
 require_once(BASE_ROOT.'Main/Plugin/PluginBase.php');
 require_once(BASE_ROOT.'Main/Plugin/PluginPage.php');
 require_once(BASE_ROOT.'Main/Pages/Page.php');

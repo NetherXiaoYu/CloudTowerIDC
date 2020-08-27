@@ -2,6 +2,8 @@
 
 namespace YunTaIDC\Plugin;
 
+use YunTaIDC\Plugin\PluginConfig;
+
 class PluginPage{
     
     public $System;
@@ -11,7 +13,7 @@ class PluginPage{
     
     public function __construct($System, $dataFolder, $sourceFolder){
         $this->System = $System;
-        $this->dataFolder = $dataFolder;
+        $this->dataFolder = $dataFolder.'/';
         $this->templateFolder = $sourceFolder .'/template';
         $this->onLoad();
     }
@@ -29,7 +31,7 @@ class PluginPage{
     }
     
     public function getTemplateFolder(){
-        return $this->templateFolder();
+        return $this->templateFolder;
     }
     
     public function getPluginManager(){
@@ -46,20 +48,6 @@ class PluginPage{
     
     public function getdataFolder(){
         return $this->dataFolder;
-    }
-    
-    public function getConfig(){
-        $configPath = $this->dataFolder . '/config.json';
-        if(!file_exists($configPath)){
-            return false;
-        }
-        return json_decode(file_get_contents($configPath), true);
-    }
-    
-    public function saveConfig($array){
-        $content = json_encode($array);
-        $configPath = $this->dataFolder .'/config.json';
-        return file_put_contents($configPath, $content);
     }
     
     public function isMobile(){

@@ -2,6 +2,8 @@
 
 namespace YunTaIDC\Plugin;
 
+use YunTaIDC\Plugin\PluginConfig;
+
 class PluginBase{
     
     public $System;
@@ -11,7 +13,7 @@ class PluginBase{
     
     public function __construct($Main, $dataFolder, $resourceFolder, $Name){
         $this->System = $Main;
-        $this->dataFolder = $dataFolder;
+        $this->dataFolder = $dataFolder.'/';
         $this->resourceFolder = $resourceFolder.'/resources/';
         $this->PluginName = $Name;
     }
@@ -43,20 +45,6 @@ class PluginBase{
     
     public function getdataFolder(){
         return $this->dataFolder;
-    }
-    
-    public function getConfig(){
-        $configPath = $this->dataFolder . '/config.json';
-        if(!file_exists($configPath)){
-            return false;
-        }
-        return json_decode(file_get_contents($configPath), true);
-    }
-    
-    public function saveConfig($array){
-        $content = json_encode($array);
-        $configPath = $this->dataFolder .'/config.json';
-        return file_put_contents($configPath, $content);
     }
     
 }
