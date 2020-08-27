@@ -18,3 +18,9 @@
 - QQ： 2119566807
 - 论坛： https://bbs.yunta.cc/
 - 官网： https://www.yunta.cc/
+
+## 赞助我们
+
+- 支付宝转账： `2031464675@qq.com`
+- ETH钱包地址：`0xdd7a1bF1A92bAD169CE4D10c501E3d1DC1952a29` 
+
