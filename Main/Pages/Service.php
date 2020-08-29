@@ -77,7 +77,7 @@ class Service extends Page{
                         $Discount = 100;
                     }
                     $Price = $Period['price'] * $Discount / 100;
-                    $Orderid = date('YmdHis').rand(100000,999999);
+                    $Orderid = date('YmdHis').random_int(100000,999999);
                     $OrderEvent = new OrderCreateEvent($this->getUser(), $Orderid, '开通服务#'.$Posts['username'], $Price, '扣款');
                     $this->getPluginManager()->loadEvent('onOrderCreate', $OrderEvent);
                     if($OrderEvent->isCancelled() === false){
@@ -169,7 +169,7 @@ class Service extends Page{
                                 $Discount = 100;
                             }
                             $Price = $Period['price'] * $Discount / 100;
-                            $Orderid = date('YmdHis').rand(100000,999999);
+                            $Orderid = date('YmdHis').random_int(100000,999999);
                             $OrderEvent = new OrderCreateEvent($this->getUser(), $Orderid, '续费服务#'.$Service->getUsername(), $Price, '扣款');
                             $this->getPluginManager()->loadEvent('onOrderCreate', $OrderEvent);
                             if($OrderEvent->isCancelled() === false){

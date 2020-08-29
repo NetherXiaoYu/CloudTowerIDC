@@ -55,7 +55,7 @@ class Pay extends Page{
                         if($Plugin === false){
                             $this->goMsg('支付渠道配置插件不存在');
                         }else{
-                            $Orderid = date('YmdHis').rand(100000,999999);
+                            $Orderid = date('YmdHis').random_int(100000,999999);
                             $OrderEvent = new OrderCreateEvent($this->getUser(), $Orderid, '用户充值#'.$Orderid, $Posts['money'], '加款');
                             $this->getPluginManager()->loadEvent('onOrderCreate', $OrderEvent);
                             if($OrderEvent->isCancelled() === false){

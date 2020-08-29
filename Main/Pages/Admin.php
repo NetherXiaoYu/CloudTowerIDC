@@ -1312,7 +1312,7 @@ class Admin{
                 @header("Location: ./index.php?p=Admin&a=Index");
                 exit;
             }else{
-                $rand = mt_rand(100, 999);
+                $rand = random_int(100, 999);
                 switch ($this->getSystem()->getGetParams()['add']) {
                     case 'ProductGroup':
                         if(!$this->CheckPermission('group_add')){

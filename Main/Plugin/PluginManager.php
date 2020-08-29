@@ -90,7 +90,8 @@ class PluginManager{
                 $plugin->onLoad();
                 $this->Plugins[$k] = $plugin;
             } catch (Error $e){
-                
+                $this->System->getLogger()->newCrashDump('无法加载插件', 'Plugin Error caught:'.$e->getMessage());
+                exit('YunTaIDC:加载插件出错');
             }
         }
         return $plugins;

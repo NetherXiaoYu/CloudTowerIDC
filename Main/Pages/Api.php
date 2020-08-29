@@ -262,15 +262,27 @@ class Api{
                             'code' => '2003'
                         )));
                     }
-                    $Discount = $this->User->getPriceset()->getPrice()[$params['product']];
-                    if(empty($Discount)){
-                        $Discount = $this->User->getPriceset()->getPrice()['*'];
+                    // $Discount = $this->User->getPriceset()->getPrice()[$params['product']];
+                    // if(empty($Discount)){
+                    //     $Discount = $this->User->getPriceset()->getPrice()['*'];
+                    //     if(empty($Discount)){
+                    //         $Discount = 100;
+                    //     }
+                    // }
+                    $Priceset = $this->User->getPriceset();
+                    if($Priceset !== false){
+                        $Discount = $this->User->getPriceset()->getPrice()[$Post['product']];
                         if(empty($Discount)){
-                            $Discount = 100;
+                            $Discount = $this->User->getPriceset()->getPrice()['*'];
+                            if(empty($Discount)){
+                                $Discount = 100;
+                            }
                         }
+                    }else{
+                        $Discount = 100;
                     }
                     $Price = $Period['price'] * $Discount / 100;
-                    $Orderid = date('YmdHis').rand(100000,999999);
+                    $Orderid = date('YmdHis').random_int(100000,999999);
                     $OrderEvent = new OrderCreateEvent($this->User, $Orderid, '开通服务#'.$params['username'], $Price, '扣款');
                     $this->getSystem()->getPluginManager()->loadEvent('onOrderCreate', $OrderEvent);
                     if($OrderEvent->isCancelled() === false){
@@ -398,15 +410,20 @@ class Api{
                                 'code' => '2015'
                             )));
                         }else{
-                            $Discount = $this->User->getPriceset()->getPrice()[$Product->getId()];
-                            if(empty($Discount)){
-                                $Discount = $this->User->getPriceset()->getPrice()['*'];
+                            $Priceset = $this->User->getPriceset();
+                            if($Priceset !== false){
+                                $Discount = $this->User->getPriceset()->getPrice()[$Post['product']];
                                 if(empty($Discount)){
-                                    $Discount = 100;
+                                    $Discount = $this->User->getPriceset()->getPrice()['*'];
+                                    if(empty($Discount)){
+                                        $Discount = 100;
+                                    }
                                 }
+                            }else{
+                                $Discount = 100;
                             }
                             $Price = $Period['price'] * $Discount / 100;
-                            $Orderid = date('YmdHis').rand(100000,999999);
+                            $Orderid = date('YmdHis').random_int(100000,999999);
                             $OrderEvent = new OrderCreateEvent($this->User, $Orderid, '续费服务#'.$Service->getUsername(), $Price, '扣款');
                             $this->getSystem()->getPluginManager()->loadEvent('onOrderCreate', $OrderEvent);
                             if($OrderEvent->isCancelled() === false){

@@ -22,6 +22,10 @@ class Page{
         $this->template = new TemplateLoadEvent($template);
     }
     
+    public function Index(){
+        
+    }
+    
     public function getTemplate(){
         return $this->template->getTemplate();
     }

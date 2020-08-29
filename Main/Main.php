@@ -55,13 +55,17 @@ class Main{
     }
 
     private function LoadPage($page, $action){
-        if(!file_exists(BASE_ROOT.'Main/Pages/'.$page.'.php')){
-            require_once(BASE_ROOT.'Main/Pages/Index.php');
-            $class = 'YunTaIDC\Page\Index';
-            $pager = new $class($this);
-            $pager->Index();
-        }else{
-            require_once(BASE_ROOT.'Main/Pages/'.$page.'.php');
+        $handler = opendir(BASE_ROOT.'/Main/Pages/');
+        while (($filename = readdir($handler)) !== false) {
+            if ($filename != "." && $filename != "..") {
+                    $files[] = $filename;
+            }
+        }
+        closedir($handler);
+        $pagefile = $page.'.php';
+        if(in_array($pagefile, $files)){
+            $key = array_search($pagefile, $files);
+            require_once(BASE_ROOT.'/Main/Pages/'.$files[$key]);
             $class = 'YunTaIDC\Page\\'.$page;
             $pager = new $class($this);
             if(method_exists($pager, $action)){
@@ -69,6 +73,11 @@ class Main{
             }else{
                 $pager->Index();
             }
+        }else{
+            require_once(BASE_ROOT.'/Main/Pages/Index.php');
+            $class = 'YunTaIDC\Page\Index';
+            $pager = new $class($this);
+            $pager->Index();
         }
     }
     
