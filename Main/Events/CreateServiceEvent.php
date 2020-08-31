@@ -11,11 +11,17 @@ class CreateServiceEvent extends Events{
     public $User;
     public $Product;
     public $Service;
+    public $Period;
     
-    public function __construct(Service $Service, Product $Product, User $User){
+    public function __construct(Service $Service, Product $Product, $Period, User $User){
         $this->Service = $Service;
         $this->Product = $Product;
+        $this->Period = $Period;
         $this->User = $User;
+    }
+    
+    public function getPeriod(){
+        return $this->Period;
     }
     
     public function getUser(){

@@ -108,7 +108,7 @@ class Service extends Page{
                                         $this->goMsg('服务插入数据库失败');
                                     }
                                 }
-                                $CreateEvent = new CreateServiceEvent($Service, $Product, $this->getUser());
+                                $CreateEvent = new CreateServiceEvent($Service, $Product, $Event->getPeriod(), $this->getUser());
                                 $result = $this->getPluginManager()->loadEventByPlugin('CreateService', $CreateEvent, $Server->getServerPluginName());
                                 if($result === true){
                                     $CreateEvent->getService()->setStatus('激活');

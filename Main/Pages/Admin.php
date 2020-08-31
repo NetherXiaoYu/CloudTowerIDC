@@ -2297,7 +2297,7 @@ class Admin{
                                 exit;
                             }else{
                                 $PluginManager = $this->getSystem()->getPluginManager();
-                                $Event = new CreateServiceEvent($Service, $Product, $Service->getUser());
+                                $Event = new CreateServiceEvent($Service, $Product, $Service->getPeriod(), $Service->getUser());
                                 $result = $PluginManager->loadEventByPlugin('CreateService', $Event, $Server->getServerPluginName());
                                 if($result === true){
                                     $Service->setStatus('激活');
@@ -2405,10 +2405,10 @@ class Admin{
                             	    	td.innerHTML=\'<input type="text" class="form-control" name="period[\' + periodcount + \'][name]" value="" style="min-width: 100px;"/>\';
                             			tr.appendChild(td);
                             	    	var td = document.createElement(\'td\');
-                            	    	td.innerHTML=\'<input type="text" class="form-control" name="period[\' + periodcount + \'][price]" value="" style="min-width: 100px;"/>\';
+                            	    	td.innerHTML=\'<input type="text" class="form-control" name="period[\' + periodcount + \'][day]" value="" style="min-width: 100px;"/>\';
                             			tr.appendChild(td);
                             	    	var td = document.createElement(\'td\');
-                            	    	td.innerHTML=\'<input type="text" class="form-control" name="period[\' + periodcount + \'][day]" value="" style="min-width: 100px;"/>\';
+                            	    	td.innerHTML=\'<input type="text" class="form-control" name="period[\' + periodcount + \'][price]" value="" style="min-width: 100px;"/>\';
                             			tr.appendChild(td);
                             	    	var td = document.createElement(\'td\');
                             	    	td.innerHTML=\'<select type="select" class="form-control" name="period[\' + periodcount + \'][renew]" style="min-width: 100px;"><option value="1">允许</option><option value="0">不允许</option></select>\';

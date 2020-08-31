@@ -28,7 +28,7 @@ class Cron{
         $config = $this->getSystem()->getConfigAll();
         $stopdate = date('Y-m-d', strtotime("+{$config['cron_stopday']} days", time()));
         $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_service` SET `status`='暂停' WHERE `enddate`<='$stopdate'");
-        $deletedate = date('Y-m-d', strtotime("-{$config['cron_stopday']} days", time()));
+        $deletedate = date('Y-m-d', strtotime("-{$config['cron_deleteday']} days", time()));
         $Services = $this->getSystem()->getDatabase()->get_rows("SELECT * FROM `ytidc_service` WHERE `enddate`<='{$deletedate}'");
         if(is_array($Services)){
             foreach ($Services as $k => $v){

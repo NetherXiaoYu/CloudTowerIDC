@@ -227,7 +227,7 @@ class Api{
         if(!$this->LoginUser($params['ctuser'], $params['ctpass'])){
             exit(json_encode(array(
                 'status' => 'fail',
-                'code' => '1000'
+                'code' => '1000',
             )));
         }else{
             $P = new P($params['product'], $this);
@@ -309,6 +309,7 @@ class Api{
                                 'code' => '2006'
                             )));
                         }else{
+                            $params['customoption'] = json_decode($params['customoption'], true);
                             $Event = new ServiceCreateEvent($params['username'], $params['password'], $Period, $params['customoption'], $P, $this->User);
                             $this->getSystem()->getPluginManager()->loadEvent('onServiceCreate', $Event);
                             if($Event->isCancelled() === false){
@@ -328,7 +329,7 @@ class Api{
                                         )));
                                     }
                                 }
-                                $CreateEvent = new CreateServiceEvent($Service, $P, $this->User);
+                                $CreateEvent = new CreateServiceEvent($Service, $P, $Event->getPeriod(), $this->User);
                                 $result = $this->getSystem()->getPluginManager()->loadEventByPlugin('CreateService', $CreateEvent, $Server->getServerPluginName());
                                 if($result === true){
                                     $CreateEvent->getService()->setStatus('激活');
