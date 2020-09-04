@@ -106,7 +106,7 @@ class Service{
         if(empty($this->Service)){
             return false;
         }else{
-            return json_decode($this->Service['username'],true);
+            return json_decode($this->Service['configoption'],true);
         }
     }
     
@@ -146,7 +146,7 @@ class Service{
             return false;
         }else{
             $configoption = json_encode($array,JSON_UNESCAPED_UNICODE);
-            return $this->Database->exec("UPDATE `ytidc_service` WHERE `configoption`='{$configoption}' WHERE `id`='{$this->Service['id']}'");
+            return $this->Database->exec("UPDATE `ytidc_service` SET `configoption`='{$configoption}' WHERE `id`='{$this->Service['id']}'");
         }
     }
     
