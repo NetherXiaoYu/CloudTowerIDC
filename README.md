@@ -8,7 +8,7 @@
 - MySQL5.6.48（官方测试环境,不一定需要跟随）
 
 ## 安装
-1. 上传源码至根目录
+1. 上传源码至根目录（下载教程：[点击观看](https://www.bilibili.com/video/BV1ZD4y1R73j/)）
 2. 导入`install.sql`文件到你的数据库
 3. 填写`config.php`文件里的数据库信息
 4. 安装完成
