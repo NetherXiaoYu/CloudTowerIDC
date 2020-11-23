@@ -10,10 +10,12 @@ class PluginBase{
     public $dataFolder;
     public $resourceFolder;
     public $PluginName;
+    public $pageFolder;
     
-    public function __construct($Main, $dataFolder, $resourceFolder, $Name){
+    public function __construct($Main, $dataFolder, $pageFolder, $resourceFolder, $Name){
         $this->System = $Main;
         $this->dataFolder = $dataFolder.'/';
+        $this->pageFolder = $pageFolder .'/';
         $this->resourceFolder = $resourceFolder.'/resources/';
         $this->PluginName = $Name;
     }
@@ -43,7 +45,7 @@ class PluginBase{
         return $this->PluginName;
     }
     
-    public function getdataFolder(){
+    public function getDataFolder(){
         return $this->dataFolder;
     }
     

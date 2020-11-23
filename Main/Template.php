@@ -13,6 +13,7 @@ class Template{
 
     public $path;
     public $name;
+    public $translation;
     
     private $File;
     private $Template;
@@ -20,6 +21,7 @@ class Template{
 
     public function __construct($name){
         $this->path = BASE_ROOT.'/Templates/'.$name.'/';
+        $this->translation = $this->path . '/languages/default.json';
         $this->name = $name;
     }
     
@@ -65,7 +67,26 @@ class Template{
     public function outputTemplate(){
         $this->replaceIncludeFile();
         $this->replaceTemplateCode();
+        $this->replaceTranslate();
         echo $this->Template;
+    }
+
+    public function replaceTranslate(){
+        if(empty($this->Template)){
+            return false;
+        }else{
+            if(!file_exists($this->translation)){
+                return false;
+            }else{
+                $Template = $this->Template;
+                $Translation = json_decode($this->translation, true);
+                foreach($Translation as $k => $v){
+                    $Template = str_replace('[lang['.$k.']]', $v, $Template);
+                }
+                $this->Template = $Template;
+                return true;
+            }
+        }
     }
 
     public function replaceTemplateCode(){

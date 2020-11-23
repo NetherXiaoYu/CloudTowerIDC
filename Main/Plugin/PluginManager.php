@@ -8,6 +8,7 @@ class PluginManager{
     
     public $path = BASE_ROOT.'/Plugins/';
     public $dataFolder = BASE_ROOT .'/PluginData/';
+    public $pageFolder = BASE_ROOT .'/PluginTemplate/';
     public $PluginClass = array();
     public $Plugins = array();
     public $PluginType = array();
@@ -77,7 +78,8 @@ class PluginManager{
     public function loadPlugins(){
         $this->loadPluginFiles();
         foreach ($this->PluginClass as $k => $v){
-            $pluginDataFolder = $this->dataFolder .$k;
+            $pluginDataFolder = $this->dataFolder . $k;
+            $pluginPageFolder = $this->pageFolder . $k;
             if(file_exists($pluginDataFolder) && !is_dir($pluginDataFolder)){
                 $this->System->getLogger()->newCrashDump('无法加载插件', 'Projected plugin '.$k.' data folder cause to an error.');
                 exit('YunTaIDC:加载插件出错');
@@ -85,8 +87,11 @@ class PluginManager{
             if(!file_exists($pluginDataFolder)){
                 mkdir($pluginDataFolder, 0755, true);
             }
+            if(!file_exists($pluginPageFolder)){
+                mkdir($pluginPageFolder, 0755, true);
+            }
             try {
-                $plugin = new $v($this->System, $pluginDataFolder, $this->PluginPath[$k], $k);
+                $plugin = new $v($this->System, $pluginDataFolder, $pluginPageFolder, $this->PluginPath[$k], $k);
                 $plugin->onLoad();
                 $this->Plugins[$k] = $plugin;
             } catch (Error $e){
