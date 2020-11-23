@@ -60,8 +60,13 @@ class PluginManager{
                                     $this->PluginPage[$v['config']['name']] = $v['config']['page'];
                                 }
                             }
-                            if(empty($config['type'])){
-                                $config['type'] = 'FUNCTION';
+                            if(empty($v['config']['type'])){
+                                $this->System->getLogger()->newCrashDump('无法加载插件', 'Cannot load plugins '.$v['config']['name'].' due to the empty type set in the plugin config file');
+                                exit('YunTaIDC:加载插件出错');
+                            }
+                            if(!in_array($v['config']['type'], array('FUNCTION','SERVER','PAYMENT'))){
+                                $this->System->getLogger()->newCrashDump('无法加载插件', 'Cannot load plugins '.$v['config']['name'].' due to the unknown type set in the plugin config file');
+                                exit('YunTaIDC:加载插件出错');
                             }
                             $this->PluginType[$v['config']['type']][] = $v['config']['name'];
                             $this->PluginPath[$v['config']['name']] = $this->path . '/'. $v['entry'];
@@ -185,6 +190,10 @@ class PluginManager{
     
     public function getPluginPath($plugin){
         return $this->PluginPath[$plugin];
+    }
+
+    public function getApiVersion(){
+        return '3.0.1';
     }
 
 }
