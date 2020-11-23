@@ -1,11 +1,11 @@
 <?php
 session_start();
-if(DEBUGMODE === false){
-    error_reporting(0);
-}
 define('BASE_ROOT',str_replace('\\','/',realpath(dirname(__FILE__).'/'))."/");
 
 require_once(BASE_ROOT.'config.php');//加载数据库配置
+if(DEBUG_MODE === true){
+    error_reporting(0);
+}
 require_once(BASE_ROOT.'Main/Logger.php');//加载文档配置
 require_once(BASE_ROOT.'Main/Database.php');//加载数据库执行文件
 require_once(BASE_ROOT.'Main/Input.php');//加载输入执行文件
