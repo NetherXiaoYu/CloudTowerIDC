@@ -1,6 +1,8 @@
 <?php
 session_start();
-error_reporting(0);
+if(DEBUG_MODE === false){
+    error_reporting(0);
+}
 define('BASE_ROOT',str_replace('\\','/',realpath(dirname(__FILE__).'/'))."/");
 
 require_once(BASE_ROOT.'config.php');//加载数据库配置
