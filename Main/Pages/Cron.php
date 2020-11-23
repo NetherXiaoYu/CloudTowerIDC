@@ -57,7 +57,7 @@ class Cron{
     }
 
     public function Orders(){
-        $this->getSystem()->getDatabase()->exec("DELETE FROM `ytidc_order` WHERE `status`='未完成'");
+        $this->getSystem()->getDatabase()->exec("DELETE FROM `ytidc_order` WHERE `status`='待支付'");
         $this->UpdateCron();
         exit('success');
     }
