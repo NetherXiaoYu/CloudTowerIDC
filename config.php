@@ -7,6 +7,6 @@ define("DB_NAME", ''); //数据库名称
 define("DB_TYPE", 'mysql');
 
 // 侦错模式
-define("DEBUG_MODE", false);
+define("DEBUGMODE", false);
 
 ?>

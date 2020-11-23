@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(DEBUG_MODE === false){
+if(DEBUGMODE === false){
     error_reporting(0);
 }
 define('BASE_ROOT',str_replace('\\','/',realpath(dirname(__FILE__).'/'))."/");
