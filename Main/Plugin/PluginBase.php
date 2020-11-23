@@ -48,6 +48,14 @@ class PluginBase{
     public function getDataFolder(){
         return $this->dataFolder;
     }
+
+    public function getPageFolder($html){
+        if ($html === true) {
+            return str_replace(BASE_ROOT, '', $this->PageFolder);
+        }else{
+            return $this->pageFolder;
+        }
+    }
     
 }
 

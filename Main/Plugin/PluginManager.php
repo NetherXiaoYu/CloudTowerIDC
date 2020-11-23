@@ -8,7 +8,7 @@ class PluginManager{
     
     public $path = BASE_ROOT.'/Plugins/';
     public $dataFolder = BASE_ROOT .'/PluginData/';
-    public $pageFolder = BASE_ROOT .'/PluginTemplate/';
+    public $pageFolder = BASE_ROOT .'/PluginTemplates/';
     public $PluginClass = array();
     public $Plugins = array();
     public $PluginType = array();
