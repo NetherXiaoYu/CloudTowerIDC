@@ -122,7 +122,6 @@ class Admin{
                         <li><a class="sidebar-link" href="./index.php?p=Admin&a=Setting&set=Template">模板管理</a></li>
                         <li><a class="sidebar-link" href="./index.php?p=Admin&a=Template">模板自定义</a></li>
                         <li><a class="sidebar-link" href="./index.php?p=Admin&a=Setting&set=Cron">Cron管理</a></li>
-                        <li><a class="sidebar-link" href="signup.html">其他管理</a></li>
                      </ul>
                   </li>
                </ul>
@@ -589,6 +588,7 @@ class Admin{
                                        <th>ID</th>
                                        <th>服务账号</th>
                                        <th>所属产品</th>
+                                       <th>购买用户</th>
                                        <th>到期时间</th>
                                        <th>操作</th>
                                     </tr>
@@ -598,6 +598,7 @@ class Admin{
                                        <th>ID</th>
                                        <th>服务账号</th>
                                        <th>所属产品</th>
+                                       <th>购买用户</th>
                                        <th>到期时间</th>
                                        <th>操作</th>
                                     </tr>
@@ -611,6 +612,7 @@ class Admin{
                                        <th>'.$v['id'].'</th>
                                        <th>'.$v['username'].'</th>
                                        <th>'.$product['name'].'</th>
+                                       <th>'.$v['user'].'</th>
                                        <th>'.$v['enddate'].'</th>
                                        <th><a href="./index.php?p=Admin&a=Service&sid='.$v['id'].'" class="btn btn-sm btn-primary">编辑</a>';
                                        if($v['status'] == '待开通'){
@@ -1179,7 +1181,7 @@ class Admin{
                          <div class="masonry-sizer col-md-6"></div>
                          <div class="masonry-item col-md-12">
                             <div class="bgc-white p-20 bd">
-                               <h6 class="c-grey-900">CRON设置</h6>
+                               <h6 class="c-grey-900">CRON设置[<a href="./index.php?p=Cron&a=Service">服务Cron</a>][<a href="./index.php?p=Cron&a=Orders">订单Cron</a>]</h6>
                                <div class="mT-30">
                                   <form action="./index.php?p=Admin&a=Setting" method="POST">
                                      <div class="form-group row">

@@ -47,10 +47,21 @@ class Cron{
             }
         }
         $this->getSystem()->getDatabase()->exec("DELETE FROM `ytidc_service` WHERE `enddate`<='{$deletedate}'");
-        $date = date('Y-m-d');
-        $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_config` SET `value`='{$date}' WHERE `key`='cron_date'");
+        $this->UpdateCron();
         exit('success');
     }
+
+    private function UpdateCron(){
+        $date = date('Y-m-d');
+        $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_config` SET `value`='{$date}' WHERE `key`='cron_date'");
+    }
+
+    public function Orders(){
+        $this->getSystem()->getDatabase()->exec("DELETE FROM `ytidc_order` WHERE `status`='未完成'");
+        $this->UpdateCron();
+        exit('success');
+    }
+
     
     public function Plugin(){
         $PluginManager = $this->getSystem()->getPluginManager();
