@@ -1,19 +1,16 @@
 <?php
 
-namespace YunTaIDC\Events;
+namespace CloudTowerIDC\Events;
 
-use YunTaIDC\Events\Events;
-use YunTaIDC\User\User;
+use CloudTowerIDC\Events\Events;
+use CloudTowerIDC\User\User;
 
 class UserChangePasswordEvent extends Events{
     
-    public $User;
-    public $Password;
-    
-    public function __construct(User $User, String $Password){
-        $this->User = $User;
-        $this->Password = $Password;
-    }
+    public function __construct(
+        public User $User,
+        public String $Password
+    ){}
     
     public function getUser(){
         return $this->User;

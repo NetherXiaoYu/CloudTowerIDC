@@ -1,23 +1,19 @@
 <?php
 
-namespace YunTaIDC\Events;
+namespace CloudTowerIDC\Events;
 
-use YunTaIDC\Events\Events;
-use YunTaIDC\User\User;
-use YunTaIDC\Order\Order;
-use YUnTaIDC\Gateway\Gateway;
+use CloudTowerIDC\Events\Events;
+use CloudTowerIDC\User\User;
+use CloudTowerIDC\Order\Order;
+use CloudTowerIDC\Gateway\Gateway;
 
 class PaySendEvent extends Events{
     
-    public $User;
-    public $Order;
-    public $Gateway;
-    
-    public function __construct(User $User, Order $Order, Gateway $Gateway){
-        $this->User = $User;
-        $this->Order = $Order;
-        $this->Gateway = $Gateway;
-    }
+    public function __construct(
+        public User $User,
+        public Order $Order,
+        public Gateway $Gateway
+    ){}
     
     public function getUser(){
         return $this->User;

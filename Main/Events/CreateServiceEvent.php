@@ -1,24 +1,19 @@
 <?php
 
-namespace YunTaIDC\Events;
+namespace CloudTowerIDC\Events;
 
-use YunTaIDC\User\User;
-use YunTaIDC\Product\Product;
-use YunTaIDC\Service\Service;
+use CloudTowerIDC\User\User;
+use CloudTowerIDC\Product\Product;
+use CloudTowerIDC\Service\Service;
 
 class CreateServiceEvent extends Events{
     
-    public $User;
-    public $Product;
-    public $Service;
-    public $Period;
-    
-    public function __construct(Service $Service, Product $Product, $Period, User $User){
-        $this->Service = $Service;
-        $this->Product = $Product;
-        $this->Period = $Period;
-        $this->User = $User;
-    }
+    public function __construct(
+        public Service $Service,
+        public Product $Product,
+        public $Period,
+        public User $User
+    ){}
     
     public function getPeriod(){
         return $this->Period;

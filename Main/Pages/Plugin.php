@@ -1,17 +1,15 @@
 <?php
 
-namespace YunTaIDC\Page;
+namespace CloudTowerIDC\Page;
 
-use YunTaIDC\Plugin\PluginManager;
+use CloudTowerIDC\Plugin\PluginManager;
 
 class Plugin{
     
-    private $System;
     private $PluginManager;
     
-    public function __construct($main){
-        $this->System = $main;
-        $this->PluginManager = $main->getPluginManager();
+    public function __construct(private $System){
+        $this->PluginManager = $this->System->getPluginManager();
     }
     
     private function goUserIndex(){
@@ -34,7 +32,7 @@ class Plugin{
                 if($this->PluginManager->PageRegistered($Gets['plugin']) === false){
                     $this->goMsg('该插件没有配置插件页面');
                 }else{
-                    $this->PluginManager->loadPluginPage($Gets['plugin'], $this->System);
+                    $this->PluginManager->loadPluginPage($Gets['plugin']);
                 }
             }
         }

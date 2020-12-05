@@ -1,15 +1,13 @@
 <?php
 
-namespace YunTaIDC\Notice;
+namespace CloudTowerIDC\Notice;
 
 class Notice{
     
-    private $Class;
     private $Database;
     public $Notice;
     
-    public function __construct($Notice, $Class){
-        $this->Class = $Class;
+    public function __construct($Notice,private $Class){
         $this->Database = $this->Class->getSystem()->getDatabase();
         $this->Notice = $this->Database->get_row("SELECT * FROM `ytidc_notice` WHERE `id`='{$Notice}'");
     }

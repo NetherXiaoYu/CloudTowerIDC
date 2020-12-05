@@ -1,15 +1,12 @@
 <?php
 
-namespace YunTaIDC\Events;
+namespace CloudTowerIDC\Events;
 
-use YunTaIDC\Server\Server;
+use CloudTowerIDC\Server\Server;
 
 class ProductConfigEvent extends Events{
     
-    public $Server;
-    
-    public function __construct(Server $Server){
-        $this->Server = $Server;
+    public function __construct(public Server $Server){
     }
     
     public function getServer(){

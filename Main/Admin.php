@@ -1,15 +1,13 @@
 <?php
 
-namespace YunTaIDC\Admin;
+namespace CloudTowerIDC\Admin;
 
 class Admin{
     
     private $Database;
-    private $Class;
     public $Admin;
     
-    public function __construct($Admin, $Class){
-        $this->Class = $Class;
+    public function __construct($Admin, private $Class){
         $this->Database = $Class->getSystem()->getDatabase();
         if(is_numeric($Admin)){
             $this->Admin = $this->Database->get_row("SELECT * FROM `ytidc_admin` WHERE `id`='{$Admin}'");

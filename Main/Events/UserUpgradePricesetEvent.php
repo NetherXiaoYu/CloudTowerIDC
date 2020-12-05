@@ -1,22 +1,17 @@
 <?php
 
-namespace YunTaIDC\Events;
+namespace CloudTowerIDC\Events;
 
-use YunTaIDC\Events\Events;
-use YunTaIDC\User\User;
-use YunTaIDC\Priceset\Priceset;
+use CloudTowerIDC\Events\Events;
+use CloudTowerIDC\User\User;
+use CloudTowerIDC\Priceset\Priceset;
 
 class UserUpgradePricesetEvent extends Events{
     
-    public $User;
-    public $Priceset;
-    public $Status;
-    
-    public function __construct(User $User, Priceset $Priceset){
-        $this->User = $User;
-        $this->Priceset = $Priceset;
-        $this->Status = $Status;
-    }
+    public function __construct(
+        public User $User,
+        public Priceset $Priceset
+    ){}
     
     public function getUser(){
         return $this->User;

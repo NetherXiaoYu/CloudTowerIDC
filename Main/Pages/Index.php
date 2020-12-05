@@ -1,12 +1,12 @@
 <?php
 
-namespace YunTaIDC\Page;
+namespace CloudTowerIDC\Page;
 
-use YunTaIDC\Template\Template;
-use YunTaIDC\Logger\Logger;
-use YunTaIDC\Plugin\PluginManager;
+use CloudTowerIDC\Template\Template;
+use CloudTowerIDC\Logger\Logger;
+use CloudTowerIDC\Plugin\PluginManager;
 
-use YunTaIDC\Events\TemplateLoadEvent;
+use CloudTowerIDC\Events\TemplateLoadEvent;
 
 class Index extends Page{
 

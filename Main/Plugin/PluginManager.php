@@ -1,8 +1,8 @@
 <?php
 
-namespace YunTaIDC\Plugin;
+namespace CloudTowerIDC\Plugin;
 
-use YunTaIDC\Main\Main;
+use CloudTowerIDC\Main\Main;
 
 class PluginManager{
     
@@ -16,10 +16,8 @@ class PluginManager{
     public $PluginPath = array();
     
     private $Database;
-    private $System;
     
-    public function __construct(Main $Main){
-        $this->System = $Main;
+    public function __construct(private Main $System){
         $this->Database = $this->System->getDatabase();
     }
     
@@ -45,7 +43,7 @@ class PluginManager{
                         $mainPath = $this->path . '/' . $v['entry'] . '/src/' . $pluginPath .'.php';
                         if(!file_exists($mainPath) || !is_file($mainPath)){
                             $this->System->getLogger()->newCrashDump('无法加载插件', 'Cannot load plugins '.$v['config']['name'].' due to the incorrect or non existed path of the plugin main file, main file should be '.$mainPath);
-                            exit('YunTaIDC:加载插件出错'.$mainPath);
+                            exit('CloudTowerIDC:加载插件出错'.$mainPath);
                         }else{
                             require_once($mainPath);
                             $this->PluginClass[$v['config']['name']] = $v['config']['main'];
@@ -54,7 +52,7 @@ class PluginManager{
                                 $PagePath = $this->path . '/' . $v['entry'] . '/src/' . $PagePath . '.php';
                                 if(!file_exists($PagePath) || !is_file($PagePath)){
                                     $this->System->getLogger()->newCrashDump('无法加载插件', 'Cannot load plugins '.$v['config']['name'].'\'s page due to the incorrect or non existed path of the plugin page file, main file should be '.$PagePath);
-                                    exit('YunTaIDC:加载插件出错'.$PagePath);
+                                    exit('CloudTowerIDC:加载插件出错'.$PagePath);
                                 }else{
                                     require_once($PagePath);
                                     $this->PluginPage[$v['config']['name']] = $v['config']['page'];
@@ -62,11 +60,15 @@ class PluginManager{
                             }
                             if(empty($v['config']['type'])){
                                 $this->System->getLogger()->newCrashDump('无法加载插件', 'Cannot load plugins '.$v['config']['name'].' due to the empty type set in the plugin config file');
-                                exit('YunTaIDC:加载插件出错');
+                                exit('CloudTowerIDC:加载插件出错');
                             }
                             if(!in_array($v['config']['type'], array('FUNCTION','SERVER','PAYMENT'))){
                                 $this->System->getLogger()->newCrashDump('无法加载插件', 'Cannot load plugins '.$v['config']['name'].' due to the unknown type set in the plugin config file');
-                                exit('YunTaIDC:加载插件出错');
+                                exit('CloudTowerIDC:加载插件出错');
+                            }
+                            if($v['config']['api'] < $this->getApiVersion()){
+                                $this->System->getLogger()->newCrashDump('无法加载插件', 'Cannot load plugins '.$v['config']['name'].' due to the unsupoorted api version.');
+                                exit('CloudTowerIDC:加载插件出错');
                             }
                             $this->PluginType[$v['config']['type']][] = $v['config']['name'];
                             $this->PluginPath[$v['config']['name']] = $this->path . '/'. $v['entry'];
@@ -76,7 +78,7 @@ class PluginManager{
             }
         }else{
             $this->System->getLogger()->newCrashDump('无法加载插件', 'Cannot load plugins due to the error open can\'t opening the directory of the plugins,please check if there is enough permission');
-            exit('YunTaIDC:加载插件出错');
+            exit('CloudTowerIDC:加载插件出错');
         }
     }
 
@@ -87,7 +89,7 @@ class PluginManager{
             $pluginPageFolder = $this->pageFolder . $k;
             if(file_exists($pluginDataFolder) && !is_dir($pluginDataFolder)){
                 $this->System->getLogger()->newCrashDump('无法加载插件', 'Projected plugin '.$k.' data folder cause to an error.');
-                exit('YunTaIDC:加载插件出错');
+                exit('CloudTowerIDC:加载插件出错');
             }
             if(!file_exists($pluginDataFolder)){
                 mkdir($pluginDataFolder, 0755, true);
@@ -101,7 +103,7 @@ class PluginManager{
                 $this->Plugins[$k] = $plugin;
             } catch (Error $e){
                 $this->System->getLogger()->newCrashDump('无法加载插件', 'Plugin Error caught:'.$e->getMessage());
-                exit('YunTaIDC:加载插件出错');
+                exit('CloudTowerIDC:加载插件出错');
             }
         }
         return $plugins;
@@ -115,7 +117,7 @@ class PluginManager{
                 }
             } catch (Exception $e) {
                 $this->System->getLogger()->newCrashDump('插件运行出错', 'ErrorFile'.$e->getFile().'\n\r ErrorLine'.$e->getFile().'\n\r ErrorMessage:'.$e->getMessage());
-                exit('YunTaIDC:插件运行出错');
+                exit('CloudTowerIDC:插件运行出错');
             }
         }
     }
@@ -123,13 +125,14 @@ class PluginManager{
     public function loadEventByPlugin($name, $event, $pluginName){
         try {
             if(method_exists($this->Plugins[$pluginName], $name)){
+                $this->System->getLogger()->addSystemLog('系统请求使用插件'.$pluginName.'执行了'.$name.'事件');
                 return $this->Plugins[$pluginName]->$name($event);
             } else {
                 return false;
             }
         } catch (Exception $e) {
             $this->System->getLogger()->newCrashDump('插件运行出错', 'ErrorFile'.$e->getFile().'\n\r ErrorLine'.$e->getFile().'\n\r ErrorMessage:'.$e->getMessage());
-            exit('YunTaIDC:插件运行出错');
+            exit('CloudTowerIDC:插件运行出错');
         }
     }
     
@@ -177,12 +180,10 @@ class PluginManager{
         }
     }
     
-    public function loadPluginPage($Plugin, $System){
+    public function loadPluginPage($Plugin){
         if($this->PageRegistered($Plugin)){
             $PageClass = $this->PluginPage[$Plugin];
-            $dataFolder = $this->dataFolder .$Plugin;
-            $sourceFolder = $this->PluginPath[$Plugin];
-            return new $PageClass($System, $dataFolder, $sourceFolder);
+            return new $PageClass($this->Plugins[$Plugin]);
         }else{
             return false;
         }
@@ -193,7 +194,7 @@ class PluginManager{
     }
 
     public function getApiVersion(){
-        return '3.0.1';
+        return '3.0.2';
     }
 
 }

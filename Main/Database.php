@@ -1,9 +1,9 @@
 <?php
 
-namespace YunTaIDC\Database;
+namespace CloudTowerIDC\Database;
 
 use PDO;
-use YunTaIDC\Logger\Logger;
+use CloudTowerIDC\Logger\Logger;
 
 class Database{
 

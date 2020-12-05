@@ -4,7 +4,7 @@ CloudTowerIDC is a free, open sourced web program for web host billing and manag
 
 ## Environment
 - .htaccess support (If not change the rules to support, or else may lead to a data exportation)
-- PHP7.4 version(Official test environment, not a must)
+- PHP8.0 version(Official test environment, only for 3.0.2 version, not a must for any other version)
 - MySQL5.6.48 version(Official test environment, not a must)
 
 ## How to install

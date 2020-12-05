@@ -1,21 +1,17 @@
 <?php
 
-namespace YunTaIDC\Events;
+namespace CloudTowerIDC\Events;
 
-use YunTaIDC\Admin\Admin;
-use YunTaIDC\Workorder\Workorder;
+use CloudTowerIDC\Admin\Admin;
+use CloudTowerIDC\Workorder\Workorder;
 
 class AdminReplyWorkorderEvent extends Events{
     
-    public $Workorder;
-    public $Content;
-    public $Admin;
-    
-    public function __construct($Content, Workorder $Workorder, Admin $Admin){
-        $this->Content = $Content;
-        $this->Workorder = $Workorder;
-        $this->Admin = $Admin;
-    }
+    public function __construct(
+        public string $Content,
+        public Workorder $Workorder,
+        public Admin $Admin
+    ){}
     
     public function getContent(){
         return $this->Content;

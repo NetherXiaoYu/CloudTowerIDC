@@ -1,19 +1,21 @@
 <?php
 
-namespace YunTaIDC\Page;
+namespace CloudTowerIDC\Page;
 
-use YunTaIDC\Service\Service;
+use CloudTowerIDC\Service\Service;
 
-use YunTaIDC\Events\CronEvent;
-use YunTaIDC\Events\ServiceDeleteEvent;
-use YunTaIDC\Events\DeleteServiceEvent;
+use CloudTowerIDC\Events\CronEvent;
+use CloudTowerIDC\Events\ServiceDeleteEvent;
+use CloudTowerIDC\Events\DeleteServiceEvent;
 
 class Cron{
     
-    private $System;
-    
-    public function __construct($System){
-        $this->System = $System;
+    private $Logger;
+
+    public function __construct(
+        private $System
+    ){
+        $this->Logger = $this->System->getLogger();
     }
     
     public function getSystem(){
@@ -48,17 +50,20 @@ class Cron{
         }
         $this->getSystem()->getDatabase()->exec("DELETE FROM `ytidc_service` WHERE `enddate`<='{$deletedate}'");
         $this->UpdateCron();
+        $this->Logger->addSystemLog('云塔Service Cron执行成功');
         exit('success');
     }
 
     private function UpdateCron(){
         $date = date('Y-m-d');
         $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_config` SET `value`='{$date}' WHERE `key`='cron_date'");
+        $this->Logger->addSystemLog('云塔Cron日期已更新');
     }
 
     public function Orders(){
         $this->getSystem()->getDatabase()->exec("DELETE FROM `ytidc_order` WHERE `status`='待支付'");
         $this->UpdateCron();
+        $this->Logger->addSystemLog('云塔Orders Cron执行成功');
         exit('success');
     }
 
@@ -69,6 +74,7 @@ class Cron{
         if(!empty($this->getSystem()->getGetParams()['plugin'])){
             $PluginManager->loadEventByPlugin('onCron', $Event, $this->getSystem()->getGetParams()['plugin']);
         }
+        $this->Logger->addSystemLog('云塔Plugin Cron执行成功');
         exit('success');
     }
     

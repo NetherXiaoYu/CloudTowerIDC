@@ -1,18 +1,16 @@
 <?php
 
-namespace YunTaIDC\User;
+namespace CloudTowerIDC\User;
 
-use YunTaIDC\Priceset\Priceset;
+use CloudTowerIDC\Priceset\Priceset;
 
 class User{
     
     private $Database;
-    private $Class;
     public $User;
     
     // User => UserId|Username
-    public function __construct($User, $Class){
-        $this->Class = $Class;
+    public function __construct($User,private $Class){
         $this->Database = $this->Class->getSystem()->getDatabase();
         if(is_numeric($User)){
             $this->User = $this->Database->get_row("SELECT * FROM `ytidc_user` WHERE `id`='{$User}'"); 

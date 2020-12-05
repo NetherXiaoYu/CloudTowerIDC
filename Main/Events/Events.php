@@ -1,6 +1,6 @@
 <?php
 
-namespace YunTaIDC\Events;
+namespace CloudTowerIDC\Events;
 
 class Events{
     

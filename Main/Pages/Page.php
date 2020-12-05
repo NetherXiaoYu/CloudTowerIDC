@@ -1,19 +1,17 @@
 <?php
 
-namespace YunTaIDC\Page;
+namespace CloudTowerIDC\Page;
 
-use YunTaIDC\Template\Template;
-use YunTaIDC\Plugin\PluginManager;
+use CloudTowerIDC\Template\Template;
+use CloudTowerIDC\Plugin\PluginManager;
 
-use YunTaIDC\Events\TemplateLoadEvent;
+use CloudTowerIDC\Events\TemplateLoadEvent;
 class Page{
 
-    private $System;
     public $template;
     public $pluginManager;
 
-    public function __construct($main){
-        $this->System = $main;
+    public function __construct(private $System){
         if($this->isMobile()){
             $template = new Template($this->System->getConfigValue('template_mobile'));
         }else{

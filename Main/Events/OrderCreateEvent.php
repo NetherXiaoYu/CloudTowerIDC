@@ -1,25 +1,19 @@
 <?php
 
-namespace YunTaIDC\Events;
+namespace CloudTowerIDC\Events;
 
-use YunTaIDC\Events\Events;
-use YunTaIDC\User\User;
+use CloudTowerIDC\Events\Events;
+use CloudTowerIDC\User\User;
 
 class OrderCreateEvent extends Events{
     
-    public $User;
-    public $OrderId;
-    public $Description;
-    public $Money;
-    public $Action;
-    
-    public function __construct(User $User, $OrderId, $Description, $Money, $Action){
-        $this->User = $User;
-        $this->OrderId = $OrderId;
-        $this->Description = $Description;
-        $this->Money = $Money;
-        $this->Action = $Action;
-    }
+    public function __construct(
+        public User $User,
+        public int $OrderId,
+        public string $Description,
+        public int|float $Money,
+        public string $Action
+    ){}
     
     public function getUser(){
         return $this->User;

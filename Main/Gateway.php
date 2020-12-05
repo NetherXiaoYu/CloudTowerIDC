@@ -1,16 +1,14 @@
 <?php
 
-namespace YunTaIDC\Gateway;
+namespace CloudTowerIDC\Gateway;
 
 class Gateway{
     
     private $Database;
-    private $Class;
     
     public $Gateway;
     
-    public function __construct($Gateway, $Class){
-        $this->Class = $Class;
+    public function __construct($Gateway,private $Class){
         $this->Database = $this->Class->getSystem()->getDatabase();
         $this->Gateway = $this->Database->get_row("SELECT * FROM `ytidc_gateway` WHERE `id`='{$Gateway}'");
     }

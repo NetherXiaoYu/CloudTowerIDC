@@ -1,17 +1,15 @@
 <?php
 
-namespace YunTaIDC\Workorder;
+namespace CloudTowerIDC\Workorder;
 
-use YunTaIDC\User\User;
+use CloudTowerIDC\User\User;
 
 class Workorder{
     
-    private $Class;
     private $Database;
     public $Workorder;
     
-    public function __construct($Workorder, $Class){
-        $this->Class = $Class;
+    public function __construct($Workorder,private $Class){
         $this->Database = $this->Class->getSystem()->getDatabase();
         $this->Workorder = $this->Database->get_row("SELECT * FROM `ytidc_workorder` WHERE `id`='{$Workorder}'");
     }

@@ -1,16 +1,13 @@
 <?php
 
-namespace YunTaIDC\Events;
+namespace CloudTowerIDC\Events;
 
-use YunTaIDC\Events\Events;
-use YunTaIDC\Template\Template;
+use CloudTowerIDC\Events\Events;
+use CloudTowerIDC\Template\Template;
 
 class TemplateLoadEvent extends Events{
     
-    public $template;
-    
-    public function __construct(Template $template){
-        $this->template = $template;
+    public function __construct(public Template $template){
     }
     
     public function getTemplate(){

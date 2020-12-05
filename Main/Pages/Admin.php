@@ -1,26 +1,24 @@
 <?php
 
-namespace YunTaIDC\Page;
+namespace CloudTowerIDC\Page;
 
-use YunTaIDC\Admin\Admin as A;
-use YunTaIDC\Workorder\Workorder;
-use YunTaIDC\Server\Server;
+use CloudTowerIDC\Admin\Admin as A;
+use CloudTowerIDC\Workorder\Workorder;
+use CloudTowerIDC\Server\Server;
 
-use YunTaIDC\Events\AdminReplyWorkorderEvent;
-use YunTaIDC\Events\ServiceDeleteEvent;
-use YunTaIDC\Events\DeleteServiceEvent;
-use YunTaIDC\Events\CreateServiceEvent;
-use YunTaIDC\Events\ProductConfigEvent;
+use CloudTowerIDC\Events\AdminReplyWorkorderEvent;
+use CloudTowerIDC\Events\ServiceDeleteEvent;
+use CloudTowerIDC\Events\DeleteServiceEvent;
+use CloudTowerIDC\Events\CreateServiceEvent;
+use CloudTowerIDC\Events\ProductConfigEvent;
 
-use YunTaIDC\Service\Service;
+use CloudTowerIDC\Service\Service;
 
 class Admin{
     
-    private $System;
     private $Admin;
     
-    public function __construct($System){
-        $this->System = $System;
+    public function __construct(private $System){
     }
     
     public function getSystem(){

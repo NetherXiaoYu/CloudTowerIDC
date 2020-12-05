@@ -1,19 +1,17 @@
 <?php
 
-namespace YunTaIDC\Events;
+namespace CloudTowerIDC\Events;
 
-use YunTaIDC\Events\Events;
-use YunTaIDC\User\User;
+use CloudTowerIDC\Events\Events;
+use CloudTowerIDC\User\User;
 
 class UserAddWorkorderEvent extends Events{
     
-    public $User;
-    public $Title;
-    public $Content;
-    
-    public function __construct(User $User, string $Title, string $Content){
-        $this->User = $User;
-    }
+    public function __construct(
+        public User $User,
+        public string $Title,
+        public string $Content
+    ){}
     
     public function getUser(){
         return $this->User;

@@ -1,20 +1,18 @@
 <?php
 
-namespace YunTaIDC\Order;
+namespace CloudTowerIDC\Order;
 
-use YunTaIDC\User\User;
+use CloudTowerIDC\User\User;
 
 class Order{
     
     private $Database;
-    private $Class;
     
     public $Order;
-    
-    public function __construct($Order, $Class){
-        $this->Class = $Class;
+
+    public function __construct($orderid,private $Class){
         $this->Database = $this->Class->getSystem()->getDatabase();
-        $this->Order = $this->Database->get_row("SELECT * FROM `ytidc_order` WHERE `orderid`='{$Order}'");
+        $this->Order = $this->Database->get_row("SELECT * FROM `ytidc_order` WHERE `orderid`='{$orderid}'");
     }
     
     public function isExisted(){

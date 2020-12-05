@@ -1,13 +1,13 @@
 <?php
 
-namespace YunTaIDC\Priceset;
+namespace CloudTowerIDC\Priceset;
 
 class Priceset{
     
     private $Database;
     public $Priceset;
     
-    public function __construct($Priceset, $Class){
+    public function __construct($Priceset,private $Class){
         $this->Database = $Class->getSystem()->getDatabase();
         if($Priceset == 0){
             $this->Priceset = $this->Database->get_row("SELECT * FROM `ytidc_priceset` WHERE `default`='1'");

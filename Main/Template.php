@@ -1,9 +1,9 @@
 <?php
 
-namespace YunTaIDC\Template;
+namespace CloudTowerIDC\Template;
 
-use YunTaIDC\Logger\Logger;
-use YunTaIDC\Plugin\PluginManager;
+use CloudTowerIDC\Logger\Logger;
+use CloudTowerIDC\Plugin\PluginManager;
 use file_get_contents;
 use str_replace;
 use file_exists;
@@ -12,17 +12,15 @@ use preg_match_all;
 class Template{
 
     public $path;
-    public $name;
     public $translation;
     
     private $File;
     private $Template;
     private $TemplateCode;
 
-    public function __construct($name){
+    public function __construct(public string $name){
         $this->path = BASE_ROOT.'/Templates/'.$name.'/';
         $this->translation = $this->path . '/languages/default.json';
-        $this->name = $name;
     }
     
     public function getTemplatePath(){

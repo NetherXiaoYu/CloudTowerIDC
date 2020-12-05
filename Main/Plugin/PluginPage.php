@@ -1,20 +1,14 @@
 <?php
 
-namespace YunTaIDC\Plugin;
+namespace CloudTowerIDC\Plugin;
 
-use YunTaIDC\Plugin\PluginConfig;
+use CloudTowerIDC\Plugin\PluginConfig;
 
 class PluginPage{
-    
-    public $System;
-    public $Plugin;
     public $templateFolder;
-    public $dataFolder;
     
-    public function __construct($System, $dataFolder, $sourceFolder){
-        $this->System = $System;
-        $this->dataFolder = $dataFolder.'/';
-        $this->templateFolder = $sourceFolder .'/template';
+    public function __construct(public $Plugin){
+        $this->templateFolder = BASE_ROOT .'/PluginTemplates/' . $this->Plugin->getPluginName();
         $this->onLoad();
     }
     
@@ -23,11 +17,11 @@ class PluginPage{
     }
     
     public function getSystem(){
-        return $this->System;
+        return $this->Plugin->getSystem();
     }
     
     public function getResourceFolder(){
-        return $this->resourceFolder;
+        return $this->Plugin->getResourceFolder();
     }
     
     public function getTemplateFolder(){
@@ -47,7 +41,7 @@ class PluginPage{
     }
     
     public function getdataFolder(){
-        return $this->dataFolder;
+        return $this->Plugin->getDataFolder();
     }
     
     public function isMobile(){

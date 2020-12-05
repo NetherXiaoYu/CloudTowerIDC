@@ -1,6 +1,6 @@
 <?php
 
-namespace YunTaIDC\Plugin;
+namespace CloudTowerIDC\Plugin;
 
 class PluginConfig{
 

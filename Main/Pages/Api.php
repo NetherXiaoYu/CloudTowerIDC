@@ -1,27 +1,25 @@
 <?php
 
-namespace YunTaIDC\Page;
+namespace CloudTowerIDC\Page;
 
-use YunTaIDC\User\User;
-use YunTaIDC\Service\Service;
-use YunTaIDC\ProductGroup\ProductGroup as PG;
-use YunTaIDC\Product\Product as P;
-use YunTaIDC\Server\Server;
+use CloudTowerIDC\User\User;
+use CloudTowerIDC\Service\Service;
+use CloudTowerIDC\ProductGroup\ProductGroup as PG;
+use CloudTowerIDC\Product\Product as P;
+use CloudTowerIDC\Server\Server;
 
-use YunTaIDC\Events\OrderCreateEvent;
-use YunTaIDC\Events\ServiceCreateEvent;
-use YunTaIDC\Events\CreateServiceEvent;
-use YunTaIDC\Events\ServiceRenewEvent;
-use YunTaIDC\Events\RenewServiceEvent;
-use YunTaIDC\Events\LoginServiceEvent;
+use CloudTowerIDC\Events\OrderCreateEvent;
+use CloudTowerIDC\Events\ServiceCreateEvent;
+use CloudTowerIDC\Events\CreateServiceEvent;
+use CloudTowerIDC\Events\ServiceRenewEvent;
+use CloudTowerIDC\Events\RenewServiceEvent;
+use CloudTowerIDC\Events\LoginServiceEvent;
 
 class Api{
     
-    private $System;
     private $User;
     
-    public function __construct($System){
-        $this->System = $System;
+    public function __construct(private $System){
     }
     
     public function getSystem(){

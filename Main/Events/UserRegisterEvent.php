@@ -1,19 +1,16 @@
 <?php
 
-namespace YunTaIDC\Events;
+namespace CloudTowerIDC\Events;
 
-use YunTaIDC\Logger\Logger;
-use YunTaIDC\Events\Events;
+use CloudTowerIDC\Logger\Logger;
+use CloudTowerIDC\Events\Events;
 
 class UserRegisterEvent extends Events{
     
-    public $Username;
-    public $Password;
-    
-    public function __construct($Username, $Password){
-        $this->Username = $Username;
-        $this->Password = $Password;
-    }
+    public function __construct(
+        public string|int|float $Username,
+        public string|int|float $Password
+    ){}
     
     public function getUsername(){
         return $this->Username;

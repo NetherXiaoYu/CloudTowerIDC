@@ -1,19 +1,17 @@
 <?php
 
-namespace YunTaIDC\Service;
+namespace CloudTowerIDC\Service;
 
-use YunTaIDC\Product\Product;
-use YunTaIDC\User\User;
+use CloudTowerIDC\Product\Product;
+use CloudTowerIDC\User\User;
 
 class Service{
     
     private $Database;
-    private $Class;
     
     public $Service;
     
-    public function __construct($Service, $Class){
-        $this->Class = $Class;
+    public function __construct($Service,private $Class){
         $this->Database = $Class->getSystem()->getDatabase();
         if(is_numeric($Service)){
             $this->Service = $this->Database->get_row("SELECT * FROM `ytidc_service` WHERE `id`='{$Service}'");

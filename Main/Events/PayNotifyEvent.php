@@ -1,23 +1,17 @@
 <?php
 
-namespace YunTaIDC\Events;
+namespace CloudTowerIDC\Events;
 
-use YunTaIDC\Events\Events;
-use YunTaIDC\Gateway\Gateway;
+use CloudTowerIDC\Events\Events;
+use CloudTowerIDC\Gateway\Gateway;
 
 class PayNotifyEvent extends Events{
     
-    public $User;
-    public $Order;
-    public $Gateway;
-    public $Gets;
-    public $Posts;
-    
-    public function __construct(Gateway $Gateway, $Gets, $Posts){
-        $this->Gateway = $Gateway;
-        $this->Gets = $Gets;
-        $this->Posts = $Posts;
-    }
+    public function __construct(
+        public Gateway $Gateway,
+        public array|null|string $Gets,
+        public array|null|string $Posts
+    ){}
     
     public function getGateway(){
         return $this->Gateway;

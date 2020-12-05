@@ -1,16 +1,14 @@
 <?php
 
-namespace YunTaIDC\ProductGroup;
+namespace CloudTowerIDC\ProductGroup;
 
 class ProductGroup{
     
-    private $Class;
     private $Database;
     
     public $Group;
     
-    public function __construct($Group, $Class){
-        $this->Class = $Class;
+    public function __construct($Group,private $Class){
         $this->Database = $Class->getSystem()->getDatabase();
         $this->Group = $this->Database->get_row("SELECT * FROM `ytidc_group` WHERE `id`='{$Group}'");
     }

@@ -1,20 +1,17 @@
 <?php
 
-namespace YunTaIDC\Events;
+namespace CloudTowerIDC\Events;
 
-use YunTaIDC\User\User;
-use YunTaIDC\Logger\Logger;
-use YunTaIDC\Events\Events;
+use CloudTowerIDC\User\User;
+use CloudTowerIDC\Logger\Logger;
+use CloudTowerIDC\Events\Events;
 
 class UserLoginEvent extends Events{
     
-    public $User;
-    public $LoginIp;
-    
-    public function __construct(User $User, $ip){
-        $this->User = $User;
-        $this->LoginIp = $ip;
-    }
+    public function __construct(
+        public User $User,
+        public string $ip
+    ){}
     
     public function getUser(){
         return $this->User;

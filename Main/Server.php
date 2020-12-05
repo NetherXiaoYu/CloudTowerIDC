@@ -1,16 +1,14 @@
 <?php
 
-namespace YunTaIDC\Server;
+namespace CloudTowerIDC\Server;
 
 class Server{
     
-    private $Class;
     private $Database;
     
     public $Server;
     
-    public function __construct($Server, $Class){
-        $this->Class = $Class;
+    public function __construct($Server,private $Class){
         $this->Database = $Class->getSystem()->getDatabase();
         $this->Server = $this->Database->get_row("SELECT * FROM `ytidc_server` WHERE `id`='{$Server}'");
     }

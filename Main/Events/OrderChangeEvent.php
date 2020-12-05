@@ -1,18 +1,15 @@
 <?php
 
-namespace YunTaIDC\Events;
+namespace CloudTowerIDC\Events;
 
-use YunTaIDC\Order\Order;
+use CloudTowerIDC\Order\Order;
 
 class OrderChangeEvent extends Events{
     
-    public $Order;
-    public $Status;
-    
-    public function __construct(Order $Order, $Status){
-        $this->Status = $Status;
-        $this->Order = $Order;
-    }
+    public function __construct(
+        public Order $Order, 
+        public string|null|bool $Status
+    ){}
     
     public function getOrder(){
         return $this->Order;

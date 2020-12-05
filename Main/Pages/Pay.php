@@ -1,18 +1,18 @@
 <?php
 
-namespace YunTaIDC\Page;
+namespace CloudTowerIDC\Page;
 
-use YunTaIDC\User\User;
-use YunTaIDC\Order\Order;
-use YunTaIDC\Gateway\Gateway;
+use CloudTowerIDC\User\User;
+use CloudTowerIDC\Order\Order;
+use CloudTowerIDC\Gateway\Gateway;
 
-use YunTaIDC\Plugin\PluginManager;
+use CloudTowerIDC\Plugin\PluginManager;
 
-use YunTaIDC\Events\OrderCreateEvent;
-use YunTaIDC\Events\OrderChangeEvent;
-use YunTaIDC\Events\PaySendEvent;
-use YunTaIDC\Events\PayReturnEvent;
-use YunTaIDC\Events\PayNotifyEvent;
+use CloudTowerIDC\Events\OrderCreateEvent;
+use CloudTowerIDC\Events\OrderChangeEvent;
+use CloudTowerIDC\Events\PaySendEvent;
+use CloudTowerIDC\Events\PayReturnEvent;
+use CloudTowerIDC\Events\PayNotifyEvent;
 
 class Pay extends Page{
     

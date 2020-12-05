@@ -1,4 +1,7 @@
 <?php
+if(phpversion() < 8){
+    exit('CloudTowerIDC:请使用PHP8.0.0版本以上运行云塔IDC系统');
+}
 session_start();
 define('BASE_ROOT',str_replace('\\','/',realpath(dirname(__FILE__).'/'))."/");
 
@@ -51,6 +54,6 @@ require_once(BASE_ROOT.'Main/Plugin/PluginBase.php');
 require_once(BASE_ROOT.'Main/Plugin/PluginPage.php');
 require_once(BASE_ROOT.'Main/Pages/Page.php');
 
-$system = new YunTaIDC\Main\Main();
+$system = new CloudTowerIDC\Main\Main();
 $system->Load();
 ?>

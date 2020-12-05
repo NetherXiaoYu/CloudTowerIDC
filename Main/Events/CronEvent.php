@@ -1,13 +1,10 @@
 <?php
 
-namespace YunTaIDC\Events;
+namespace CloudTowerIDC\Events;
 
 class CronEvent extends Events{
     
-    public $System;
-    
-    public function __construct($system){
-        $this->System = $system;
+    public function __construct(private $System){
     }
     
     public function getSystem(){

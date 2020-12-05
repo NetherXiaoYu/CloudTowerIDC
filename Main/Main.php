@@ -2,14 +2,14 @@
 
 //Main.php处理一切
 
-namespace YunTaIDC\Main;
+namespace CloudTowerIDC\Main;
 
-use YunTaIDC\Database\Database;
-use YunTaIDC\Logger\Logger;
-use YunTaIDC\Page;
-use YunTaIDC\User\User;
-use YunTaIDC\Input\Input;
-use YunTaIDC\Plugin\PluginManager;
+use CloudTowerIDC\Database\Database;
+use CloudTowerIDC\Logger\Logger;
+use CloudTowerIDC\Page;
+use CloudTowerIDC\User\User;
+use CloudTowerIDC\Input\Input;
+use CloudTowerIDC\Plugin\PluginManager;
 
 class Main{
 
@@ -66,7 +66,7 @@ class Main{
         if(in_array($pagefile, $files)){
             $key = array_search($pagefile, $files);
             require_once(BASE_ROOT.'/Main/Pages/'.$files[$key]);
-            $class = 'YunTaIDC\Page\\'.$page;
+            $class = 'CloudTowerIDC\Page\\'.$page;
             $pager = new $class($this);
             if(method_exists($pager, $action)){
                 $pager->$action();
@@ -75,7 +75,7 @@ class Main{
             }
         }else{
             require_once(BASE_ROOT.'/Main/Pages/Index.php');
-            $class = 'YunTaIDC\Page\Index';
+            $class = 'CloudTowerIDC\Page\Index';
             $pager = new $class($this);
             $pager->Index();
         }

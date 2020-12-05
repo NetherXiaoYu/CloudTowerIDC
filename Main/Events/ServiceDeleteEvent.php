@@ -1,19 +1,16 @@
 <?php
 
-namespace YunTaIDC\Events;
+namespace CloudTowerIDC\Events;
 
-use YunTaIDC\Service\Service;
-use YunTaIDC\Server\Server;
+use CloudTowerIDC\Service\Service;
+use CloudTowerIDC\Server\Server;
 
 class ServiceDeleteEvent extends Events{
     
-    public $Service;
-    public $Server;
-    
-    public function __construct(Service $Service, Server $Server){
-        $this->Service = $Service;
-        $this->Server = $Server;
-    }
+    public function __construct(
+        public Service $Service,
+        public Server $Server
+    ){}
     
     public function getServer(){
         return $this->Server;

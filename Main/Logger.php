@@ -2,7 +2,7 @@
 
 //Logger.php处理一切报告档案
 
-namespace YunTaIDC\Logger;
+namespace CloudTowerIDC\Logger;
 
 use Exception;
 use PDOException;

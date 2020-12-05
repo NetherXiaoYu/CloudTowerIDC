@@ -1,21 +1,21 @@
 <?php
 
-namespace YunTaIDC\Page;
+namespace CloudTowerIDC\Page;
 
-use YunTaIDC\Service\Service as S;
-use YunTaIDC\USer\User;
-use YunTaIDC\Product\Product;
-use YunTaIDC\Priceset\Priceset;
-use YunTaIDC\Server\Server;
+use CloudTowerIDC\Service\Service as S;
+use CloudTowerIDC\USer\User;
+use CloudTowerIDC\Product\Product;
+use CloudTowerIDC\Priceset\Priceset;
+use CloudTowerIDC\Server\Server;
 
-use YunTaIDC\Plugin\PluginManager;
+use CloudTowerIDC\Plugin\PluginManager;
 
-use YunTaIDC\Events\OrderCreateEvent;
-use YunTaIDC\Events\ServiceCreateEvent;
-use YunTaIDC\Events\CreateServiceEvent;
-use YunTaIDC\Events\ServiceRenewEvent;
-use YunTaIDC\Events\LoginServiceEvent;
-use YunTaIDC\Events\RenewServiceEvent;
+use CloudTowerIDC\Events\OrderCreateEvent;
+use CloudTowerIDC\Events\ServiceCreateEvent;
+use CloudTowerIDC\Events\CreateServiceEvent;
+use CloudTowerIDC\Events\ServiceRenewEvent;
+use CloudTowerIDC\Events\LoginServiceEvent;
+use CloudTowerIDC\Events\RenewServiceEvent;
 
 class Service extends Page{
     

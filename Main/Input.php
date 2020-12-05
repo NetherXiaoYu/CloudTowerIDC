@@ -1,6 +1,6 @@
 <?php
 
-namespace YunTaIDC\Input;
+namespace CloudTowerIDC\Input;
 
 use htmlspecialchars;
 

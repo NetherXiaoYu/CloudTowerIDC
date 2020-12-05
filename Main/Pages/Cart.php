@@ -1,14 +1,14 @@
 <?php
 
-namespace YunTaIDC\Page;
+namespace CloudTowerIDC\Page;
 
-use YunTaIDC\Template\Template;
-use YunTaIDC\Logger\Logger;
-use YunTaIDC\Product\Product;
-use YunTaIDC\ProductGroup\ProductGroup;
-use YunTaIDC\User\User;
+use CloudTowerIDC\Template\Template;
+use CloudTowerIDC\Logger\Logger;
+use CloudTowerIDC\Product\Product;
+use CloudTowerIDC\ProductGroup\ProductGroup;
+use CloudTowerIDC\User\User;
 
-use YunTaIDC\Events\TemplateLoadEvent;
+use CloudTowerIDC\Events\TemplateLoadEvent;
 
 class Cart extends Page{
     
