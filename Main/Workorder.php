@@ -91,7 +91,7 @@ class Workorder{
             return false;
         }else{
             $time = date('Y-m-d H:i:s');
-            return $this->Database->exec("INSERT INTO `ytidc_workorder_reply`(`person`, `content`, `workorder`) VALUES ('{$person}', '{$content}', '{$this->Workorder['id']}')");
+            return $this->Database->exec("INSERT INTO `ytidc_workorder_reply`(`person`, `content`, `workorder`, `time`) VALUES ('{$person}', '{$content}', '{$this->Workorder['id']}', '{$time}')");
         }
     }
     

@@ -65,16 +65,16 @@ class Service extends Page{
                         $this->goMsg('服务账号不能为纯数字！');
                     }
                     $Priceset = $this->getUser()->getPriceset();
-                    if($Priceset !== false){
-                        $Discount = $this->getUser()->getPriceset()->getPrice()[$Post['product']];
+                    if($Priceset === false){
+                        $Discount = 100;
+                    }else{
+                        $Discount = $this->getUser()->getPriceset()->getPrice()[$Posts['product']];
                         if(empty($Discount)){
                             $Discount = $this->getUser()->getPriceset()->getPrice()['*'];
                             if(empty($Discount)){
                                 $Discount = 100;
                             }
                         }
-                    }else{
-                        $Discount = 100;
                     }
                     $Price = $Period['price'] * $Discount / 100;
                     $Orderid = date('YmdHis').random_int(100000,999999);
@@ -158,7 +158,7 @@ class Service extends Page{
                         }else{
                             $Priceset = $this->getUser()->getPriceset();
                             if($Priceset !== false){
-                                $Discount = $this->getUser()->getPriceset()->getPrice()[$Post['product']];
+                                $Discount = $this->getUser()->getPriceset()->getPrice()[$Product->getId()];
                                 if(empty($Discount)){
                                     $Discount = $this->getUser()->getPriceset()->getPrice()['*'];
                                     if(empty($Discount)){

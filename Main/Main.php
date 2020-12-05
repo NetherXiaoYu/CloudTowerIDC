@@ -196,6 +196,9 @@ class Main{
     }
     
     public function addWorkorder($title, $content, $service, $user){
+        if (empty($service)) {
+            $service = 0;
+        }
         return $this->getDatabase()->exec("INSERT INTO `ytidc_workorder`(`title`, `content`, `service`, `user`, `status`) VALUES ('{$title}', '{$content}', '{$service}', '{$user}', '待处理')");
     }
     

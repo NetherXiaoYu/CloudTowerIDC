@@ -1233,29 +1233,28 @@ class Admin{
                 exit;
             }else{
                 $customcount = count($this->getSystem()->getTemplateCustom());
-                $custom = $this->getSystem()->getDatabase()->get_rows("SELECT * FROM `ytidc_template`");
+                $customrows = $this->getSystem()->getDatabase()->get_rows("SELECT * FROM `ytidc_template`");
+                $template = $this->getSystem()->getConfigValue('template');
+                $template_mobile = $this->getSystem()->getConfigValue('template_mobile');
+                foreach($customrows as $k => $v){
+                  $custom[$v['key']] = $v['value'];
+                }
+                if(file_exists(BASE_ROOT.'/Templates/'.$template.'/config.json') && file_exists(BASE_ROOT.'/Templates/'.$template_mobile.'/config.json')){
+                  $template = json_decode(file_get_contents(BASE_ROOT.'/Templates/'.$template.'/custom.json'), true);
+                  $template_mobile = json_decode(file_get_contents(BASE_ROOT.'/Templates/'.$template_mobile.'/custom.json'), true);
+                  $keys = array_merge($template_mobile['keys'], $template['keys']);
+                }else{
+                  if(!file_exists(BASE_ROOT.'/Templates/'.$template.'/config.json')){
+                     $template = json_decode(file_get_contents(BASE_ROOT.'/Templates/'.$template_mobile.'/custom.json'), true);
+                     $keys = $template['keys'];
+                  }
+                  if(!file_exists(BASE_ROOT.'/Templates/'.$template_mobile.'/config.json')){
+                     $template = json_decode(file_get_contents(BASE_ROOT.'/Templates/'.$template_mobile.'/custom.json'), true);
+                     $keys = $template['keys'];
+                  }
+                }
                 $this->Header();
                 echo '
-                <script>
-                                var customcount = '.$customcount.';
-                        
-                                function AddCustomInput() {
-                                    customcount++;
-                                    var custom = document.getElementById("customtable");
-                                    var editform = document.getElementById("editform");
-                                    editform.style.height = editform.offsetHeight + 50 +\'px\';
-                        
-                                    var tr = document.createElement(\'tr\');
-                            	    	var td = document.createElement(\'td\');
-                            	    	td.innerHTML=\'<input type="text" class="form-control" name="custom[\' + customcount + \'][key]" value="" style="min-width: 100px;"/>\';
-                            			tr.appendChild(td);
-                            	    	var td = document.createElement(\'td\');
-                            	    	td.innerHTML=\'<input type="text" class="form-control" name="custom[\' + customcount + \'][value]" value="" style="min-width: 100px;"/>\';
-                            			tr.appendChild(td);
-                            		custom.appendChild(tr);
-                        
-                                }
-                            </script>
                     <main class="main-content bgc-grey-100">
                    <div id="mainContent">
                       <div class="row gap-20 masonry pos-r"  id="editform">
@@ -1266,7 +1265,7 @@ class Admin{
                                <div class="mT-30">
                                   <form action="./index.php?p=Admin&a=Template" method="POST">
                                      <div class="form-group row">
-                                            <label for="inputEmail3" class="col-sm-2 col-form-label">模板自定义设置 <button class="btn btn-sm btn-primary" onclick="AddCustomInput()" type="button">新增设置</button></label>
+                                            <label for="inputEmail3" class="col-sm-2 col-form-label">模板自定义设置</label>
                                             <div class="table-responsive col-sm-10">
                                                 <table class="table">
                                                     <thead>
@@ -1276,13 +1275,15 @@ class Admin{
                                                         </tr>
                                                     </thead>
                                                     <tbody id="customtable">';
-                                                    foreach($custom as $k => $v){
-                                                        echo '
-                                                            <tr>
-                                                               <td><input class="form-control" name="custom['.$k.'][key]" value="'.$v['key'].'"></td>
-                                                               <td><input class="form-control" name="custom['.$k.'][value]" value="'.$v['value'].'"></td>
-                                                            </tr>
-                                                        ';
+                                                    $i = 1;
+                                                    foreach($keys as $k => $v){
+                                                         echo '
+                                                             <tr>
+                                                                <td><input class="form-control" name="custom['.$i.'][key]" value="'.$k.'" ></td>
+                                                                <td><input class="form-control" name="custom['.$i.'][value]" value="'.$custom[$k].'" placeholder="'.$v.'"></td>
+                                                             </tr>
+                                                         ';
+                                                         $i++;
                                                     }
                                                     echo '
                                                     </tbody>
@@ -1704,6 +1705,9 @@ class Admin{
                             $password = md5(md5($params['password']));
                             $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_user` sET `password`='{$password}' WHERE `id`='{$user['id']}'");
                         }
+                        if(empty($params['priceset'])){
+                           $params['priceset'] = 0;
+                        }
                         $result = $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_user` SET `username`='{$params['username']}', `money`='{$params['money']}', `priceset`='{$params['priceset']}', `status`='{$params['status']}' WHERE `id`='{$user['id']}'");
                         if($result == 0){
                             $this->getSystem()->getLogger()->addSystemLog('数据库修改用户错误：'.print_r($this->getSystem()->getDatabase()->error()));
@@ -1804,7 +1808,10 @@ class Admin{
                             $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_priceset` SET `default`='0' WHERE `default`='1'");
                             $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_priceset` SET `default`='1' WHERE `id`='{$priceset['id']}'");
                         }
-                        $result = $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_priceset` SET `name`='{$params['name']}', `description`='{$params['description']}', `money`='{$params['money']}', `status`='{$params['status']}' WHERE `id`='{$priceset['id']}'");
+                        if(empty($params['weight'])){
+                           $params['weight'] = 0;
+                        }
+                        $result = $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_priceset` SET `name`='{$params['name']}', `description`='{$params['description']}', `weight`='{$params['weight']}', `money`='{$params['money']}', `status`='{$params['status']}' WHERE `id`='{$priceset['id']}'");
                         if($result == 0){
                             $this->getSystem()->getLogger()->addSystemLog('数据库修改价格组错误：'.print_r($this->getSystem()->getDatabase()->error()));
                         }
@@ -2357,8 +2364,17 @@ class Admin{
                         }
                         $params['customoption'] = json_encode($customoption, JSON_UNESCAPED_UNICODE);
                         $params['configoption'] = json_encode($params['configoption'], JSON_UNESCAPED_UNICODE);
+                        if(empty($params['server'])){
+                           $params['server'] = 0;
+                        }
+                        if(empty($params['group'])){
+                           $params['group'] = 0;
+                        }
+                        if(empty($params['weight'])){
+                           $params['weight'] = 0;
+                        }
                         $result = $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_product` SET `name`='{$params['name']}',`description`='{$params['description']}',`weight`='{$params['weight']}',`period`='{$params['period']}',`group`='{$params['group']}',`configoption`='{$params['configoption']}',`customoption`='{$params['customoption']}',`server`='{$params['server']}',`hidden`='{$params['hidden']}',`status`='{$params['status']}' WHERE `id`='{$product['id']}'");
-                        if($result == 0){
+                        if($result == false){
                             $this->getSystem()->getLogger()->addSystemLog('数据库修改产品错误：'.print_r($this->getSystem()->getDatabase()->error()));
                         }
                         @header("Location: ./index.php?p=Admin&a=Product&pid=".$product['id']);

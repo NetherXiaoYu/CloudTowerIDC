@@ -9,9 +9,9 @@ class OrderCreateEvent extends Events{
     
     public function __construct(
         public User $User,
-        public int $OrderId,
+        public $OrderId,
         public string $Description,
-        public int|float $Money,
+        public float $Money,
         public string $Action
     ){}
     
