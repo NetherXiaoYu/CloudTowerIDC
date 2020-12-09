@@ -1081,128 +1081,132 @@ class Admin{
             }else{
                 $config = $this->getSystem()->getConfigAll();
                 $this->Header();
-                switch ($this->getSystem()->getGetParams()['set']) {
-                    case 'Seo':
-                        echo '
-                        <main class="main-content bgc-grey-100">
-                   <div id="mainContent">
-                      <div class="row gap-20 masonry pos-r">
-                         <div class="masonry-sizer col-md-6"></div>
-                         <div class="masonry-item col-md-12">
-                            <div class="bgc-white p-20 bd">
-                               <h6 class="c-grey-900">SEO设置</h6>
-                               <div class="mT-30">
-                                  <form action="./index.php?p=Admin&a=Setting" method="POST">
-                                     <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-2 col-form-label">SEO标题</label>
-                                        <div class="col-sm-10"><input type="text" class="form-control" id="" placeholder="SEO标题" name="seo_title" value="'.$config['seo_title'].'"></div>
-                                     </div>
-                                     <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-2 col-form-label">SEO副标题</label>
-                                        <div class="col-sm-10"><input type="text" class="form-control" id="" placeholder="SEO副标题" name="seo_subtitle" value="'.$config['seo_subtitle'].'"></div>
-                                     </div>
-                                     <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-2 col-form-label">SEO介绍</label>
-                                        <div class="col-sm-10"><textarea name="seo_description" rows="4" class="form-control" placeholder="SEO介绍">'.$config['seo_description'].'</textarea></div>
-                                     </div>
-                                     <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-2 col-form-label">SEO关键词</label>
-                                        <div class="col-sm-10"><input type="text" class="form-control" id="" placeholder="SEO关键词" name="seo_keywords" value="'.$config['seo_keywords'].'"></div>
-                                     </div>
-                                     <div class="form-group row">
-                                        <div class="col-sm-10"><button type="submit" class="btn btn-primary">修改</button></div>
-                                     </div>
-                                  </form>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                   </div>
-                </main>';
-                        break;
-                    case 'Template':
-                        $Templates = $this->get_dir(BASE_ROOT.'/Templates/');
-                        echo '
-                        <main class="main-content bgc-grey-100">
-                   <div id="mainContent">
-                      <div class="row gap-20 masonry pos-r">
-                         <div class="masonry-sizer col-md-6"></div>
-                         <div class="masonry-item col-md-12">
-                            <div class="bgc-white p-20 bd">
-                               <h6 class="c-grey-900">模板设置</h6>
-                               <div class="mT-30">
-                                  <form action="./index.php?p=Admin&a=Setting" method="POST">
-                                     <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-2 col-form-label">默认模板</label>
-                                        <div class="col-sm-10"><select class="form-control" name="template">';
-                                            foreach($Templates as $k => $v){
-                                      			if($config['template'] == $v){
-                                      				$selected = "selected";
-                                      			}else{
-                                      				$selected = "";
-                                      			}
-                                      			echo '<option value="'.$v.'" '.$selected.'>'.$k.'</option>';
-                                      		}
-                                            echo '
-                                        </select></div>
-                                     </div>
-                                     <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-2 col-form-label">手机模板</label>
-                                        <div class="col-sm-10"><select class="form-control" name="template_mobile">';
-                                            foreach($Templates as $k => $v){
-                                      			if($config['template_mobile'] == $v){
-                                      				$selected = "selected";
-                                      			}else{
-                                      				$selected = "";
-                                      			}
-                                      			echo '<option value="'.$v.'" '.$selected.'>'.$k.'</option>';
-                                      		}
-                                            echo '
-                                        </select></div>
-                                     </div>
-                                     <div class="form-group row">
-                                        <div class="col-sm-10"><button type="submit" class="btn btn-primary">修改</button></div>
-                                     </div>
-                                  </form>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                   </div>
-                </main>';
-                        break;
-                    case 'Cron':
-                        echo '
-                        <main class="main-content bgc-grey-100">
-                   <div id="mainContent">
-                      <div class="row gap-20 masonry pos-r">
-                         <div class="masonry-sizer col-md-6"></div>
-                         <div class="masonry-item col-md-12">
-                            <div class="bgc-white p-20 bd">
-                               <h6 class="c-grey-900">CRON设置[<a href="./index.php?p=Cron&a=Service">服务Cron</a>][<a href="./index.php?p=Cron&a=Orders">订单Cron</a>]</h6>
-                               <div class="mT-30">
-                                  <form action="./index.php?p=Admin&a=Setting" method="POST">
-                                     <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-2 col-form-label">距离到期（多少）天暂停服务</label>
-                                        <div class="col-sm-10"><input type="text" class="form-control" id="inputEmail3" placeholder="距离到期（多少）天暂停服务" name="cron_stopday" value="'.$config['cron_stopday'].'"></div>
-                                     </div>
-                                     <div class="form-group row">
-                                        <label for="inputEmail3" class="col-sm-2 col-form-label">到期后（多少）天删除服务</label>
-                                        <div class="col-sm-10"><input type="text" class="form-control" id="inputEmail3" placeholder="到期后（多少）天删除服务" name="cron_deleteday" value="'.$config['cron_deleteday'].'"></div>
-                                     </div>
-                                     <div class="form-group row">
-                                        <div class="col-sm-10"><button type="submit" class="btn btn-primary">修改</button></div>
-                                     </div>
-                                  </form>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                   </div>
-                </main>';
-                        break;
-                    default:
-                        break;
+                if(!empty($this->getSystem()->getGetParams()['set'])){
+                  switch ($this->getSystem()->getGetParams()['set']) {
+                     case 'Seo':
+                         echo '
+                         <main class="main-content bgc-grey-100">
+                    <div id="mainContent">
+                       <div class="row gap-20 masonry pos-r">
+                          <div class="masonry-sizer col-md-6"></div>
+                          <div class="masonry-item col-md-12">
+                             <div class="bgc-white p-20 bd">
+                                <h6 class="c-grey-900">SEO设置</h6>
+                                <div class="mT-30">
+                                   <form action="./index.php?p=Admin&a=Setting" method="POST">
+                                      <div class="form-group row">
+                                         <label for="inputEmail3" class="col-sm-2 col-form-label">SEO标题</label>
+                                         <div class="col-sm-10"><input type="text" class="form-control" id="" placeholder="SEO标题" name="seo_title" value="'.$config['seo_title'].'"></div>
+                                      </div>
+                                      <div class="form-group row">
+                                         <label for="inputEmail3" class="col-sm-2 col-form-label">SEO副标题</label>
+                                         <div class="col-sm-10"><input type="text" class="form-control" id="" placeholder="SEO副标题" name="seo_subtitle" value="'.$config['seo_subtitle'].'"></div>
+                                      </div>
+                                      <div class="form-group row">
+                                         <label for="inputEmail3" class="col-sm-2 col-form-label">SEO介绍</label>
+                                         <div class="col-sm-10"><textarea name="seo_description" rows="4" class="form-control" placeholder="SEO介绍">'.$config['seo_description'].'</textarea></div>
+                                      </div>
+                                      <div class="form-group row">
+                                         <label for="inputEmail3" class="col-sm-2 col-form-label">SEO关键词</label>
+                                         <div class="col-sm-10"><input type="text" class="form-control" id="" placeholder="SEO关键词" name="seo_keywords" value="'.$config['seo_keywords'].'"></div>
+                                      </div>
+                                      <div class="form-group row">
+                                         <div class="col-sm-10"><button type="submit" class="btn btn-primary">修改</button></div>
+                                      </div>
+                                   </form>
+                                </div>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+                 </main>';
+                         break;
+                     case 'Template':
+                         $Templates = $this->get_dir(BASE_ROOT.'/Templates/');
+                         echo '
+                         <main class="main-content bgc-grey-100">
+                    <div id="mainContent">
+                       <div class="row gap-20 masonry pos-r">
+                          <div class="masonry-sizer col-md-6"></div>
+                          <div class="masonry-item col-md-12">
+                             <div class="bgc-white p-20 bd">
+                                <h6 class="c-grey-900">模板设置</h6>
+                                <div class="mT-30">
+                                   <form action="./index.php?p=Admin&a=Setting" method="POST">
+                                      <div class="form-group row">
+                                         <label for="inputEmail3" class="col-sm-2 col-form-label">默认模板</label>
+                                         <div class="col-sm-10"><select class="form-control" name="template">';
+                                             foreach($Templates as $k => $v){
+                                                if($config['template'] == $v){
+                                                   $selected = "selected";
+                                                }else{
+                                                   $selected = "";
+                                                }
+                                                echo '<option value="'.$v.'" '.$selected.'>'.$k.'</option>';
+                                             }
+                                             echo '
+                                         </select></div>
+                                      </div>
+                                      <div class="form-group row">
+                                         <label for="inputEmail3" class="col-sm-2 col-form-label">手机模板</label>
+                                         <div class="col-sm-10"><select class="form-control" name="template_mobile">';
+                                             foreach($Templates as $k => $v){
+                                                if($config['template_mobile'] == $v){
+                                                   $selected = "selected";
+                                                }else{
+                                                   $selected = "";
+                                                }
+                                                echo '<option value="'.$v.'" '.$selected.'>'.$k.'</option>';
+                                             }
+                                             echo '
+                                         </select></div>
+                                      </div>
+                                      <div class="form-group row">
+                                         <div class="col-sm-10"><button type="submit" class="btn btn-primary">修改</button></div>
+                                      </div>
+                                   </form>
+                                </div>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+                 </main>';
+                         break;
+                     case 'Cron':
+                         echo '
+                         <main class="main-content bgc-grey-100">
+                    <div id="mainContent">
+                       <div class="row gap-20 masonry pos-r">
+                          <div class="masonry-sizer col-md-6"></div>
+                          <div class="masonry-item col-md-12">
+                             <div class="bgc-white p-20 bd">
+                                <h6 class="c-grey-900">CRON设置[<a href="./index.php?p=Cron&a=Service">服务Cron</a>][<a href="./index.php?p=Cron&a=Orders">订单Cron</a>]</h6>
+                                <div class="mT-30">
+                                   <form action="./index.php?p=Admin&a=Setting" method="POST">
+                                      <div class="form-group row">
+                                         <label for="inputEmail3" class="col-sm-2 col-form-label">距离到期（多少）天暂停服务</label>
+                                         <div class="col-sm-10"><input type="text" class="form-control" id="inputEmail3" placeholder="距离到期（多少）天暂停服务" name="cron_stopday" value="'.$config['cron_stopday'].'"></div>
+                                      </div>
+                                      <div class="form-group row">
+                                         <label for="inputEmail3" class="col-sm-2 col-form-label">到期后（多少）天删除服务</label>
+                                         <div class="col-sm-10"><input type="text" class="form-control" id="inputEmail3" placeholder="到期后（多少）天删除服务" name="cron_deleteday" value="'.$config['cron_deleteday'].'"></div>
+                                      </div>
+                                      <div class="form-group row">
+                                         <div class="col-sm-10"><button type="submit" class="btn btn-primary">修改</button></div>
+                                      </div>
+                                   </form>
+                                </div>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+                 </main>';
+                         break;
+                     default:
+                         break;
+                 }
+                }else{
+                   @header("Location: ./index.php?p=Admin&a=Index");
                 }
                 $this->Footer();
             }
@@ -1418,7 +1422,7 @@ class Admin{
                     exit;
                 }else{
                     $group = $this->getSystem()->getDatabase()->get_row("SELECT * FROM `ytidc_group` WHERE `id`='{$this->getSystem()->getGetParams()['gid']}'");
-                    if($this->getSystem()->getGetParams()['act'] == 'del'){
+                    if(!empty($this->getSystem()->getGetParams()['act']) && $this->getSystem()->getGetParams()['act'] == 'del'){
                         if(!$this->CheckPermission('group_delete')){
                             $this->goIndex();
                         }
@@ -1501,7 +1505,7 @@ class Admin{
                     exit;
                 }else{
                     $notice = $this->getSystem()->getDatabase()->get_row("SELECT * FROM `ytidc_notice` WHERE `id`='{$this->getSystem()->getGetParams()['nid']}'");
-                    if($this->getSystem()->getGetParams()['act'] == 'del'){
+                    if(!empty($this->getSystem()->getGetParams()['act']) && $this->getSystem()->getGetParams()['act'] == 'del'){
                         if(!$this->CheckPermission('notice_delete')){
                             $this->goIndex();
                         }
@@ -1581,7 +1585,7 @@ class Admin{
                     exit;
                 }else{
                     $service = $this->getSystem()->getDatabase()->get_row("SELECT * FROM `ytidc_service` WHERE `id`='{$this->getSystem()->getGetParams()['sid']}'");
-                    if($this->getSystem()->getGetParams()['act'] == 'del'){
+                    if(!empty($this->getSystem()->getGetParams()['act']) && $this->getSystem()->getGetParams()['act'] == 'del'){
                         if(!$this->CheckPermission('service_delete')){
                             $this->goIndex();
                         }
@@ -1691,7 +1695,7 @@ class Admin{
                     exit;
                 }else{
                     $user = $this->getSystem()->getDatabase()->get_row("SELECT * FROM `ytidc_user` WHERE `id`='{$this->getSystem()->getGetParams()['uid']}'");
-                    if($this->getSystem()->getGetParams()['act'] == 'del'){
+                    if(!empty($this->getSystem()->getGetParams()['act']) && $this->getSystem()->getGetParams()['act'] == 'del'){
                         if(!$this->CheckPermission('user_delete')){
                             $this->goIndex();
                         }
@@ -1794,7 +1798,7 @@ class Admin{
                     exit;
                 }else{
                     $priceset = $this->getSystem()->getDatabase()->get_row("SELECT * FROM `ytidc_priceset` WHERE `id`='{$this->getSystem()->getGetParams()['pid']}'");
-                    if($this->getSystem()->getGetParams()['act'] == 'del'){
+                    if(!empty($this->getSystem()->getGetParams()['act']) && $this->getSystem()->getGetParams()['act'] == 'del'){
                         if(!$this->CheckPermission('priceset_delete')){
                             $this->goIndex();
                         }
@@ -1966,7 +1970,7 @@ class Admin{
                     exit;
                 }else{
                     $workorder = $this->getSystem()->getDatabase()->get_row("SELECT * FROM `ytidc_workorder` WHERE `id`='{$this->getSystem()->getGetParams()['wid']}'");
-                    if($this->getSystem()->getGetParams()['act'] == 'del'){
+                    if(!empty($this->getSystem()->getGetParams()['act']) && $this->getSystem()->getGetParams()['act'] == 'del'){
                         if(!$this->CheckPermission('workorder_delete')){
                             $this->goIndex();
                         }
@@ -2060,7 +2064,7 @@ class Admin{
                     exit;
                 }else{
                     $admin = $this->getSystem()->getDatabase()->get_row("SELECT * FROM `ytidc_admin` WHERE `id`='{$this->getSystem()->getGetParams()['aid']}'");
-                    if($this->getSystem()->getGetParams()['act'] == 'del'){
+                    if(!empty($this->getSystem()->getGetParams()['act']) && $this->getSystem()->getGetParams()['act'] == 'del'){
                         if(!$this->CheckPermission('admin_delete')){
                             $this->goIndex();
                         }
@@ -2167,7 +2171,7 @@ class Admin{
                     exit;
                 }else{
                     $server = $this->getSystem()->getDatabase()->get_row("SELECT * FROM `ytidc_server` WHERE `id`='{$this->getSystem()->getGetParams()['sid']}'");
-                    if($this->getSystem()->getGetParams()['act'] == 'del'){
+                    if(!empty($this->getSystem()->getGetParams()['act']) && $this->getSystem()->getGetParams()['act'] == 'del'){
                         if(!$this->CheckPermission('server_delete')){
                             $this->goIndex();
                         }
@@ -2341,7 +2345,7 @@ class Admin{
                     exit;
                 }else{
                     $product = $this->getSystem()->getDatabase()->get_row("SELECT * FROM `ytidc_product` WHERE `id`='{$this->getSystem()->getGetParams()['pid']}'");
-                    if($this->getSystem()->getGetParams()['act'] == 'del'){
+                    if(!empty($this->getSystem()->getGetParams()['act']) && $this->getSystem()->getGetParams()['act'] == 'del'){
                         if(!$this->CheckPermission('product_delete')){
                             $this->goIndex();
                         }
@@ -2657,7 +2661,7 @@ class Admin{
                     exit;
                 }else{
                     $gateway = $this->getSystem()->getDatabase()->get_row("SELECT * FROM `ytidc_gateway` WHERE `id`='{$this->getSystem()->getGetParams()['gid']}'");
-                    if($this->getSystem()->getGetParams()['act'] == 'del'){
+                    if(!empty($this->getSystem()->getGetParams()['act']) && $this->getSystem()->getGetParams()['act'] == 'del'){
                         if(!$this->CheckPermission('gateway_delete')){
                             $this->goIndex();
                         }

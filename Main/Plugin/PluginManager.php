@@ -37,7 +37,7 @@ class PluginManager{
             }
             for($i = 100; $i >= 1; $i--){
                 $priority = $i;
-                if(!is_null($pluginsconfig[$priority])){
+                if(!empty($pluginsconfig[$priority])){
                     if(is_array($pluginsconfig[$priority])){
                         foreach($pluginsconfig[$priority] as $k => $v){
                             $mainClass = $v['config']['main'];

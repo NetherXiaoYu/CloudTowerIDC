@@ -152,16 +152,20 @@ class Main{
     }
     
     public function checkUserLogin(){
-        $Lastip = $_SESSION['ytidc_lastip'];
-        $User = new User($_SESSION['ytidc_user'], $this);
-        if($User->isExisted() === false){
-            return false;
-        }else{
-            if($this->getClientIp() == $Lastip && $User->getLastIp() == $this->getClientIp()){
-                return true;
-            }else{
+        if(!empty($_SESSION['ytidc_lastip']) && !empty($_SESSION['ytidc_lastip'])){
+            $Lastip = $_SESSION['ytidc_lastip'];
+            $User = new User($_SESSION['ytidc_user'], $this);
+            if($User->isExisted() === false){
                 return false;
+            }else{
+                if($this->getClientIp() == $Lastip && $User->getLastIp() == $this->getClientIp()){
+                    return true;
+                }else{
+                    return false;
+                }
             }
+        }else{
+            return false;
         }
     }
     
