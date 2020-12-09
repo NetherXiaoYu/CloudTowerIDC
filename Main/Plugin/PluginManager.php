@@ -23,6 +23,7 @@ class PluginManager{
     
     public function loadPluginFiles(){
         if($handle = opendir($this->path)){
+            $pluginsconfig = array();
             while(false !== ($entry = readdir($handle))){
                 if($entry != '.' && $entry != '..' && is_dir($this->path .'/'. $entry)){
                     if(file_exists($this->path.'/'. $entry.'/plugin.json')){
@@ -36,42 +37,44 @@ class PluginManager{
             }
             for($i = 100; $i >= 1; $i--){
                 $priority = $i;
-                if(is_array($pluginsconfig[$priority])){
-                    foreach($pluginsconfig[$priority] as $k => $v){
-                        $mainClass = $v['config']['main'];
-                        $pluginPath = str_replace('\\', '/', $mainClass);
-                        $mainPath = $this->path . '/' . $v['entry'] . '/src/' . $pluginPath .'.php';
-                        if(!file_exists($mainPath) || !is_file($mainPath)){
-                            $this->System->getLogger()->newCrashDump('无法加载插件', 'Cannot load plugins '.$v['config']['name'].' due to the incorrect or non existed path of the plugin main file, main file should be '.$mainPath);
-                            exit('CloudTowerIDC:加载插件出错'.$mainPath);
-                        }else{
-                            require_once($mainPath);
-                            $this->PluginClass[$v['config']['name']] = $v['config']['main'];
-                            if(!empty($v['config']['page'])){
-                                $PagePath = str_replace('\\', '/', $v['config']['page']);
-                                $PagePath = $this->path . '/' . $v['entry'] . '/src/' . $PagePath . '.php';
-                                if(!file_exists($PagePath) || !is_file($PagePath)){
-                                    $this->System->getLogger()->newCrashDump('无法加载插件', 'Cannot load plugins '.$v['config']['name'].'\'s page due to the incorrect or non existed path of the plugin page file, main file should be '.$PagePath);
-                                    exit('CloudTowerIDC:加载插件出错'.$PagePath);
-                                }else{
-                                    require_once($PagePath);
-                                    $this->PluginPage[$v['config']['name']] = $v['config']['page'];
+                if(!is_null($pluginsconfig[$priority])){
+                    if(is_array($pluginsconfig[$priority])){
+                        foreach($pluginsconfig[$priority] as $k => $v){
+                            $mainClass = $v['config']['main'];
+                            $pluginPath = str_replace('\\', '/', $mainClass);
+                            $mainPath = $this->path . '/' . $v['entry'] . '/src/' . $pluginPath .'.php';
+                            if(!file_exists($mainPath) || !is_file($mainPath)){
+                                $this->System->getLogger()->newCrashDump('无法加载插件', 'Cannot load plugins '.$v['config']['name'].' due to the incorrect or non existed path of the plugin main file, main file should be '.$mainPath);
+                                exit('CloudTowerIDC:加载插件出错'.$mainPath);
+                            }else{
+                                require_once($mainPath);
+                                $this->PluginClass[$v['config']['name']] = $v['config']['main'];
+                                if(!empty($v['config']['page'])){
+                                    $PagePath = str_replace('\\', '/', $v['config']['page']);
+                                    $PagePath = $this->path . '/' . $v['entry'] . '/src/' . $PagePath . '.php';
+                                    if(!file_exists($PagePath) || !is_file($PagePath)){
+                                        $this->System->getLogger()->newCrashDump('无法加载插件', 'Cannot load plugins '.$v['config']['name'].'\'s page due to the incorrect or non existed path of the plugin page file, main file should be '.$PagePath);
+                                        exit('CloudTowerIDC:加载插件出错'.$PagePath);
+                                    }else{
+                                        require_once($PagePath);
+                                        $this->PluginPage[$v['config']['name']] = $v['config']['page'];
+                                    }
                                 }
+                                if(empty($v['config']['type'])){
+                                    $this->System->getLogger()->newCrashDump('无法加载插件', 'Cannot load plugins '.$v['config']['name'].' due to the empty type set in the plugin config file');
+                                    exit('CloudTowerIDC:加载插件出错');
+                                }
+                                if(!in_array($v['config']['type'], array('FUNCTION','SERVER','PAYMENT'))){
+                                    $this->System->getLogger()->newCrashDump('无法加载插件', 'Cannot load plugins '.$v['config']['name'].' due to the unknown type set in the plugin config file');
+                                    exit('CloudTowerIDC:加载插件出错');
+                                }
+                                if($v['config']['api'] < $this->getApiVersion()){
+                                    $this->System->getLogger()->newCrashDump('无法加载插件', 'Cannot load plugins '.$v['config']['name'].' due to the unsupoorted api version.');
+                                    exit('CloudTowerIDC:加载插件出错');
+                                }
+                                $this->PluginType[$v['config']['type']][] = $v['config']['name'];
+                                $this->PluginPath[$v['config']['name']] = $this->path . '/'. $v['entry'];
                             }
-                            if(empty($v['config']['type'])){
-                                $this->System->getLogger()->newCrashDump('无法加载插件', 'Cannot load plugins '.$v['config']['name'].' due to the empty type set in the plugin config file');
-                                exit('CloudTowerIDC:加载插件出错');
-                            }
-                            if(!in_array($v['config']['type'], array('FUNCTION','SERVER','PAYMENT'))){
-                                $this->System->getLogger()->newCrashDump('无法加载插件', 'Cannot load plugins '.$v['config']['name'].' due to the unknown type set in the plugin config file');
-                                exit('CloudTowerIDC:加载插件出错');
-                            }
-                            if($v['config']['api'] < $this->getApiVersion()){
-                                $this->System->getLogger()->newCrashDump('无法加载插件', 'Cannot load plugins '.$v['config']['name'].' due to the unsupoorted api version.');
-                                exit('CloudTowerIDC:加载插件出错');
-                            }
-                            $this->PluginType[$v['config']['type']][] = $v['config']['name'];
-                            $this->PluginPath[$v['config']['name']] = $this->path . '/'. $v['entry'];
                         }
                     }
                 }
