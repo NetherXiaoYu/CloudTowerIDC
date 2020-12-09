@@ -6,7 +6,7 @@ session_start();
 define('BASE_ROOT',str_replace('\\','/',realpath(dirname(__FILE__).'/'))."/");
 
 require_once(BASE_ROOT.'config.php');//加载数据库配置
-if(DEBUG_MODE === true){
+if(DEBUG_MODE === false){
     error_reporting(0);
 }
 require_once(BASE_ROOT.'Main/Logger.php');//加载文档配置
