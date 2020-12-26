@@ -13,6 +13,14 @@
 3. 填写`config.php`文件里的数据库信息
 4. 安装完成
 
+## 更新：3.0.3
+1. 新增自动安装向导
+2. 更新后台可查看Log日志文件
+3. 更新后台可查看功能插件列表
+4. 更新后台可修改功能插件config.json文件
+5. `PluginManager`类新增`getPluginConfig`于`setPluginConfig`功能
+6. 修复部分PHP8.0报错提示的内容
+
 ## 联系我们
 - 邮箱： 2119566807@qq.com
 - QQ： 2119566807
