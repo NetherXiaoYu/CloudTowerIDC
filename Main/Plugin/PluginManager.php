@@ -68,7 +68,7 @@ class PluginManager{
                                     $this->System->getLogger()->newCrashDump('无法加载插件', 'Cannot load plugins '.$v['config']['name'].' due to the unknown type set in the plugin config file');
                                     exit('CloudTowerIDC:加载插件出错');
                                 }
-                                if($v['config']['api'] < $this->getApiVersion()){
+                                if($v['config']['api'] < $this->getSupportedApiVersion()){
                                     $this->System->getLogger()->newCrashDump('无法加载插件', 'Cannot load plugins '.$v['config']['name'].' due to the unsupoorted api version.');
                                     exit('CloudTowerIDC:加载插件出错');
                                 }
@@ -109,7 +109,7 @@ class PluginManager{
                 exit('CloudTowerIDC:加载插件出错');
             }
         }
-        return $plugins;
+        return true;
     }
     
     public function loadEvent($name, $event){
@@ -142,13 +142,25 @@ class PluginManager{
     public function getPlugins($type = "all"){
         switch ($type) {
             case 'SERVER':
-                return $this->PluginType['SERVER'];
+                if(!empty($this->PluginType['SERVER'])){
+                    return $this->PluginType['SERVER'];
+                }else{
+                    return false;
+                }
             break;
             case 'PAYMENT':
-                return $this->PluginType['PAYMENT'];
+                if(!empty($this->PluginType['PAYMENT'])){
+                    return $this->PluginType['PAYMENT'];
+                }else{
+                    return false;
+                }
             break;
             case 'FUNCTION':
-                return $this->PluginType['FUNCTION'];
+                if(!empty($this->PluginType['FUNCTION'])){
+                    return $this->PluginType['FUNCTION'];
+                }else{
+                    return false;
+                }
             break;
             default:
                 foreach($this->Plugins as $k => $v){
@@ -196,8 +208,35 @@ class PluginManager{
         return $this->PluginPath[$plugin];
     }
 
-    public function getApiVersion(){
+    public function getSupportedApiVersion(){
         return '3.0.2';
+    }
+
+    public function getApiVersion(){
+        return '3.0.3';
+    }
+    
+    public function getPluginConfig($plugin){
+        if(file_exists(BASE_ROOT.'PluginData/'.$plugin.'/config.json')){
+            $config = json_decode(file_get_contents(BASE_ROOT.'/PluginData/'.$plugin.'/config.json'), true);
+            return $config;
+        }else{
+            return false;
+        }
+    }
+    
+    public function setPluginConfig($plugin, $config){
+        if(file_exists(BASE_ROOT.'/PluginData/'.$plugin.'/config.json')){
+            if(is_array($config)){
+                $config = json_encode($config, JSON_UNESCAPED_UNICODE);
+                file_put_contents(BASE_ROOT.'/PluginData/'.$plugin.'/config.json', $config);
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
     }
 
 }

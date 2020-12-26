@@ -26,16 +26,20 @@ class Admin{
     }
     
     public function checkLogin(){
-        $Lastip = $_SESSION['ctadmin_ip'];
-        $this->Admin = new A($_SESSION['ctadmin_user'], $this);
-        if($this->Admin->isExisted() === false){
-            return false;
-        }else{
-            if($this->getSystem()->getClientIp() == $Lastip && $this->Admin->getLastIp() == $this->getSystem()->getClientIp()){
-                return true;
-            }else{
+        if(!empty($_SESSION['ctadmin_ip']) && !empty($_SESSION['ctadmin_user'])){
+            $Lastip = $_SESSION['ctadmin_ip'];
+            $this->Admin = new A($_SESSION['ctadmin_user'], $this);
+            if($this->Admin->isExisted() === false){
                 return false;
+            }else{
+                if($this->getSystem()->getClientIp() == $Lastip && $this->Admin->getLastIp() == $this->getSystem()->getClientIp()){
+                    return true;
+                }else{
+                    return false;
+                }
             }
+        }else{
+            return false;
         }
     }
     
@@ -53,7 +57,7 @@ class Admin{
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
-      <title>管理中心 - 云塔IDC系统v3.0.1</title>
+      <title>管理中心 - 云塔IDC系统v3.0.3</title>
       <style>#loader{transition:all .3s ease-in-out;opacity:1;visibility:visible;position:fixed;height:100vh;width:100%;background:#fff;z-index:90000}#loader.fadeOut{opacity:0;visibility:hidden}.spinner{width:40px;height:40px;position:absolute;top:calc(50% - 20px);left:calc(50% - 20px);background-color:#333;border-radius:100%;-webkit-animation:sk-scaleout 1s infinite ease-in-out;animation:sk-scaleout 1s infinite ease-in-out}@-webkit-keyframes sk-scaleout{0%{-webkit-transform:scale(0)}100%{-webkit-transform:scale(1);opacity:0}}@keyframes sk-scaleout{0%{-webkit-transform:scale(0);transform:scale(0)}100%{-webkit-transform:scale(1);transform:scale(1);opacity:0}}</style>
       <link href="/Main/Pages/Admin/style.css" rel="stylesheet">
    </head>
@@ -111,6 +115,7 @@ class Admin{
                      </ul>
                   </li>
                   <li class="nav-item"><a class="sidebar-link" href="./index.php?p=Admin&a=Workorders"><span class="icon-holder"><i class="c-gray-500 ti-pencil-alt"></i> </span><span class="title">工单管理</span></a></li>
+                  <li class="nav-item"><a class="sidebar-link" href="./index.php?p=Admin&a=Plugins"><span class="icon-holder"><i class="c-pink-500 ti-widget"></i> </span><span class="title">插件管理</span></a></li>
                   <li class="nav-item"><a class="sidebar-link" href="./index.php?p=Admin&a=Admins"><span class="icon-holder"><i class="c-green-500 ti-headphone-alt"></i> </span><span class="title">管理员管理</span></a></li>
                   <li class="nav-item dropdown">
                      <a class="dropdown-toggle" href="javascript:void(0);"><span class="icon-holder"><i class="c-red-500 ti-settings"></i> </span><span class="title">网站设置</span> <span class="arrow"><i class="ti-angle-right"></i></span></a>
@@ -120,6 +125,7 @@ class Admin{
                         <li><a class="sidebar-link" href="./index.php?p=Admin&a=Setting&set=Template">模板管理</a></li>
                         <li><a class="sidebar-link" href="./index.php?p=Admin&a=Template">模板自定义</a></li>
                         <li><a class="sidebar-link" href="./index.php?p=Admin&a=Setting&set=Cron">Cron管理</a></li>
+                        <li><a class="sidebar-link" href="./index.php?p=Admin&a=Log">查看日志</a></li>
                      </ul>
                   </li>
                </ul>
@@ -588,6 +594,7 @@ class Admin{
                                        <th>所属产品</th>
                                        <th>购买用户</th>
                                        <th>到期时间</th>
+                                       <th>状态</th>
                                        <th>操作</th>
                                     </tr>
                                  </thead>
@@ -598,6 +605,7 @@ class Admin{
                                        <th>所属产品</th>
                                        <th>购买用户</th>
                                        <th>到期时间</th>
+                                       <th>状态</th>
                                        <th>操作</th>
                                     </tr>
                                  </tfoot>
@@ -612,6 +620,7 @@ class Admin{
                                        <th>'.$product['name'].'</th>
                                        <th>'.$v['user'].'</th>
                                        <th>'.$v['enddate'].'</th>
+                                       <th>'.$v['status'].'</th>
                                        <th><a href="./index.php?p=Admin&a=Service&sid='.$v['id'].'" class="btn btn-sm btn-primary">编辑</a>';
                                        if($v['status'] == '待开通'){
                                            echo '<a href="./index.php?p=Admin&a=ReopenService&sid='.$v['id'].'" class="btn btn-sm btn-success">开通</a>';
@@ -1281,10 +1290,11 @@ class Admin{
                                                     <tbody id="customtable">';
                                                     $i = 1;
                                                     foreach($keys as $k => $v){
+                                                        $content = htmlspecialchars($custom[$k]);
                                                          echo '
                                                              <tr>
                                                                 <td><input class="form-control" name="custom['.$i.'][key]" value="'.$k.'" ></td>
-                                                                <td><input class="form-control" name="custom['.$i.'][value]" value="'.$custom[$k].'" placeholder="'.$v.'"></td>
+                                                                <td><input class="form-control" name="custom['.$i.'][value]" value="'.$content.'" placeholder="'.$v.'"></td>
                                                              </tr>
                                                          ';
                                                          $i++;
@@ -2088,7 +2098,7 @@ class Admin{
                         @header("Location: ./index.php?p=Admin&a=Admin&aid=".$admin['id']);
                         exit;
                     }else{
-                        $allpermissions = array('*'=>'全部权限', 'Index'=>'首页权限', 'group_check'=>'产品组检视', 'group_add'=>'产品组添加', 'group_edit'=>'产品组编辑', 'group_delete'=>'产品组删除', 'product_check'=>'产品检视', 'product_add'=>'产品添加', 'product_edit'=>'产品编辑', 'product_delete'=>'产品删除', 'server_check'=>'服务器检视', 'server_add'=>'服务器添加', 'server_edit'=>'服务器编辑', 'server_delete'=>'服务器删除', 'service_check'=>'在线服务检视', 'service_edit'=>'在线服务编辑', 'service_delete'=>'在线服务删除', 'user_check'=>'用户检视', 'user_edit'=>'用户编辑', 'user_delete'=>'用户删除', 'gateway_check'=>'支付渠道检视', 'gateway_add'=>'支付渠道添加', 'gateway_edit'=>'支付渠道编辑', 'gateway_delete'=>'支付渠道删除', 'priceset_check'=>'价格组检视', 'priceset_add'=>'价格组添加', 'priceset_edit'=>'价格组编辑', 'priceset_delete'=>'价格组删除', 'order_check'=>'订单检视', 'workorder_check'=>'工单检视','workorder_edit'=>'工单回复', 'workorder_delete'=>'工单删除', 'admin_check'=>'管理员检视', 'admin_add'=>'管理员添加', 'admin_edit'=>'管理员编辑', 'admin_delete'=>'管理员删除','web_setting'=>'网站设置', 'notice_add'=>'公告添加', 'workorder_check'=>'公告检视', 'notice_edit'=>'公告编辑', 'notice_delete'=>'公告删除');
+                        $allpermissions = array('*'=>'全部权限', 'Index'=>'首页权限', 'group_check'=>'产品组检视', 'group_add'=>'产品组添加', 'group_edit'=>'产品组编辑', 'group_delete'=>'产品组删除', 'product_check'=>'产品检视', 'product_add'=>'产品添加', 'product_edit'=>'产品编辑', 'product_delete'=>'产品删除', 'server_check'=>'服务器检视', 'server_add'=>'服务器添加', 'server_edit'=>'服务器编辑', 'server_delete'=>'服务器删除', 'service_check'=>'在线服务检视', 'service_edit'=>'在线服务编辑', 'service_delete'=>'在线服务删除', 'user_check'=>'用户检视', 'user_edit'=>'用户编辑', 'user_delete'=>'用户删除', 'gateway_check'=>'支付渠道检视', 'gateway_add'=>'支付渠道添加', 'gateway_edit'=>'支付渠道编辑', 'gateway_delete'=>'支付渠道删除', 'priceset_check'=>'价格组检视', 'priceset_add'=>'价格组添加', 'priceset_edit'=>'价格组编辑', 'priceset_delete'=>'价格组删除', 'order_check'=>'订单检视', 'workorder_check'=>'工单检视','workorder_edit'=>'工单回复', 'workorder_delete'=>'工单删除', 'admin_check'=>'管理员检视', 'admin_add'=>'管理员添加', 'admin_edit'=>'管理员编辑', 'admin_delete'=>'管理员删除','web_setting'=>'网站设置', 'notice_add'=>'公告添加', 'workorder_check'=>'公告检视', 'notice_edit'=>'公告编辑', 'notice_delete'=>'公告删除', 'web_checklog'=>'查看日志', 'plugin_check'=>'查看插件', 'plugin_manage'=>'编辑插件');
                         $permissions = json_decode($admin['permission'], true);
                         $this->Header();
                         echo '
@@ -2403,7 +2413,7 @@ class Admin{
                         }else{
                             $ProductConfigs = array();
                         }
-                        if(is_array($customcount)){
+                        if(is_array($customoption)){
                             $customcount = count($customoption);
                         }else{
                             $customcount = 0;
@@ -2596,6 +2606,9 @@ class Admin{
                                          </div>';
                                          if(is_array($ProductConfigs)){
                                              foreach($ProductConfigs as $k => $v){
+                                                 if(!isset($product['configoption'][$k]) || empty($product['configoption'][$k])){
+                                                     $product['configoption'][$k] = '';
+                                                 }
                                                  if($v['type'] == 'text' || $v['type'] == "number" || $v['type'] == "password"){
                                                      echo '
                                                  <div class="form-group row">
@@ -2771,6 +2784,176 @@ class Admin{
                        </div>
                     </main>';
                     $this->Footer();
+                    }
+                }
+            }
+        }
+    }
+    
+    public function Log(){
+        if($this->checkLogin() === false){
+            $this->goLogin();
+        }else{
+            if(!$this->CheckPermission('web_checklog')){
+                $this->goIndex();
+            }else{
+                $log = file_get_contents(BASE_ROOT."/logs/system.log");
+                $this->Header();
+                echo '
+            <main class="main-content bgc-grey-100">
+               <div id="mainContent">
+                  <div class="container-fluid">
+                     <h4 class="c-grey-900 mT-10 mB-30">网站日志</h4>
+                     <div class="row">
+                        <div class="col-md-12">
+                           <div class="bgc-white bd bdrs-3 p-20 mB-20">
+                              <h4 class="c-grey-900 mB-20">网站日志</h4>
+                              <textarea class="form-control" id="log" placeholder="系统日志" rows="22" disabled style="background-color: rgba(0,0,0,1);color: rgba(0,255,0,1)">'.$log.'</textarea>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </main>
+            ';
+                $this->Footer();
+            }
+        }
+    }
+    
+    public function Plugins(){
+        if($this->checkLogin() === false){
+            $this->goLogin();
+        }else{
+            if(!$this->CheckPermission('plugin_check')){
+                $this->goIndex();
+            }else{
+                $plugins = $this->getSystem()->getPluginManager()->getPlugins("FUNCTION");
+                $this->Header();
+                echo '
+            <main class="main-content bgc-grey-100">
+               <div id="mainContent">
+                  <div class="container-fluid">
+                     <h4 class="c-grey-900 mT-10 mB-30">插件列表</h4>
+                     <div class="row">
+                        <div class="col-md-12">
+                           <div class="bgc-white bd bdrs-3 p-20 mB-20">
+                              <h4 class="c-grey-900 mB-20">插件列表</h4>
+                              <table id="dataTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                 <thead>
+                                    <tr>
+                                       <th>插件名称</th>
+                                       <th>详细操作</th>
+                                    </tr>
+                                 </thead>
+                                 <tfoot>
+                                    <tr>
+                                       <th>插件名称</th>
+                                       <th>详细操作</th>
+                                    </tr>
+                                 </tfoot>
+                                 <tbody>
+                                 ';
+                                 if($plugins !== false){
+                                     foreach($plugins as $k => $v){
+                                         echo '
+                                        <tr>
+                                           <th>'.$v.'</th>
+                                           <th><a href="./index.php?p=Admin&a=Plugin&plugin='.$v.'" class="btn btn-small btn-xs btn-success">编辑</a></th>
+                                        </tr>';
+                                     }
+                                 }
+                                 echo '
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </main>
+            ';
+                $this->Footer();
+            }
+        }
+    }
+    
+    public function Plugin(){
+        if($this->checkLogin() === false){
+            $this->goLogin();
+        }else{
+            if(!$this->CheckPermission('plugin_manage')){
+                $this->goIndex();
+            }else{
+                $Gets = $this->getSystem()->getGetParams();
+                if(empty($Gets['plugin']) || !isset($Gets['plugin'])){
+                    @header("Location: ./index.php?p=Admin&a=Plugins");
+                    exit;
+                }else{
+                    if($this->getSystem()->getPluginManager()->PluginLoaded($Gets['plugin']) === false){
+                        @header("Location: ./index.php?p=Admin&a=Plugins");
+                        exit;
+                    }else{
+                        if(empty($this->getSystem()->getPostParams()) || empty($this->getSystem()->getPostParams()['config']) || !is_array($this->getSystem()->getPostParams()['config'])){
+                            $config = $this->getSystem()->getPluginManager()->getPluginConfig($Gets['plugin']);
+                            $this->Header();
+                            echo '
+                            <main class="main-content bgc-grey-100">
+                               <div id="mainContent">
+                                  <div class="container-fluid">
+                                     <h4 class="c-grey-900 mT-10 mB-30">设置插件</h4>
+                                     <div class="row">
+                                        <div class="col-md-12">
+                                           <div class="bgc-white bd bdrs-3 p-20 mB-20">
+                                              <h4 class="c-grey-900 mB-20">设置插件</h4>
+                                              <form action="#" method="POST">
+                                              ';
+                                              if(!empty($config) && is_array($config)){
+                                                  foreach($config as $k => $v){
+                                                      echo '
+                                                 <div class="form-group row">
+                                                    <label for="inputEmail3" class="col-sm-2 col-form-label">插件配置：'.$k.'</label>
+                                                    <div class="col-sm-10">
+                                                        <input class="form-control" placeholder="'.$k.'" name="config['.$k.']" value="'.$v.'">
+                                                    </div>
+                                                 </div>';
+                                                  }
+                                                  echo '
+                                                <button type="submit" class="btn btn-primary">提交</button>
+                                                <button type="reset" class="btn btn-danger">重置</button>
+                                                ';
+                                              }else{
+                                                  echo '
+                                                 <div class="form-group row">
+                                                    <label for="inputEmail3" class="col-sm-12 col-form-label">该插件无配置/无config,json配置文件</label>
+                                                 </div>
+                                                 <a href="./index.php?p=Admin&a=Plugins" class="btn btn-success">返回</a>
+                                                 ';
+                                              }
+                                              echo '
+                                             </form>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </main>
+                            ';
+                            $this->Footer();
+                        }else{
+                            $config = $this->getSystem()->getPluginManager()->getPluginConfig($Gets['plugin']);
+                            $new_config = $this->getSystem()->getPostParams()['config'];
+                            if(!empty($config) && !empty($new_config)){
+                                foreach($config as $k => $v){
+                                    if(isset($config[$k]) && isset($new_config[$k])){
+                                        $config[$k] = $new_config[$k];
+                                    }
+                                }
+                            }
+                            $this->getSystem()->getPluginManager()->setPluginConfig($Gets['plugin'], $config);
+                            @header("Location: ./index.php?p=Admin&a=Plugin&plugin=".$Gets['plugin']);
+                            exit;
+                        }
                     }
                 }
             }

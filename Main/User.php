@@ -81,11 +81,16 @@ class User{
         }else{
             $Priceset = new Priceset($this->User['priceset'], $this->Class);
             if($Priceset->isExisted() === false){
-                $Priceset = new Priceset($this->Class->getSystem()->getDefaultPriceset()['id'], $this->Class);
-                if($Priceset->isExisted() === false){
-                    return false;
+                $default = $this->Class->getSystem()->getDefaultPriceset();
+                if($default !== false){
+                    $Priceset = new Priceset($default['id'], $this->Class);
+                    if($Priceset->isExisted() === false){
+                        return false;
+                    }else{
+                        return $Priceset;
+                    }
                 }else{
-                    return $Priceset;
+                    return false;
                 }
             }else{
                 return $Priceset;

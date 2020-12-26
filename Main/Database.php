@@ -24,7 +24,11 @@ class Database{
         $result = $this->database->prepare($sql);
         $result->execute();
         $result = $result->fetch(PDO::FETCH_ASSOC);
-        return $result;
+        if(empty($result) || $result === false){
+            return false;
+        }else{
+            return $result;
+        }
     }
     
     public function num_rows($sql){
