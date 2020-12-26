@@ -1,4 +1,8 @@
 <?php
+if(file_exists("./install.php")){
+    @header("Location: ./install.php");
+    exit;
+}
 if(phpversion() < 8){
     exit('CloudTowerIDC:请使用PHP8.0.0版本以上运行云塔IDC系统');
 }
