@@ -1,0 +1,357 @@
+/*==================================
+* Author        : "ThemeSine"
+* Template Name : Sign-up  HTML Template
+* Version       : 1.0
+==================================== */
+
+/*==================================
+font-family: 'Poppins', sans-serif;
+font-family: 'Open Sans', sans-serif;
+==================================== */
+
+
+/*=========== TABLE OF CONTENTS ===========
+1.  General css (Reset code)
+2.  Header
+3.  Welcome-hero
+
+/*-------------------------------------
+		1.General css (Reset code)
+--------------------------------------*/
+*{
+    padding: 0;
+    margin: 0;
+}
+
+*{
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -o-box-sizing:border-box;
+    -ms-box-sizing:border-box;
+    box-sizing:border-box;
+}
+body{
+    font-family: 'Poppins', sans-serif;
+    font-size:14px;
+    color: #a7a7a7;
+    background: #fff;
+    max-width:1920px;
+    margin:0 auto;
+    overflow-x:hidden;
+}
+
+a,a:hover,a:active,a:focus {
+    display:inline-block;
+    text-decoration:none;
+    color: #7c8089;
+    font-size: 16px;
+    font-weight: 400;
+    padding:0;
+}
+h1,h2,h3,h4,h5,h6 { 
+    margin: 0;
+    color:#464d5f;
+    font-family: 'Poppins', sans-serif;
+    text-transform: capitalize;
+    font-weight: 400;
+}
+p {
+    margin: 0;
+    line-height: 28px;
+    color:#97a0ba;
+    font-size:16px;
+    font-family: 'Poppins', sans-serif;
+}
+img{    border:none;max-width:100%; height:auto;}
+ul{
+    padding: 0;
+    margin: 0 auto;
+    list-style: none;
+}
+ul li {
+    list-style: none;
+    
+}
+select,input,textarea,button,.form-control{box-shadow:none;outline:0!important;}
+
+
+html,body{
+    height: 100%;
+    position: relative;
+    z-index: 2;
+}
+[placeholder]:focus::-webkit-input-placeholder {
+  -webkit-transition: opacity 0.3s 0.3s ease; 
+  -moz-transition: opacity 0.3s 0.3s ease; 
+  -ms-transition: opacity 0.3s 0.3s ease; 
+  -o-transition: opacity 0.3s 0.3s ease; 
+  transition: opacity 0.3s 0.3s ease; 
+  opacity: 0;
+}
+
+/*=============Style css=========*/
+
+/*-------------------------------------
+		2. Header
+--------------------------------------*/
+.signin{
+    background: #f4f6fa;
+    padding: 250px 0;
+}
+.signin.signup {padding: 171px 0px;}
+
+.sign-content {
+    max-width: 620px;
+    margin: 0 auto;
+}
+.sign-content h2{
+    color: #464d5f;
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 54px;
+}
+
+/*.signin-form  .form-control*/
+.signin-form  .form-control {
+    background: transparent;
+    border: transparent;
+    border-bottom: 1px solid #bcbfc9;
+    border-radius: 0;
+    outline: 0!important;
+    box-shadow: none;
+    padding: 0px 0;
+    height: 46px;
+    -webkit-transition: linear .5s;
+    -moz-transition: linear .5s;
+    -ms-transition: linear .5s;
+    -o-transition: linear .5s;
+    transition: linear .5s;
+}
+.signin-form  .form-control:hover,.signin-form  .form-control:focus{
+    border-bottom: 1px solid #474d5b;
+    color:#474d5b;
+}
+
+.signin-form label{
+    position: relative;
+    top: 5px;
+    color: #474d5b;
+    font-size:14px;
+    font-weight: 500;
+    text-transform: capitalize;
+    margin-bottom: 0px;
+}
+.signin-form input[type="text"],.signin-form input[type="email"],.signin-form input[type="password"]{
+    color:
+    color:#474d5b;
+    font-size:16px;
+    font-weight: 400;
+}
+/*.signin-form  .form-control*/
+
+/*.password-circle*/
+.signin-password,.signin-modal-password {
+    margin-top: 15px;
+}
+.password-circle,.password-modal-circle {
+    display: inline-block
+    margin-bottom: 17px;
+}
+.single-password-circle,.single-password-modal-circle{
+    display: inline-block
+}
+.single-forgot-password-circle ,.single-forgot-password-modal-circle {
+    display: inline-block;
+    float: right;
+    color: #7c8089;
+    font-size: 16px;
+    font-weight: 400;
+}
+.single-password-circle input[type="radio"],.single-password-modal-circle input[type="radio"] {
+    display:none;
+}
+.single-password-circle input[type="radio"] + label,.single-password-modal-circle input[type="radio"] + label{
+    color: #7c8089;
+    font-size: 16px;
+    font-weight: 400;
+    text-transform: capitalize;
+    margin-bottom: 17px;
+    margin-right:5px;
+}
+.single-password-circle input[type="radio"] + label span.round-boarder,
+.single-password-modal-circle input[type="radio"] + label span.round-boarder-modal{
+    display:inline-block;
+    width:20px;
+    height:20px;
+    margin:-1px 15px 0 0;
+    vertical-align:middle;
+    cursor:pointer;
+    -moz-border-radius:  50%;
+    border-radius:  50%;
+}
+.single-password-circle input[type="radio"] + label span.round-boarder1,
+.single-password-modal-circle input[type="radio"] + label span.round-boarder-modal-one{
+    display:inline-block;
+    width: 12px;
+    height: 12px;
+    margin: -8px 0px 0 2px;
+    vertical-align:middle;
+    cursor:pointer;
+    -moz-border-radius:  50%;
+    border-radius:  50%;
+}
+.single-password-circle input[type="radio"] + label span.round-boarder,
+.single-password-modal-circle input[type="radio"] + label span.round-boarder-modal{
+    border:2px solid #d5dadf;
+}
+
+.single-password-circle input[type="radio"] + label span.round-boarder1,
+.single-password-modal-circle input[type="radio"] + label span.round-boarder-modal-one {
+    border:1px solid #fff;
+    background-color:#fff;
+}
+
+.single-password-circle input[type="radio"]:checked + label span.round-boarder1,
+.single-password-modal-circle input[type="radio"]:checked + label span.round-boarder-modal-one{
+     background-color:#5a84fd;
+}
+
+.single-password-circle input[type="radio"] + label span.round-boarder1,
+.single-password-circle input[type="radio"]:checked + label span.round-boarder1,
+
+.single-password-modal-circle input[type="radio"] + label span.round-boarder-modal-one,
+.single-password-modal-circle input[type="radio"]:checked + label span.round-boarder-modal-one {
+  -webkit-transition:background-color 0.4s linear;
+  -o-transition:background-color 0.4s linear;
+  -moz-transition:background-color 0.4s linear;
+  transition:background-color 0.4s linear;
+}
+/*.password-circle*/
+
+/*.btn.signin_btn*/
+.btn.signin_btn,.btn.signin_btn:focus {
+    width: 620px;
+    padding: 0;
+    height: 60px;
+    background: #26d9b3;
+    color: #fff;
+    font-size: 14px;
+    text-transform: uppercase;
+    border-radius: 3px;
+    box-shadow: 0 5px 30px rgba(60,191,163,.3);
+    margin-top: 23px;
+}
+
+.btn.signin_btn.signin_btn_two,.btn.signin_btn.signin_btn_two:focus{background: #5a84fd;box-shadow: 0 5px 30px rgba(0,66,255,.3);}
+/*.btn.signin_btn*/
+
+.signin-footer p{
+    color: #91949c;
+    font-size:16px;
+    max-width: 265px;
+    margin: 35px auto;
+
+}
+.signin-footer p>a{
+    color: #7c8089;
+    font-size:16px;
+    font-weight: 500;
+    text-transform: capitalize;
+
+}
+
+/*modal-header*/
+.modal-content {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 60px 0;
+}
+.modal-body {
+    position: relative;
+    padding: 0;
+}
+.modal-content  .sign-content {
+    max-width: 500px;
+    margin: 0 auto;
+}
+.modal-content  .btn.signin_btn,.modal-content  .btn.signin_btn:focus {
+    width: 500px;
+}
+.modal-header {
+    padding:0;
+    border-bottom: transparent;
+     margin-left:0px;
+}
+/*modal-header*/
+
+/*.signin.popup-in*/
+.signin.popup-in {padding: 170px 0;}
+.signin.signup.popup-up {padding: 48px 0;}
+.signin.popup-in,.signin.signup.popup-up{
+    position: relative;
+    background: url(../images/popupsignin.png)no-repeat;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+}
+.signin.signup.popup-in.pop-up{
+    background: url(../images/popupsignup.png)no-repeat;
+    padding: 96px 0;
+}
+.signin.popup-in:before,.signin.signup.popup-up:before{
+    position:absolute;
+    content: " ";
+    top: 0;
+    left:0;
+    width:100%;
+    height: 100%;
+    background:rgba(0,0,0,.7);
+    z-index: -1;
+}
+.sign-content.popup-in-content{
+    background: #fff;
+    border-radius: 5px;
+    padding: 60px 0 100px;
+}
+.popup-in-txt{
+    max-width: 500px;
+    margin:0 auto;
+}
+.sign-content.popup-in-content .btn.signin_btn,.sign-content.popup-in-content  .btn.signin_btn:focus {
+    width: 500px;
+}
+/*.signin.popup-in*/
+
+
+/*===============================
+    Scroll Top
+===============================*/
+#scroll-Top  .return-to-top {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    display: none;
+    width: 40px;
+    line-height: 40px;
+    height: 40px;
+    text-align: center;
+    font-size: 30px;
+    cursor: pointer;
+    color: #fff;
+    background:#1c7cf8;
+	border:1px solid #1c7cf8;
+	border-radius:5px;
+	-webkit-transition: .5s; 
+	-moz-transition:.5s; 
+	-ms-transition:.5s; 
+	-o-transition:.5s;
+    transition: .5s;
+	z-index: 2;
+}
+#scroll-Top  .return-to-top:hover {
+    background:#f9fbff;
+    color: #1c7cf8;
+	border:1px solid #1c7cf8;
+	border-radius:50%;
+}
+/*========================Thank you=================
