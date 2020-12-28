@@ -37,36 +37,51 @@ class Cart extends Page{
             }
             if(empty($this->getSystem()->getGetParams()['gid'])){
                 $Group = $this->getSystem()->getDatabase()->get_row("SELECT * FROM `ytidc_group` WHERE `status`='1' ORDER BY `weight` DESC");
-                $Group = new ProductGroup($Group['id'], $this);
+                if($Group !== false){
+                    $Group = new ProductGroup($Group['id'], $this);
+                }
             }else{
                 $Group = new ProductGroup($this->getSystem()->getGetParams()['gid'], $this);
                 if($Group->isExisted() === false){
                     $Group = $this->getSystem()->getDatabase()->get_row("SELECT * FROM `ytidc_group` WHERE `status`='1' ORDER BY `weight` DESC");
-                    $Group = new ProductGroup($Group['id'], $this);
+                    if($Group !== false){
+                        $Group = new ProductGroup($Group['id'], $this);
+                    }
                 }
             }
-            $Product = $Group->getProducts();
-            $Products = array();
-            if(is_array($Product)){
-                foreach($Product as $k => $v){
-                    $Products[$k] = $v;
-                    $vperiod = array_shift(json_decode($v['period'], true));
-                    $Products[$k]['periodname'] = $vperiod['name'];
-                    $Products[$k]['periodprice'] = $vperiod['price'];
+            if($Group !== false){
+                $Product = $Group->getProducts();
+                $Products = array();
+                if(is_array($Product)){
+                    foreach($Product as $k => $v){
+                        $Products[$k] = $v;
+                        $vperiod = array_shift(json_decode($v['period'], true));
+                        $Products[$k]['periodname'] = $vperiod['name'];
+                        $Products[$k]['periodprice'] = $vperiod['price'];
+                    }
                 }
-            }
-            if($Product === false){
-                $this->getTemplate()->replaceListContent('ProductList', array());
+                if($Product === false){
+                    $this->getTemplate()->replaceListContent('ProductList', array());
+                }else{
+                    $this->getTemplate()->replaceListContent('ProductList', $Products);
+                }
+                $template_code = array(
+                    'config' => $this->getSystem()->getConfigAll(),
+                    'template' => $this->getSystem()->getTemplateCustom(),
+                    'group' => $Group->getAll(),
+                );
+                $this->getTemplate()->setTemplateCode($template_code);
+                echo $this->getTemplate()->outputTemplate();
             }else{
-                $this->getTemplate()->replaceListContent('ProductList', $Products);
+                $this->getTemplate()->replaceListContent('ProductList', array());
+                $template_code = array(
+                    'config' => $this->getSystem()->getConfigAll(),
+                    'template' => $this->getSystem()->getTemplateCustom(),
+                    'group' => array(),
+                );
+                $this->getTemplate()->setTemplateCode($template_code);
+                echo $this->getTemplate()->outputTemplate();
             }
-            $template_code = array(
-                'config' => $this->getSystem()->getConfigAll(),
-                'template' => $this->getSystem()->getTemplateCustom(),
-                'group' => $Group->getAll(),
-            );
-            $this->getTemplate()->setTemplateCode($template_code);
-            echo $this->getTemplate()->outputTemplate();
         }
     }
     

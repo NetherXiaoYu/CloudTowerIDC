@@ -22,6 +22,23 @@ class Api{
     public function __construct(private $System){
     }
     
+    private function LoginUser($username, $password){
+        $this->User = new User($username, $this);
+        if($this->User->isExisted() === false){
+            return false;
+        }else{
+            if($this->User->getPassword() == md5(md5($password))){
+                if($this->User->getStatus() == 0){
+                    return false;
+                }else{
+                    return true;
+                }
+            }else{
+                return false;
+            }
+        }
+    }
+    
     public function getSystem(){
         return $this->System;
     }

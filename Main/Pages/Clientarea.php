@@ -126,6 +126,10 @@ class Clientarea extends Page{
                         if(is_numeric($params['ytidc_username'])){
                             $this->goRegister('用户名不能为纯数字');
                         }
+                        $User = new User($params['ytidc_username']);
+                        if($User->isExisted() === true){
+                            $this->goRegister('用户名已存在');
+                        }
                         $event = new UserRegisterEvent($params['ytidc_username'], $params['ytidc_password']);
                         $this->getPluginManager()->loadEvent('onUserRegister', $event);
                         if($event->isCancelled() === false){

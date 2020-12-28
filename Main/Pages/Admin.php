@@ -486,11 +486,16 @@ class Admin{
                                  ';
                                  foreach($products as $k => $v){
                                      $group = $this->getSystem()->getDatabase()->get_row("SELECT * FROM `ytidc_group` WHERE `id`='{$v['group']}'");
+                                     if($group === false){
+                                         $group = '【暂无产品组】';
+                                     }else{
+                                         $group = $group['name'];
+                                     }
                                      echo '
                                     <tr>
                                        <th>'.$v['id'].'</th>
                                        <th>'.$v['name'].'</th>
-                                       <th>'.$group['name'].'</th>
+                                       <th>'.$group.'</th>
                                        <th><a href="./index.php?p=Admin&a=Product&pid='.$v['id'].'" class="btn btn-sm btn-primary">编辑</a><a href="./index.php?p=Admin&a=Product&pid='.$v['id'].'&act=del" class="btn btn-sm btn-danger">删除</a></th>
                                     </tr>';
                                  }
@@ -1334,7 +1339,7 @@ class Admin{
                             $this->goIndex();
                         }
                         $result = $this->getSystem()->getDatabase()->exec("INSERT INTO `ytidc_group`(`name`, `description`, `weight`, `status`) VALUES ('新建产品组{$rand}', '', '0', '1')");
-                        if($result == 0){
+                        if($result === false){
                             $this->getSystem()->getLogger()->addSystemLog('数据库添加'.$this->getSystem()->getGetParams()['add'].'错误：'.print_r($this->getSystem()->getDatabase()->error()));
                         }
                         @header("Location: ./index.php?p=Admin&a=ProductGroups");
@@ -1345,7 +1350,7 @@ class Admin{
                             $this->goIndex();
                         }
                         $result = $this->getSystem()->getDatabase()->exec("INSERT INTO `ytidc_product`(`name`, `description`, `weight`, `period`, `group`, `configoption`, `customoption`, `server`, `hidden`, `status`) VALUES ('新建产品{$rand}', '', '0', '[]', '0', '[]', '[]', '0', '0', '1')");
-                        if($result == 0){
+                        if($result === false){
                             $this->getSystem()->getLogger()->addSystemLog('数据库添加'.$this->getSystem()->getGetParams()['add'].'错误：'.print_r($this->getSystem()->getDatabase()->error()));
                         }
                         @header("Location: ./index.php?p=Admin&a=Products");
@@ -1356,7 +1361,7 @@ class Admin{
                             $this->goIndex();
                         }
                         $result = $this->getSystem()->getDatabase()->exec("INSERT INTO `ytidc_server`(`name`, `serverip`, `serverdomain`, `serverdns1`, `serverdns2`, `serverusername`, `serverpassword`, `serveraccesshash`, `servercpanel`, `serverport`, `plugin`, `status`) VALUES ('新建服务器{$rand}', '', '', '', '', '', '', '', '', '0', '', '1')");
-                        if($result == 0){
+                        if($result === false){
                             $this->getSystem()->getLogger()->addSystemLog('数据库添加'.$this->getSystem()->getGetParams()['add'].'错误：'.print_r($this->getSystem()->getDatabase()->error()));
                         }
                         @header("Location: ./index.php?p=Admin&a=Servers");
@@ -1367,7 +1372,7 @@ class Admin{
                             $this->goIndex();
                         }
                         $result = $this->getSystem()->getDatabase()->exec("INSERT INTO `ytidc_gateway`(`name`, `rate`, `plugin`, `configoption`, `status`) VALUES ('新建支付渠道{$rand}', '100.00', '', '[]', '1')");
-                        if($result == 0){
+                        if($result === false){
                             $this->getSystem()->getLogger()->addSystemLog('数据库添加'.$this->getSystem()->getGetParams()['add'].'错误：'.print_r($this->getSystem()->getDatabase()->error()));
                         }
                         @header("Location: ./index.php?p=Admin&a=Gateways");
@@ -1379,7 +1384,7 @@ class Admin{
                         }
                         $password = md5(md5('admin'.$rand));
                         $result = $this->getSystem()->getDatabase()->exec("INSERT INTO `ytidc_admin`(`username`, `password`, `permission`, `lastip`, `status`) VALUES ('admin{$rand}', '{$password}', '[]', '', '1')");
-                        if($result == 0){
+                        if($result === false){
                             $this->getSystem()->getLogger()->addSystemLog('数据库添加'.$this->getSystem()->getGetParams()['add'].'错误：'.print_r($this->getSystem()->getDatabase()->error()));
                         }
                         @header("Location: ./index.php?p=Admin&a=Admins");
@@ -1391,7 +1396,7 @@ class Admin{
                         }
                         $date = date('Y-m-d H:i:s');
                         $result = $this->getSystem()->getDatabase()->exec("INSERT INTO `ytidc_notice`(`title`, `content`, `date`, `status`) VALUES ('新增公告{$rand}', '', '{$date}', '1')");
-                        if($result == 0){
+                        if($result === false){
                             $this->getSystem()->getLogger()->addSystemLog('数据库添加'.$this->getSystem()->getGetParams()['add'].'错误：'.print_r($this->getSystem()->getDatabase()->error()));
                         }
                         @header("Location: ./index.php?p=Admin&a=Notice");
@@ -1402,7 +1407,7 @@ class Admin{
                             $this->goIndex();
                         }
                         $result = $this->getSystem()->getDatabase()->exec("INSERT INTO `ytidc_priceset`(`name`, `description`, `weight`, `money`, `price`, `default`, `status`) VALUES ('新建价格组{$rand}', '', '0', '999', '[]', '0', '1')");
-                        if($result == 0){
+                        if($result === false){
                             $this->getSystem()->getLogger()->addSystemLog('数据库添加'.$this->getSystem()->getGetParams()['add'].'错误：'.print_r($this->getSystem()->getDatabase()->error()));
                         }
                         @header("Location: ./index.php?p=Admin&a=Pricesets");
@@ -1443,7 +1448,7 @@ class Admin{
                     if(!empty($this->getSystem()->getPostParams())){
                         $params = $this->getSystem()->getPostParams();
                         $result = $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_group` SET `name`='{$params['name']}', `description`='{$params['description']}', `weight`='{$params['weight']}', `status`='{$params['status']}' WHERE `id`='{$group['id']}'");
-                        if($result == 0){
+                        if($result === false){
                             $this->getSystem()->getLogger()->addSystemLog('数据库修改产品组错误：'.print_r($this->getSystem()->getDatabase()->error()));
                         }
                         @header("Location: ./index.php?p=Admin&a=ProductGroup&gid=".$group['id']);
@@ -1527,7 +1532,7 @@ class Admin{
                         $params = $this->getSystem()->getPostParams();
                         $date = date('Y-m-d H:i:s');
                         $result = $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_notice` SET `title`='{$params['title']}', `content`='{$params['content']}', `date`='{$date}', `status`='{$params['status']}' WHERE `id`='{$notice['id']}'");
-                        if($result == 0){
+                        if($result === false){
                             $this->getSystem()->getLogger()->addSystemLog('数据库修改公告错误：'.print_r($this->getSystem()->getDatabase()->error()));
                         }
                         @header("Location: ./index.php?p=Admin&a=Notice&nid=".$notice['id']);
@@ -1620,7 +1625,7 @@ class Admin{
                         $params['customoption'] = json_encode($params['customoption'], JSON_UNESCAPED_UNICODE);
                         $params['password'] = base64_encode($params['password']);
                         $result = $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_service` SET `username`='{$params['username']}', `password`='{$params['password']}', `enddate`='{$params['enddate']}', `customoption`='{$params['customoption']}', `status`='{$params['status']}' WHERE `id`='{$service['id']}'");
-                        if($result == 0){
+                        if($result === false){
                             $this->getSystem()->getLogger()->addSystemLog('数据库修改在线服务错误：'.print_r($this->getSystem()->getDatabase()->error()));
                         }
                         @header("Location: ./index.php?p=Admin&a=Service&sid=".$service['id']);
@@ -1723,7 +1728,7 @@ class Admin{
                            $params['priceset'] = 0;
                         }
                         $result = $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_user` SET `username`='{$params['username']}', `money`='{$params['money']}', `priceset`='{$params['priceset']}', `status`='{$params['status']}' WHERE `id`='{$user['id']}'");
-                        if($result == 0){
+                        if($result === false){
                             $this->getSystem()->getLogger()->addSystemLog('数据库修改用户错误：'.print_r($this->getSystem()->getDatabase()->error()));
                         }
                         @header("Location: ./index.php?p=Admin&a=User&uid=".$user['id']);
@@ -1826,7 +1831,7 @@ class Admin{
                            $params['weight'] = 0;
                         }
                         $result = $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_priceset` SET `name`='{$params['name']}', `description`='{$params['description']}', `weight`='{$params['weight']}', `money`='{$params['money']}', `status`='{$params['status']}' WHERE `id`='{$priceset['id']}'");
-                        if($result == 0){
+                        if($result === false){
                             $this->getSystem()->getLogger()->addSystemLog('数据库修改价格组错误：'.print_r($this->getSystem()->getDatabase()->error()));
                         }
                         @header("Location: ./index.php?p=Admin&a=Priceset&pid=".$priceset['id']);
@@ -1916,7 +1921,7 @@ class Admin{
                         $params = $this->getSystem()->getPostParams();
                         $Prices = json_encode($params['price']);
                         $result = $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_priceset` SET `price`='{$Prices}' WHERE `id`='{$priceset['id']}'");
-                        if($result == 0){
+                        if($result === false){
                             $this->getSystem()->getLogger()->addSystemLog('数据库修改价格错误：'.print_r($this->getSystem()->getDatabase()->error()));
                         }
                         @header("Location: ./index.php?p=Admin&a=Price&pid=".$priceset['id']);
@@ -1991,12 +1996,12 @@ class Admin{
                     if(!empty($this->getSystem()->getPostParams())){
                         $params = $this->getSystem()->getPostParams();
                         $result = $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_workorder` SET `status`='已处理' WHERE `id`='{$workorder['id']}'");
-                        if($result == 0){
+                        if($result === false){
                             $this->getSystem()->getLogger()->addSystemLog('数据库修改工单状态错误：'.print_r($this->getSystem()->getDatabase()->error()));
                         }
                         $date = date('Y-m-d H:i:s');
                         $result = $this->getSystem()->getDatabase()->exec("INSERT INTO `ytidc_workorder_reply`(`person`, `content`, `workorder`, `time`) VALUES ('{$_SESSION['ctadmin_user']}', '{$params['reply']}', '{$workorder['id']}', '{$date}')");
-                        if($result == 0){
+                        if($result === false){
                             $this->getSystem()->getLogger()->addSystemLog('数据库新增工单回复错误：'.print_r($this->getSystem()->getDatabase()->error()));
                         }
                         $PluginManager = $this->getSystem()->getPluginManager();
@@ -2084,6 +2089,11 @@ class Admin{
                     }
                     if(!empty($this->getSystem()->getPostParams())){
                         $params = $this->getSystem()->getPostParams();
+                        if(is_numeric($params['username'])){
+                            $this->getSystem()->getLogger()->addSystemLog('数据库修改管理员错误：管理员账户不能为纯数字！');
+                            @header("Location: ./index.php?p=Admin&a=Admin&aid=".$admin['id']);
+                            exit;
+                        }
                         // exit(print_r($params['permission']));
                         $params['permission'] = json_encode($params['permission']);
                         if(!empty($params['password'])){
@@ -2092,7 +2102,7 @@ class Admin{
                             $params['password'] = $admin['password'];
                         }
                         $result = $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_admin` SET `username`='{$params['username']}', `password`='{$params['password']}', `permission`='{$params['permission']}', `status`='{$params['status']}' WHERE `id`='{$admin['id']}'");
-                        if($result == 0){
+                        if($result === false){
                             $this->getSystem()->getLogger()->addSystemLog('数据库修改管理员错误：'.print_r($this->getSystem()->getDatabase()->error()));
                         }
                         @header("Location: ./index.php?p=Admin&a=Admin&aid=".$admin['id']);
@@ -2194,7 +2204,7 @@ class Admin{
                         $params['serverpassword'] = base64_encode($params['serverpassword']);
                         $params['serveraccesshash'] = base64_encode($params['serveraccesshash']);
                         $result = $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_server` SET `name`='{$params['name']}',`serverip`='{$params['serverip']}',`serverdomain`='{$params['serverdomain']}',`serverdns1`='{$params['serverdns1']}',`serverdns2`='{$params['serverdns2']}',`serverusername`='{$params['serverusername']}',`serverpassword`='{$params['serverpassword']}',`serveraccesshash`='{$params['serveraccesshash']}',`servercpanel`='{$params['servercpanel']}',`serverport`='{$params['serverport']}',`plugin`='{$params['plugin']}',`status`='{$params['status']}' WHERE `id`='{$server['id']}'");
-                        if($result == 0){
+                        if($result === false){
                             $this->getSystem()->getLogger()->addSystemLog('数据库修改服务器错误：'.print_r($this->getSystem()->getDatabase()->error()));
                         }
                         @header("Location: ./index.php?p=Admin&a=Server&sid=".$server['id']);
@@ -2388,7 +2398,7 @@ class Admin{
                            $params['weight'] = 0;
                         }
                         $result = $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_product` SET `name`='{$params['name']}',`description`='{$params['description']}',`weight`='{$params['weight']}',`period`='{$params['period']}',`group`='{$params['group']}',`configoption`='{$params['configoption']}',`customoption`='{$params['customoption']}',`server`='{$params['server']}',`hidden`='{$params['hidden']}',`status`='{$params['status']}' WHERE `id`='{$product['id']}'");
-                        if($result == false){
+                        if($result === false){
                             $this->getSystem()->getLogger()->addSystemLog('数据库修改产品错误：'.print_r($this->getSystem()->getDatabase()->error()));
                         }
                         @header("Location: ./index.php?p=Admin&a=Product&pid=".$product['id']);
@@ -2405,18 +2415,22 @@ class Admin{
                         $product['configoption'] = json_decode($product['configoption'], true);
                         $customoption = json_decode($product['customoption'], true);
                         $server = $this->getSystem()->getDatabase()->get_row("SELECT * FROM `ytidc_server` WHERE `id`='{$product['server']}'");
-                        $Plugin = $this->getSystem()->getPluginManager()->getPlugin($server['plugin']);
-                        $PluginServer = new Server($server['id'], $this);
-                        $Event = new ProductConfigEvent($PluginServer);
-                        if($Plugin  !== false){
-                            $ProductConfigs = $Plugin->ProductConfig($Event);
+                        if($server !== false){
+                            $Plugin = $this->getSystem()->getPluginManager()->getPlugin($server['plugin']);
+                            $PluginServer = new Server($server['id'], $this);
+                            $Event = new ProductConfigEvent($PluginServer);
+                            if($Plugin  !== false){
+                                $ProductConfigs = $Plugin->ProductConfig($Event);
+                            }else{
+                                $ProductConfigs = array();
+                            }
+                            if(is_array($customoption)){
+                                $customcount = count($customoption);
+                            }else{
+                                $customcount = 0;
+                            }
                         }else{
                             $ProductConfigs = array();
-                        }
-                        if(is_array($customoption)){
-                            $customcount = count($customoption);
-                        }else{
-                            $customcount = 0;
                         }
                         $this->Header();
                         echo '
@@ -2686,7 +2700,7 @@ class Admin{
                         $params = $this->getSystem()->getPostParams();
                         $params['configoption'] = json_encode($params['configoption'], JSON_UNESCAPED_UNICODE);
                         $result = $this->getSystem()->getDatabase()->exec("UPDATE `ytidc_gateway` SET `name`='{$params['name']}',`rate`='{$params['rate']}',`plugin`='{$params['plugin']}',`configoption`='{$params['configoption']}',`status`='{$params['status']}' WHERE `id`='{$gateway['id']}'");
-                        if($result == 0){
+                        if($result === false){
                             $this->getSystem()->getLogger()->addSystemLog('数据库修改服务器错误：'.print_r($this->getSystem()->getDatabase()->error()));
                         }
                         @header("Location: ./index.php?p=Admin&a=Gateway&gid=".$gateway['id']);
