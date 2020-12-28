@@ -126,7 +126,7 @@ class Clientarea extends Page{
                         if(is_numeric($params['ytidc_username'])){
                             $this->goRegister('用户名不能为纯数字');
                         }
-                        $User = new User($params['ytidc_username']);
+                        $User = new User($params['ytidc_username'], $this);
                         if($User->isExisted() === true){
                             $this->goRegister('用户名已存在');
                         }
