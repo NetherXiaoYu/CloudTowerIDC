@@ -213,7 +213,7 @@ class PluginManager{
     }
 
     public function getApiVersion(){
-        return '3.0.3';
+        return '3.0.4';
     }
     
     public function getPluginConfig($plugin){
