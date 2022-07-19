@@ -28,4 +28,4 @@
 
 ## License
 
-GPL License should be used for CloudTowerIDC version 3.0.4 or below, Lesser GPL License should be used for CloudTowerIDC version 4.0.0 or above.
+The project is licensed under the GNU Lesser General Public License v3.0, please check the [LICENSE](https://github.com/CloudTowerDev/CloudTowerIDC/blob/master/LICENSE) file for details.
