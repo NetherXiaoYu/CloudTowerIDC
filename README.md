@@ -1,4 +1,4 @@
-<h1 align="center">CloudTowerIDC: The Hosting Billing & Management System</h1>
+<h1 align="center">CloudTowerIDC: The Billing & Management System</h1>
 
 <p align="center"><strong>A highly customisable, open-sourced billing and management system for webhosting bussiness written in PHP</strong></p>
 
