@@ -1,4 +1,8 @@
-# 云塔IDC系统
+## 注意事项
+- 本项目仅供学习使用，**请勿将本项目用于生产环境或任何商业用途**，期间产生的任何损失本项目概不负责。
+- 本项目目前处于**停更**状态
+
+## 云塔IDC系统
 云塔IDC系统是一个免费，开源的网站程序，专注于IDC财务管理。
 ![d6csMR.png](https://s1.ax1x.com/2020/08/25/d6csMR.png)
 
@@ -22,13 +26,7 @@
 6. 修复部分PHP8.0报错提示的内容
 
 ## 联系我们
-- 邮箱： 2119566807@qq.com
+- 邮箱： admin@cloudtower.cc
 - QQ： 2119566807
-- 论坛： https://bbs.yunta.cc/
-- 官网： https://www.cloudtower.cn/
-
-## 赞助我们
-
-- 支付宝转账： `2031464675@qq.com`
-- ETH钱包地址：`0xdd7a1bF1A92bAD169CE4D10c501E3d1DC1952a29` 
+- 官网： https://www.cloudtower.cc/
 
